@@ -1,0 +1,5 @@
+name: HorseOverhaul
+main: com.github.boltydawg.horseoverhaul.Main
+version: 0.1.0
+author: BoltyDawg
+description: Better horse breeding and stat viewing
