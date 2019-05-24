@@ -25,17 +25,22 @@ public class Main extends JavaPlugin{
 		instance = this;
 		
 		config = this.getConfig();
+		
+		config.addDefault("betterBreeding", true);
 		config.addDefault("autoSaddleMount", true);
 		config.addDefault("dropHorseGear", true);
+		
 		config.options().copyDefaults(true);
 		saveConfig();
+		
+		if(config.getBoolean("betterBreeding"))
+			this.getServer().getPluginManager().registerEvents(new FoalListener(), this);
 		
 		if(config.getBoolean("autoSaddleMount"))
 			this.getServer().getPluginManager().registerEvents(new ListenerSaddle(), this);
 		
 		if(config.getBoolean("dropHorseGear"))
 			this.getServer().getPluginManager().registerEvents(new ListenerHorseDeath(), this);
-		this.getServer().getPluginManager().registerEvents(new FoalListener(), this);
 	}
 	@Override
 	public void onDisable() {
