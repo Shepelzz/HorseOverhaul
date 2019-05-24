@@ -15,13 +15,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 //TODO re-work horse breeding algorithm
 //TODO improve printHorseStats(), add symbols
 //TODO optional: horses drop saddle and horse armor upon death
+//TODO saddle automatically is equipped (autoSaddleMount)
 
 public class Main extends JavaPlugin{
 	public static DecimalFormat df = new DecimalFormat("0.00");
 	public static FileConfiguration config;
+	public static JavaPlugin instance;
+	
 	@Override
 	public void onEnable() {
-		getServer().getPluginManager().registerEvents(new FoalListener(), this);
+		instance = this;
+		
+		config = this.getConfig();
+		config.addDefault("autoSaddleMount", true);
+		config.options().copyDefaults(true);
+		saveConfig();
+		
+		if(config.getBoolean("autoSaddleMount"))
+			this.getServer().getPluginManager().registerEvents(new ListenerSaddle(), this);
+		this.getServer().getPluginManager().registerEvents(new FoalListener(), this);
 	}
 	@Override
 	public void onDisable() {
