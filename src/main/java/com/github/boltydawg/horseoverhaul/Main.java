@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 //TODO add feature for viewing any horse's stats
 //TODO re-work horse breeding algorithm
 //TODO improve printHorseStats(), add symbols
+//TODO optional: horses drop saddle and horse armor upon death
 
 public class Main extends JavaPlugin{
 	public static DecimalFormat df = new DecimalFormat("0.00");

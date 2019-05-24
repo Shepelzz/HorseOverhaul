@@ -1,6 +1,5 @@
 package com.github.boltydawg.horseoverhaul;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
@@ -14,17 +13,14 @@ public class FoalListener implements Listener{
 		if(event.getEntityType().equals(EntityType.HORSE) && event.getBreeder() instanceof Player) {
 			if(!(event.getFather() instanceof Horse && event.getMother() instanceof Horse)) return;
 			Player player = (Player)event.getBreeder();
-			StatHorse mother = new StatHorse(event.getMother());
+			StatHorse foal = new StatHorse(event.getEntity());
+			foal.calculateBirth((Horse)event.getMother(),(Horse)event.getFather());
+			
 			StatHorse father = new StatHorse(event.getFather());
-			player.sendMessage(printHorseStats(mother,"Mom"));
-			player.sendMessage(printHorseStats(father,"Dad"));
+			StatHorse mother = new StatHorse(event.getMother());
+			player.sendMessage(foal.printStats("Foal"));
+			player.sendMessage(father.printStats("Father"));
+			player.sendMessage(mother.printStats("Mother"));
 		}
-	}
-	private String printHorseStats(StatHorse roach, String name) {
-		String msg = name+":\n";
-		msg += ChatColor.GREEN + ("S: " + roach.getSpeed() + " m/s\n");
-		msg += ChatColor.RED + ("H: " + roach.getHealth() + " hearts\n");
-		msg += ChatColor.BLUE + ("J: " + roach.getJumpHeight() + " blocks");
-		return msg;
 	}
 }
