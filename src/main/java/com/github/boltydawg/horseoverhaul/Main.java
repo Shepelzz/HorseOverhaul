@@ -5,17 +5,20 @@ import java.text.DecimalFormat;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+
 /**
  * A plugin that allows you to drop and trade your hard-earned xp
  * 
  * @author BoltyDawg
  */
 
-//TODO add feature for viewing any horse's stats
-//TODO re-work horse breeding algorithm
-//TODO improve printHorseStats(), add symbols
+//TODO test breeding algorithm, change to x*father + (1-x)*mother + y ?
 //TODO food type specific breeding
 //TODO name horse upon birth
+//TODO store stats in a book
+//TODO look more into horse ownernship and blocking other players from interacting with owned horses as long as said horse has armor on
+//TODO documentation
+//TODO bypass protection permission
 
 public class Main extends JavaPlugin{
 	public static DecimalFormat df = new DecimalFormat("0.00");
