@@ -4,3 +4,7 @@ version: 0.1.1
 author: BoltyDawg
 description: Better horse breeding and stat viewing
 api-version: 1.13
+Commands:
+   clearowners:
+      description: resets the owners of all currently loaded horses. Dev use only.
+      usage: /clearowners
