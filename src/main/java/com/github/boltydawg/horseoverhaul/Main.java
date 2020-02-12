@@ -41,7 +41,7 @@ public class Main extends JavaPlugin{
 		
 		config = this.getConfig();
 		
-		config.addDefault("autoSaddleMount", true);
+		config.addDefault("autoGearEquip", true);
 		config.addDefault("betterBreeding", true);
 		config.addDefault("checkHorseStats", true);
 		config.addDefault("dropHorseGear", true);
@@ -59,8 +59,8 @@ public class Main extends JavaPlugin{
 		met.setLore(lore);
 		deed.setItemMeta(met);
 		
-		if(config.getBoolean("autoSaddleMount"))
-			this.getServer().getPluginManager().registerEvents(new ListenerSaddle(), this);
+		if(config.getBoolean("autoGearEquip"))
+			this.getServer().getPluginManager().registerEvents(new ListenerGear(), this);
 		
 		if(config.getBoolean("betterBreeding"))
 			this.getServer().getPluginManager().registerEvents(new FoalListener(), this);
