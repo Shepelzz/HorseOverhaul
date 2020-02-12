@@ -9,8 +9,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTameEvent;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -23,7 +21,7 @@ public class ListenerHorseOwnership implements Listener {
 	public void onDamage(EntityDamageByEntityEvent event) {
 		if(event.getEntity() instanceof Horse) {
 			Horse horse = (Horse) event.getEntity();
-			if(horse.getOwner() != null) {
+			if(horse.getOwner() != null && horse.getInventory().getArmor() != null) {
 				if(event.getDamager() instanceof Player) {
 					Player player = (Player) event.getDamager();
 					if(horse.getOwner().getUniqueId().equals(player.getUniqueId())) {
@@ -87,17 +85,6 @@ public class ListenerHorseOwnership implements Listener {
 				}
 				event.setCancelled(true);
 			}
-		}
-	}
-	
-	@EventHandler
-	public void invClick(InventoryClickEvent event) {
-		((Player)event.getWhoClicked()).sendMessage("in");
-		if(event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) {
-			((Player)event.getWhoClicked()).sendMessage(event.getClickedInventory().getType().name());
-		}
-		else if(event.getCursor() != null && event.getCursor().getType().name().contains("HORSE_ARMOR")) {
-			((Player)event.getWhoClicked()).sendMessage(event.getClickedInventory().getContents().length+"");
 		}
 	}
 }

@@ -16,18 +16,34 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 /**
- * A plugin that allows you to drop and trade your hard-earned xp
+ * A plugin that improves many aspects of owning/breeding horses
  * 
  * @author BoltyDawg
  */
 
-//TODO test breeding algorithm, change to x*father + (1-x)*mother + y ?
-//TODO food type specific breeding
-//TODO name horse upon birth
+//TODO test breeding algorithm some more
+//TODO name horse upon birth, or with deed?
 //TODO store stats in a book
-//TODO look more into horse ownernship and blocking other players from interacting with owned horses as long as said horse has armor on
-//TODO documentation
-//TODO bypass protection permission
+//TODO fix ownership
+//TODO documentation, cleaning, organizing
+//TODO bypass protection permission  ??
+
+/**
+ * FEATURES:
+ * AutoGearEquip:
+ * 	Saddles and armor get equipped on the horse when you right click it, rather than opening up their inventory. Can shift click to open the inventory still
+ * Better Breeding:
+ * 	new breeding algorithm that provides more generational improvements rather than complete luck
+ * BetterBreedingFoodMultipliers:
+ * 	get better results from your breeding by using better foods
+ * checkHorseStats:
+ * 	right click a tamed horse to check its stats. Compatible with ownership feature
+ * dropHorseGear:
+ * 	Horses drop their gear upon death
+ * Ownership:
+ * 	can't damage your own horse if it's wearing armor
+ *
+ */
 
 public class Main extends JavaPlugin{
 	public static DecimalFormat df = new DecimalFormat("0.00");
@@ -43,6 +59,7 @@ public class Main extends JavaPlugin{
 		
 		config.addDefault("autoGearEquip", true);
 		config.addDefault("betterBreeding", true);
+		config.addDefault("betterBreedingFoodMultipliers",true);
 		config.addDefault("checkHorseStats", true);
 		config.addDefault("dropHorseGear", true);
 		config.addDefault("horseOwnership", true);
