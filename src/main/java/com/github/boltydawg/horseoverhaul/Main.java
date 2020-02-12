@@ -73,7 +73,6 @@ public class Main extends JavaPlugin{
 		
 		if(config.getBoolean("horseOwnership")) {
 			this.getServer().getPluginManager().registerEvents(new ListenerHorseOwnership(), this);
-			this.getCommand("clearowners").setExecutor(new CommandClearOwners());
 			
 			ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "deed"),deed);
 			recipe.addIngredient(1, Material.WRITABLE_BOOK);
