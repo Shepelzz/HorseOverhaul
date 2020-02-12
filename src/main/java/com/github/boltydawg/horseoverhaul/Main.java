@@ -27,6 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 //TODO fix ownership
 //TODO documentation, cleaning, organizing
 //TODO bypass protection permission  ??
+//TODO test mixing food types
 
 /**
  * FEATURES:
@@ -35,7 +36,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Better Breeding:
  * 	new breeding algorithm that provides more generational improvements rather than complete luck
  * BetterBreedingFoodMultipliers:
- * 	get better results from your breeding by using better foods
+ * 	get better results from your breeding by using better foods. 
+ * 	Enchanted golden apples give you a maxed out horse, and golden apples make it so you can't do worse than the lower of your two parents!
  * checkHorseStats:
  * 	right click a tamed horse to check its stats. Compatible with ownership feature
  * dropHorseGear:

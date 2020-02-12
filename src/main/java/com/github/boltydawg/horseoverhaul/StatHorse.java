@@ -167,6 +167,8 @@ public class StatHorse{
 	 * @return a double on scale of 0-1.0 that will determine the child's attribute
 	 */
 	private double randomizer(double f, double m) {
+		if(food == 2)
+			return 1.0;
 		double min = f < m ? f : m;
 		double max = f > m ? f : m;
 		
@@ -179,14 +181,6 @@ public class StatHorse{
 			max = max * (Math.random() * 0.25 + 0.9);
 		
 		return Math.random() * (max-min) + min;
-//		double mrand = (1+(1-m)) * m * (Math.random() * 0.1 + .95);
-//		double frand = (1+(1-f)) * f * (Math.random() * 0.1 + .95);
-//		
-//		double ret = (mrand + frand) / 2;
-//		
-//		if(ret > 1.0)
-//			return 1.0;
-//		return ret;
 	}
 	
 	/**
