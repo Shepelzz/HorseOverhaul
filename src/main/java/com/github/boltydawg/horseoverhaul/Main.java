@@ -44,6 +44,9 @@ import org.bukkit.plugin.java.JavaPlugin;
  * 	Horses drop their gear upon death
  * Ownership:
  * 	can't damage your own horse if it's wearing armor
+ * 	claim a horse as yours by clicking on it with a deed, or click on it with its existing deed to transfer owners. Deeds also name horses
+ * 	"fix" a horse upon birth so you can sell it, and it can't breed (right click foal with shears)
+ * 	Check an owned horse's stats by right clicking it with a carrot on a stick
  *
  */
 
@@ -51,7 +54,7 @@ public class Main extends JavaPlugin{
 	public static DecimalFormat df = new DecimalFormat("0.00");
 	public static FileConfiguration config;
 	public static JavaPlugin instance;
-	public static ItemStack deed;
+	public static ItemStack blankDeed;
 	
 	@Override
 	public void onEnable() {
@@ -69,14 +72,14 @@ public class Main extends JavaPlugin{
 		config.options().copyDefaults(true);
 		saveConfig();
 		
-		deed = new ItemStack(Material.PAPER);
-		ItemMeta met = deed.getItemMeta();
-		met.setDisplayName(ChatColor.YELLOW.toString() + ChatColor.ITALIC + "Blank Deed");
+		blankDeed = new ItemStack(Material.PAPER);
+		ItemMeta met = blankDeed.getItemMeta();
+		met.setDisplayName("Blank Deed");
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add(ChatColor.GRAY + "Right click an unclaimed");
 		lore.add(ChatColor.GRAY + "horse to make it yours");
 		met.setLore(lore);
-		deed.setItemMeta(met);
+		blankDeed.setItemMeta(met);
 		
 		if(config.getBoolean("autoGearEquip"))
 			this.getServer().getPluginManager().registerEvents(new ListenerGear(), this);
@@ -93,7 +96,7 @@ public class Main extends JavaPlugin{
 		if(config.getBoolean("horseOwnership")) {
 			this.getServer().getPluginManager().registerEvents(new ListenerHorseOwnership(), this);
 			
-			ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "deed"),deed);
+			ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),blankDeed);
 			recipe.addIngredient(1, Material.WRITABLE_BOOK);
 			recipe.addIngredient(1, Material.GOLDEN_CARROT);
 			this.getServer().addRecipe(recipe);
@@ -101,7 +104,7 @@ public class Main extends JavaPlugin{
 		else {
 			Iterator<Recipe> iter = getServer().recipeIterator();
 			while(iter.hasNext()) {
-				if(iter.next().getResult().equals(deed)) {
+				if(iter.next().getResult().equals(blankDeed)) {
 					iter.remove();
 					break;
 				}

@@ -15,10 +15,7 @@ public class ListenerStats implements Listener {
 		if(event.getRightClicked() instanceof Horse) {
 			Player player = event.getPlayer();
 			Horse horse = (Horse)event.getRightClicked();
-			if(!horse.isTamed()) {
-				return;
-			}
-			else if(event.isCancelled()) {
+			if(!horse.isTamed() || event.isCancelled()) {
 				return;
 			}
 			else if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.CARROT_ON_A_STICK)) {

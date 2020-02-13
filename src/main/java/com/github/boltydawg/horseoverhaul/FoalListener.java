@@ -10,10 +10,21 @@ import org.bukkit.event.entity.EntityBreedEvent;
 
 public class FoalListener implements Listener{
 	@EventHandler
-	public void onSpawn(EntityBreedEvent event) {
+	public void onBreed(EntityBreedEvent event) {
 		if(event.getEntityType().equals(EntityType.HORSE) && event.getBreeder() instanceof Player) {
 			if(!(event.getFather() instanceof Horse && event.getMother() instanceof Horse)) return;
-			//Player player = (Player)event.getBreeder();
+			Player player = (Player)event.getBreeder();
+			
+			if(event.getFather().getScoreboardTags().contains("isNudered") || event.getMother().getScoreboardTags().contains("isNudered")) {
+				player.sendMessage("One of these horses is nudered! Why must you be so cruel, with your false promises of parenthood?");
+				Horse father = (Horse)event.getFather();
+				Horse mother = (Horse)event.getMother();
+				father.setLoveModeTicks(0);
+				mother.setLoveModeTicks(0);
+				event.setCancelled(true);
+				return;
+			}
+			
 			StatHorse foal;
 			if(event.getBredWith().getType().equals(Material.ENCHANTED_GOLDEN_APPLE))
 				foal = new StatHorse(event.getEntity(), (byte)2);

@@ -65,6 +65,8 @@ public class StatHorse{
 		msg += ChatColor.GREEN + "Speed:\n" + printSpeed(getSpeed()) + " " + ChatColor.GREEN + Main.df.format(getSpeed()) + "\n";
 		msg += ChatColor.BLUE + "Jump Height:\n" + printJump(getJumpHeight()) + " " + ChatColor.BLUE + Main.df.format(getJumpHeight()) + "\n";
 		
+		msg += ChatColor.DARK_GRAY + "Can Breed:\n" + (roach.getScoreboardTags().contains("isNudered") ? ChatColor.GRAY + "False" : ChatColor.GRAY + "True") + "\n";
+		
 		
 		
 		if(border) {
