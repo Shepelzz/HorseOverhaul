@@ -1,5 +1,10 @@
 package com.github.boltydawg.horseoverhaul;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Horse;
@@ -10,6 +15,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import net.md_5.bungee.api.ChatColor;
@@ -17,6 +29,26 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class ListenerHorseOwnership implements Listener {
+	
+	public ItemStack getDeed(UUID horseID, String horsey, UUID pID, String pname) {
+		ItemStack deed = new ItemStack(Material.WRITTEN_BOOK);
+		BookMeta met = (BookMeta)deed.getItemMeta();
+		
+		met.setDisplayName(ChatColor.GREEN.toString() + ChatColor.ITALIC + "Deed to " + horsey);
+		met.setAuthor(pname);
+		
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add(ChatColor.GRAY + "Currently Owned By:");
+		lore.add(ChatColor.GRAY + pname);
+		met.setLore(lore);
+		
+		met.setPages(horseID.toString(), pID.toString());
+		
+		deed.setItemMeta(met);
+		
+		return deed;
+	}
+	
 	@EventHandler
 	public void onDamage(EntityDamageByEntityEvent event) {
 		if(event.getEntity() instanceof Horse) {
@@ -59,32 +91,123 @@ public class ListenerHorseOwnership implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
-	public void onClick(PlayerInteractEntityEvent event) {
+	public void onClickHorse(PlayerInteractEntityEvent event) {
 		if(event.getRightClicked() instanceof Horse) {
 			Player player = event.getPlayer();
 			Horse horse = (Horse)event.getRightClicked();
-			if(!horse.isTamed())
-				return;
-			else if(horse.getOwner() != null && horse.getInventory().getArmor() != null && !horse.getOwner().getUniqueId().equals(player.getUniqueId())) {
-				horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_ANGRY, 1.0F, 1.0F);
-				event.setCancelled(true);
+			ItemStack main = player.getInventory().getItemInMainHand();
+			ItemStack off = player.getInventory().getItemInOffHand();
+			
+			if(main.getType().equals(Material.NAME_TAG) || off.getType().equals(Material.NAME_TAG)) {
 				
-				TextComponent msg = new TextComponent();
-				msg.setText(player.getServer().getPlayer(horse.getOwner().getUniqueId()).getDisplayName() + " owns this horse");
-				msg.setColor(ChatColor.RED);
-				player.spigot().sendMessage(ChatMessageType.ACTION_BAR,msg);
-			}
-			//TODO replace this with armor equip event
-			else if(player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().isSimilar(Main.deed)){
-				if(horse.getOwner() != null && horse.getInventory().getArmor() != null)
-					player.sendMessage("You already own this horse");
-				else {
-					horse.setOwner(player);
-					player.sendMessage("ye");
-					player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
-				}
 				event.setCancelled(true);
+				player.sendMessage("you can only rename a horse by using a deed!");
+				
 			}
+			
+			else if(event.getHand().equals(EquipmentSlot.HAND)) {
+				
+				if(horse.getOwner() != null && horse.getScoreboardTags().contains("isOwned")) {
+					
+					if( horse.getOwner().getUniqueId() != player.getUniqueId() ) {
+						
+						if( main.getItemMeta().getDisplayName().contains(ChatColor.GREEN.toString() + ChatColor.ITALIC + "Deed to ") && main.getType().equals(Material.WRITTEN_BOOK)) {
+							
+							BookMeta met = (BookMeta)main.getItemMeta();
+							UUID horseId = UUID.fromString(met.getPage(1));
+							if(horseId == horse.getUniqueId()) {
+								claimHorse(horse, player, met.getDisplayName());
+								return;
+							}
+						}
+						
+						horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_ANGRY, 1.0F, 1.0F);
+						event.setCancelled(true);
+				
+						TextComponent msg = new TextComponent();
+						msg.setText(player.getServer().getPlayer(horse.getOwner().getUniqueId()).getDisplayName() + " owns this horse!");
+						msg.setColor(ChatColor.RED);
+						player.spigot().sendMessage(ChatMessageType.ACTION_BAR,msg);
+					}
+					
+					else if( !horse.isAdult() && main.getType().equals(Material.SHEARS)) {
+						
+						if(horse.getScoreboardTags().contains("isNudered")) {
+							
+							player.sendMessage(ChatColor.RED + ("You already nudered "+ horse.getCustomName() + ", you sick bastard!"));
+						}
+						
+						else {
+							
+							horse.getScoreboardTags().add("isNudered");
+							
+							horse.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 10));
+							horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_DEATH, 1.2f, 1.5f);
+							new BukkitRunnable() {
+								@Override
+								public void run() {
+									horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_CHICKEN_EGG, 0.9f, 1.3f);
+									player.sendMessage(ChatColor.RED + ("You have successfully cut the cock and balls off of "+ horse.getCustomName() + ". He/she will never breed."));
+								}
+							}.runTaskLater(Main.instance, 20L);
+							
+						}
+					}
+					
+				}
+				else if(main != null) {
+					if(main.isSimilar(Main.blankDeed)){
+					
+						event.setCancelled(true);
+						player.sendMessage("You have to name this horse before you can claim it!\n"
+								+ "Use an anvil to change the name of this blank deed to the name of your new horse, not a nametag!.");
+						
+					}
+					
+					else if(main.getType().equals(Material.PAPER)) {
+						ItemMeta met = main.getItemMeta();
+						List<String> lore = met.getLore();
+						if (lore != null && lore.size() == 2) {
+							if(lore.get(0).equals(ChatColor.GRAY + "Right click an unclaimed")
+									&& lore.get(1).equals(ChatColor.GRAY + "horse to make it yours")) {
+								
+								event.setCancelled(true);
+								player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
+								
+								claimHorse(horse, player, met.getDisplayName());
+								
+							}
+						}
+					}
+					
+					else if(!horse.isAdult() && main.getType().equals(Material.SHEARS)) {
+					
+						player.sendMessage(ChatColor.DARK_RED + "You can only nuder foals that you own the deed to!");
+					
+					}
+				}
+				
+				
+			}
+		}
+	}
+	
+	private void claimHorse(Horse horse, Player player, String horseName) {
+		horse.setOwner(player);
+		horse.getScoreboardTags().add("isOwned");
+		horse.setCustomName(horseName);
+		
+		horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_ARMOR, 0.9f, 2.0f);
+		player.sendMessage(ChatColor.GREEN + ("You are now the proud owner of " + horseName + "!"));
+		
+		
+		player.getInventory().addItem(getDeed(horse.getUniqueId(), horse.getCustomName(), player.getUniqueId(), player.getName()));
+	}
+	
+	@EventHandler
+	public void onRightClick(PlayerInteractEvent event) {
+		if(event.getItem() != null && event.getItem().getItemMeta().hasDisplayName() && event.getItem().getItemMeta().getDisplayName().contains(ChatColor.GREEN.toString() + ChatColor.ITALIC + "Deed to ")) {
+			event.setCancelled(true);
 		}
 	}
 }
