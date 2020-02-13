@@ -26,8 +26,10 @@ public class FoalListener implements Listener{
 			}
 			
 			StatHorse foal;
-			if(event.getBredWith().getType().equals(Material.ENCHANTED_GOLDEN_APPLE))
+			if(event.getBredWith().getType().equals(Material.ENCHANTED_GOLDEN_APPLE)) {
 				foal = new StatHorse(event.getEntity(), (byte)2);
+				event.getEntity().getScoreboardTags().add("isNudered");
+			}
 			else if(event.getBredWith().getType().equals(Material.GOLDEN_APPLE))
 				foal = new StatHorse(event.getEntity(), (byte)1);
 			else
