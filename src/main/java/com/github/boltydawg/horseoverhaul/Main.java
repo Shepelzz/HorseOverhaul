@@ -22,9 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 
 //TODO test breeding algorithm some more
-//TODO name horse upon birth, or with deed?
 //TODO store stats in a book
-//TODO fix ownership
 //TODO documentation, cleaning, organizing
 //TODO bypass protection permission  ??
 //TODO test mixing food types
@@ -44,10 +42,10 @@ import org.bukkit.plugin.java.JavaPlugin;
  * 	Horses drop their gear upon death
  * Ownership:
  * 	can't damage your own horse if it's wearing armor
- * 	claim a horse as yours by clicking on it with a deed, or click on it with its existing deed to transfer owners. Deeds also name horses
- * 	"fix" a horse upon birth so you can sell it, and it can't breed (right click foal with shears)
+ * 	claim a horse as yours by clicking on it with a blank deed, or click on it with its existing deed to transfer owners
+ * 	blank deeds name the horse
+ * 	right click an owned foal with shears to "nuder" it: it can't breed, and you can safely sell it to someone
  * 	Check an owned horse's stats by right clicking it with a carrot on a stick
- *
  */
 
 public class Main extends JavaPlugin{
