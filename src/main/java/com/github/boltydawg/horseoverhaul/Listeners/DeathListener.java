@@ -6,12 +6,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class DeathListener implements Listener {
+	
 	@EventHandler
 	public void onDeath(EntityDeathEvent event) {
+		
 		if(event.getEntity() instanceof Horse) {
+			
 			Horse horse = (Horse)event.getEntity();
 			event.getDrops().add(horse.getInventory().getSaddle());
 			event.getDrops().add(horse.getInventory().getArmor());
+			
 		}
 	}
 }
