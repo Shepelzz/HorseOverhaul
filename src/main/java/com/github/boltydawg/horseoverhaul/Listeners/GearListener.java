@@ -1,4 +1,4 @@
-package com.github.boltydawg.horseoverhaul;
+package com.github.boltydawg.horseoverhaul.Listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Horse;
@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class ListenerGear implements Listener {
+public class GearListener implements Listener {
 	
 	@EventHandler
 	public void clickEntity(PlayerInteractEntityEvent event) {

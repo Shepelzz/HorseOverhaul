@@ -1,4 +1,4 @@
-package com.github.boltydawg.horseoverhaul;
+package com.github.boltydawg.horseoverhaul.Listeners;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +24,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.github.boltydawg.horseoverhaul.Main;
+
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class ListenerHorseOwnership implements Listener {
+public class OwnershipListener implements Listener {
 	
 	public ItemStack getDeed(UUID horseID, String horsey, UUID pID, String pname) {
 		ItemStack deed = new ItemStack(Material.WRITTEN_BOOK);

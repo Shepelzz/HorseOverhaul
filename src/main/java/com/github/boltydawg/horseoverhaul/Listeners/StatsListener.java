@@ -1,4 +1,4 @@
-package com.github.boltydawg.horseoverhaul;
+package com.github.boltydawg.horseoverhaul.Listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Horse;
@@ -8,7 +8,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-public class ListenerStats implements Listener {
+import com.github.boltydawg.horseoverhaul.StatHorse;
+
+public class StatsListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.LOW)
 	public void onClick(PlayerInteractEntityEvent event) {

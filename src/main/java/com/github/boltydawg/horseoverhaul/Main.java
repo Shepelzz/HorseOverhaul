@@ -14,6 +14,12 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.github.boltydawg.horseoverhaul.Listeners.FoalListener;
+import com.github.boltydawg.horseoverhaul.Listeners.GearListener;
+import com.github.boltydawg.horseoverhaul.Listeners.DeathListener;
+import com.github.boltydawg.horseoverhaul.Listeners.OwnershipListener;
+import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
+
 
 /**
  * A plugin that improves many aspects of owning/breeding horses
@@ -80,19 +86,19 @@ public class Main extends JavaPlugin{
 		blankDeed.setItemMeta(met);
 		
 		if(config.getBoolean("autoGearEquip"))
-			this.getServer().getPluginManager().registerEvents(new ListenerGear(), this);
+			this.getServer().getPluginManager().registerEvents(new GearListener(), this);
 		
 		if(config.getBoolean("betterBreeding"))
 			this.getServer().getPluginManager().registerEvents(new FoalListener(), this);
 		
 		if(config.getBoolean("checkHorseStats"))
-			this.getServer().getPluginManager().registerEvents(new ListenerStats(), this);
+			this.getServer().getPluginManager().registerEvents(new StatsListener(), this);
 		
 		if(config.getBoolean("dropHorseGear"))
-			this.getServer().getPluginManager().registerEvents(new ListenerHorseDeath(), this);
+			this.getServer().getPluginManager().registerEvents(new DeathListener(), this);
 		
 		if(config.getBoolean("horseOwnership")) {
-			this.getServer().getPluginManager().registerEvents(new ListenerHorseOwnership(), this);
+			this.getServer().getPluginManager().registerEvents(new OwnershipListener(), this);
 			
 			ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),blankDeed);
 			recipe.addIngredient(1, Material.WRITABLE_BOOK);
