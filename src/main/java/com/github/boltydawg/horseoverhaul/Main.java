@@ -28,10 +28,7 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
  */
 
 //TODO test breeding algorithm some more
-//TODO store stats in a book
-//TODO documentation, cleaning, organizing
-//TODO bypass protection permission  ??
-//TODO test mixing food types
+//TODO test with multiple users
 
 /**
  * FEATURES:
@@ -50,18 +47,23 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
  * 	can't damage your own horse if it's wearing armor
  * 	claim a horse as yours by clicking on it with a blank deed, or click on it with its existing deed to transfer owners
  * 	blank deeds name the horse
- * 	right click an owned foal with shears to "nuder" it: it can't breed, and you can safely sell it to someone
+ * 	right click an owned foal with shears to "neuter" it: it can't breed, and you can safely sell it to someone
  * 	Check an owned horse's stats by right clicking it with a carrot on a stick
  */
 
 public class Main extends JavaPlugin{
+	
 	public static DecimalFormat df = new DecimalFormat("0.00");
+	
 	public static FileConfiguration config;
+	
 	public static JavaPlugin instance;
+	
 	public static ItemStack blankDeed;
 	
 	@Override
 	public void onEnable() {
+		
 		instance = this;
 		
 		config = this.getConfig();
@@ -98,25 +100,35 @@ public class Main extends JavaPlugin{
 			this.getServer().getPluginManager().registerEvents(new DeathListener(), this);
 		
 		if(config.getBoolean("horseOwnership")) {
+			
 			this.getServer().getPluginManager().registerEvents(new OwnershipListener(), this);
 			
 			ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),blankDeed);
 			recipe.addIngredient(1, Material.WRITABLE_BOOK);
 			recipe.addIngredient(1, Material.GOLDEN_CARROT);
 			this.getServer().addRecipe(recipe);
+			
 		}
 		else {
+			
 			Iterator<Recipe> iter = getServer().recipeIterator();
+			
 			while(iter.hasNext()) {
+				
 				if(iter.next().getResult().equals(blankDeed)) {
+					
 					iter.remove();
 					break;
+					
 				}
 			}
+			
 		}
 	}
+	
 	@Override
 	public void onDisable() {
 		
 	}
+	
 }
