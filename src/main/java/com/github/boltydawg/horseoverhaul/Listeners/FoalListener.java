@@ -1,4 +1,4 @@
-package com.github.boltydawg.horseoverhaul;
+package com.github.boltydawg.horseoverhaul.Listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityBreedEvent;
+
+import com.github.boltydawg.horseoverhaul.StatHorse;
 
 public class FoalListener implements Listener{
 	@EventHandler
