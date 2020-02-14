@@ -29,6 +29,9 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
 
 //TODO test breeding algorithm some more
 //TODO test with multiple users
+//TODO make a scoreboard specific for this plugin, as to not risk losing any of that data.
+//TODO maybe change isNeutered to something like isSterile?
+//TODO add whistle feature?
 
 /**
  * FEATURES:
@@ -38,7 +41,7 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
  * 	new breeding algorithm that provides more generational improvements rather than complete luck
  * BetterBreedingFoodMultipliers:
  * 	get better results from your breeding by using better foods. 
- * 	Enchanted golden apples give you a maxed out horse, and golden apples make it so you can't do worse than the lower of your two parents!
+ * 	Enchanted golden apples give you a maxed out horse (but it can't breed!), and golden apples make it so you can't do worse than the lower of your two parents!
  * checkHorseStats:
  * 	right click a tamed horse to check its stats. Compatible with ownership feature
  * 	store the stats your horses on a sign
