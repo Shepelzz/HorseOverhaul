@@ -41,6 +41,7 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
  * 	Enchanted golden apples give you a maxed out horse, and golden apples make it so you can't do worse than the lower of your two parents!
  * checkHorseStats:
  * 	right click a tamed horse to check its stats. Compatible with ownership feature
+ * 	store the stats your horses on a sign
  * dropHorseGear:
  * 	Horses drop their gear upon death
  * Ownership:
