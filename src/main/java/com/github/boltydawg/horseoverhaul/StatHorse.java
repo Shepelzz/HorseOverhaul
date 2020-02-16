@@ -36,7 +36,7 @@ public class StatHorse{
 	
 	public StatHorse(LivingEntity horse, byte f) {
 		roach = (Horse)horse;
-		if(Main.config.getBoolean("betterBreedingFoodMultipliers") && Main.config.getBoolean("betterBreeding"))
+		if(Main.foodEffects)
 			food = f;
 		else
 			food = 0;
