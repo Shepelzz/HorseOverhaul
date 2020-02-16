@@ -21,7 +21,7 @@ public class FoalListener implements Listener{
 			
 			Player player = (Player)event.getBreeder();
 			
-			if(event.getFather().getScoreboardTags().contains("isNeutered") || event.getMother().getScoreboardTags().contains("isNeutered")) {
+			if(event.getFather().getScoreboardTags().contains("ho.isNeutered") || event.getMother().getScoreboardTags().contains("ho.isNeutered")) {
 				
 				player.sendMessage("One of these horses is neutered! Why must you be so cruel, with your false promises of parenthood?");
 				Horse father = (Horse)event.getFather();
@@ -37,7 +37,7 @@ public class FoalListener implements Listener{
 			if(event.getBredWith().getType().equals(Material.ENCHANTED_GOLDEN_APPLE)) {
 				
 				foal = new StatHorse(event.getEntity(), (byte)2);
-				event.getEntity().getScoreboardTags().add("isNeutered");
+				event.getEntity().getScoreboardTags().add("ho.isNeutered");
 				
 			}
 

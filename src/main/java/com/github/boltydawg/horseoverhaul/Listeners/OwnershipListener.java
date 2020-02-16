@@ -158,14 +158,14 @@ public class OwnershipListener implements Listener {
 					
 					else if( !horse.isAdult() && main.getType().equals(Material.SHEARS)) {
 						
-						if(horse.getScoreboardTags().contains("isNeutered")) {
+						if(horse.getScoreboardTags().contains("ho.isNeutered")) {
 							
 							player.sendMessage(ChatColor.RED + ("You already neutered "+ horse.getCustomName() + ", you sick bastard!"));
 						}
 						
 						else {
 							
-							horse.getScoreboardTags().add("isNeutered");
+							horse.getScoreboardTags().add("ho.isNeutered");
 							
 							horse.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 10));
 							horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_DEATH, 1.2f, 1.5f);
