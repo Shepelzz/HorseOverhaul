@@ -72,6 +72,8 @@ public class Main extends JavaPlugin{
 	
 	public static boolean foodEffects;
 	
+	public static boolean ownership;
+	
 	
 	@Override
 	public void onEnable() {
@@ -135,6 +137,8 @@ public class Main extends JavaPlugin{
 		if(config.getBoolean("horseOwnership")) {
 			
 			this.getServer().getPluginManager().registerEvents(new OwnershipListener(), this);
+			
+			ownership = true;
 			
 			ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),blankDeed);
 			recipe.addIngredient(1, Material.WRITABLE_BOOK);

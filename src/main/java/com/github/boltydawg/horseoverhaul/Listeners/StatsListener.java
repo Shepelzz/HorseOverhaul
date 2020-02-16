@@ -54,7 +54,7 @@ public class StatsListener implements Listener {
 			else if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.CARROT_ON_A_STICK)) {
 				
 				event.setCancelled(true);
-				player.sendMessage(new StatHorse(horse).printStats(true));
+				player.sendMessage(new StatHorse(horse).printStats(Main.ownership));
 				
 				
 				ArrayList<String> stats = new ArrayList<String>();
