@@ -29,7 +29,6 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
 
 //TODO test breeding algorithm some more
 //TODO test with multiple users
-//TODO make a scoreboard specific for this plugin, as to not risk losing any of that data.
 //TODO maybe change isNeutered to something like isSterile?
 //TODO add whistle feature?
 
@@ -59,22 +58,25 @@ public class Main extends JavaPlugin{
 	
 	public static DecimalFormat df = new DecimalFormat("0.00");
 	
-	public static FileConfiguration config;
-	
 	public static JavaPlugin instance;
 	
 	public static ItemStack blankDeed;
+	
+	public static boolean foodEffects;
+	
 	
 	@Override
 	public void onEnable() {
 		
 		instance = this;
 		
-		config = this.getConfig();
+		FileConfiguration config = this.getConfig();
+		
+		config.options().header("HorseOverhaul Configuration\n\n   Note: betterBreeding is required in order to use foodEffects\n");
 		
 		config.addDefault("autoGearEquip", true);
 		config.addDefault("betterBreeding", true);
-		config.addDefault("betterBreedingFoodMultipliers",true);
+		config.addDefault("betterBreeding_foodEffects",true);
 		config.addDefault("checkHorseStats", true);
 		config.addDefault("dropHorseGear", true);
 		config.addDefault("horseOwnership", true);
@@ -91,18 +93,34 @@ public class Main extends JavaPlugin{
 		met.setLore(lore);
 		blankDeed.setItemMeta(met);
 		
-		if(config.getBoolean("autoGearEquip"))
+		
+		if(config.getBoolean("autoGearEquip")) {
+
 			this.getServer().getPluginManager().registerEvents(new GearListener(), this);
-		
-		if(config.getBoolean("betterBreeding"))
+			
+		}
+		if(config.getBoolean("betterBreeding")) {
+			
 			this.getServer().getPluginManager().registerEvents(new FoalListener(), this);
-		
-		if(config.getBoolean("checkHorseStats"))
+			
+			if(config.getBoolean("betterBreeding_foodEffects")) {
+				
+				foodEffects = true;
+				
+			}
+			
+		}
+		if(config.getBoolean("checkHorseStats")) {
+			
 			this.getServer().getPluginManager().registerEvents(new StatsListener(), this);
+			
+		}
 		
-		if(config.getBoolean("dropHorseGear"))
+		if(config.getBoolean("dropHorseGear")) {
+			
 			this.getServer().getPluginManager().registerEvents(new DeathListener(), this);
-		
+			
+		}
 		if(config.getBoolean("horseOwnership")) {
 			
 			this.getServer().getPluginManager().registerEvents(new OwnershipListener(), this);
@@ -128,11 +146,6 @@ public class Main extends JavaPlugin{
 			}
 			
 		}
-	}
-	
-	@Override
-	public void onDisable() {
-		
 	}
 	
 }
