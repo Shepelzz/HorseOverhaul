@@ -34,8 +34,9 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
 //TODO test breeding algorithm some more
 //TODO test with multiple users
 //TODO test nerfing
-//TODO maybe change isNeutered to something like isSterile?
+//TODO maybe change ho.isNeutered to something like isSterile?
 //TODO add whistle feature?
+//TODO look into testing whether the scoreboard tags can be cleared or not
 
 
 public class Main extends JavaPlugin{
@@ -138,16 +139,18 @@ public class Main extends JavaPlugin{
 			
 		}
 		if(config.getBoolean("nerfWildHorses")) {
+			
 			this.getServer().getPluginManager().registerEvents(new NerfListener(), this);
 			
 			NerfListener.nerf = config.getDouble("nerfWildHorses_factor", 1.5);
 			
 			if(config.getBoolean("nerfWildHorses_override")) {
+				
 				NerfListener.override = true;
 				
 				for (World w: instance.getServer().getWorlds()){
 					for(LivingEntity e: w.getLivingEntities()) {
-						if(e.isValid() && e instanceof Horse && !e.getScoreboardTags().contains("isNerfed")) {
+						if(e.isValid() && e instanceof Horse && !e.getScoreboardTags().contains("ho.isNerfed")) {
 							NerfListener.nerf((Horse)e);
 						}
 					}
@@ -156,7 +159,6 @@ public class Main extends JavaPlugin{
 			}
 			else
 				NerfListener.override = false;
-			
 		}
 	}
 	

@@ -27,11 +27,11 @@ public class NerfListener implements Listener{
 				nerf((Horse)event.getEntity());
 			}
 			
-//			else if(override) {
-//				
-//				event.getEntity().addScoreboardTag("isNerfed");
-//				
-//			}
+			else if(override) {
+				
+				event.getEntity().addScoreboardTag("ho.isNerfed");
+				
+			}
 		}
 	}
 	
@@ -55,7 +55,7 @@ public class NerfListener implements Listener{
 				
 				if(e instanceof Horse) {
 					
-					if(!e.getScoreboardTags().contains("isNerfed"))
+					if(!e.getScoreboardTags().contains("ho.isNerfed"))
 						nerf((Horse)e);
 					
 				}
@@ -67,7 +67,7 @@ public class NerfListener implements Listener{
 		
 		if(override) {
 			
-			horse.addScoreboardTag("isNerfed");
+			horse.addScoreboardTag("ho.isNerfed");
 			
 		}
 		

@@ -174,7 +174,7 @@ public class StatHorse{
 			return bord + "\n" + msg + bord;
 		}
 		else
-			return msg + ChatColor.DARK_GRAY + "Can Breed:\n" + (roach.getScoreboardTags().contains("isNeutered") ? ChatColor.GRAY + "False" : ChatColor.GRAY + "True") + "\n";
+			return msg + ChatColor.DARK_GRAY + "Can Breed:\n" + (roach.getScoreboardTags().contains("ho.isNeutered") ? ChatColor.GRAY + "False" : ChatColor.GRAY + "True") + "\n";
 	}
 		
 	private String printJump(double jh) {
