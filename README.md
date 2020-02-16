@@ -8,7 +8,7 @@ FEATURES:
    * new breeding algorithm that provides more generational improvements rather than complete luck
  * BetterBreedingFoodMultipliers:
    * get better results from your breeding by using better foods. 
-   -Enchanted golden apples give you a maxed out horse (but it can't breed!), and golden apples make it so you can't do worse than the lower of your two parents!
+   * Enchanted golden apples give you a maxed out horse (but it can't breed!), and golden apples make it so you can't do worse than the lower of your two parents!
  * checkHorseStats:
    * right click a tamed horse to check its stats. Compatible with ownership feature
    * store the stats your horses on a sign
