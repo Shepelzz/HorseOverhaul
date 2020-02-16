@@ -168,16 +168,13 @@ public class StatHorse{
 		msg += ChatColor.GREEN + "Speed:\n" + printSpeed(getSpeed()) + " " + ChatColor.GREEN + Main.df.format(getSpeed()) + "\n";
 		msg += ChatColor.BLUE + "Jump Height:\n" + printJump(getJumpHeight()) + " " + ChatColor.BLUE + Main.df.format(getJumpHeight()) + "\n";
 		
-		msg += ChatColor.DARK_GRAY + "Can Breed:\n" + (roach.getScoreboardTags().contains("isNeutered") ? ChatColor.GRAY + "False" : ChatColor.GRAY + "True") + "\n";
-		
-		
 		
 		if(border) {
 			String bord = ChatColor.LIGHT_PURPLE + "-----------------------------------------------------";
 			return bord + "\n" + msg + bord;
 		}
 		else
-			return msg;
+			return msg + ChatColor.DARK_GRAY + "Can Breed:\n" + (roach.getScoreboardTags().contains("isNeutered") ? ChatColor.GRAY + "False" : ChatColor.GRAY + "True") + "\n";
 	}
 		
 	private String printJump(double jh) {
