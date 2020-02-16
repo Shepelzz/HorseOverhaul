@@ -7,7 +7,10 @@ import java.util.Iterator;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Horse;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
@@ -16,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.boltydawg.horseoverhaul.Listeners.FoalListener;
 import com.github.boltydawg.horseoverhaul.Listeners.GearListener;
+import com.github.boltydawg.horseoverhaul.Listeners.NerfListener;
 import com.github.boltydawg.horseoverhaul.Listeners.DeathListener;
 import com.github.boltydawg.horseoverhaul.Listeners.OwnershipListener;
 import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
@@ -29,6 +33,7 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
 
 //TODO test breeding algorithm some more
 //TODO test with multiple users
+//TODO test nerfing
 //TODO maybe change isNeutered to something like isSterile?
 //TODO add whistle feature?
 
@@ -52,6 +57,9 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
  * 	blank deeds name the horse
  * 	right click an owned foal with shears to "neuter" it: it can't breed, and you can safely sell it to someone
  * 	Check an owned horse's stats by right clicking it with a carrot on a stick
+ * nerfWildHorses:
+ * 	reduce the starting stats of wild horses by a chosen factor (default is 1.5) in order to require players to breed to get the best horses
+ * 	can also override any existing horses (treats any pre-existing horse in your world as "wild", and nerfs it)
  */
 
 public class Main extends JavaPlugin{
@@ -72,7 +80,7 @@ public class Main extends JavaPlugin{
 		
 		FileConfiguration config = this.getConfig();
 		
-		config.options().header("HorseOverhaul Configuration\n\n   Note: betterBreeding is required in order to use foodEffects\n");
+		config.options().header("HorseOverhaul Configuration\n\n   Please read about each option on the Spigot page.");
 		
 		config.addDefault("autoGearEquip", true);
 		config.addDefault("betterBreeding", true);
@@ -80,6 +88,9 @@ public class Main extends JavaPlugin{
 		config.addDefault("checkHorseStats", true);
 		config.addDefault("dropHorseGear", true);
 		config.addDefault("horseOwnership", true);
+		config.addDefault("nerfWildHorses", false);
+		config.addDefault("nerfWildHorses_factor", 1.5);
+		config.addDefault("nerfWildHorses_override", false);
 		
 		config.options().copyDefaults(true);
 		saveConfig();
@@ -144,6 +155,27 @@ public class Main extends JavaPlugin{
 					
 				}
 			}
+			
+		}
+		if(config.getBoolean("nerfWildHorses")) {
+			this.getServer().getPluginManager().registerEvents(new NerfListener(), this);
+			
+			NerfListener.nerf = config.getDouble("nerfWildHorses_factor", 1.5);
+			
+			if(config.getBoolean("nerfWildHorses_override")) {
+				NerfListener.override = true;
+				
+				for (World w: instance.getServer().getWorlds()){
+					for(LivingEntity e: w.getLivingEntities()) {
+						if(e.isValid() && e instanceof Horse && !e.getScoreboardTags().contains("isNerfed")) {
+							NerfListener.nerf((Horse)e);
+						}
+					}
+				}
+				
+			}
+			else
+				NerfListener.override = false;
 			
 		}
 	}
