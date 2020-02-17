@@ -9,6 +9,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -244,18 +245,27 @@ public class OwnershipListener implements Listener {
 		horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_ARMOR, 0.9f, 2.0f);
 		player.sendMessage(ChatColor.GREEN + ("You are now the proud owner of " + horseName + "!"));
 		
+		player.getWorld().playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1.0f, 0.8f);
 		
-		player.getInventory().addItem(getDeed(horse.getUniqueId(), horse.getCustomName(), player.getUniqueId(), player.getName()));
+		new BukkitRunnable() {
+			
+			@Override
+			public void run() {
+				
+				player.getInventory().addItem(getDeed(horse.getUniqueId(), horse.getCustomName(), player.getUniqueId(), player.getName()));
+				
+			}
+		}.runTaskLater(Main.instance, 4);
+		
 		
 	}
 	
-	@EventHandler
 	public void onRightClick(PlayerInteractEvent event) {
 		
 		if(event.getItem() != null && event.getItem().getItemMeta().hasDisplayName() 
 				&& event.getItem().getItemMeta().getDisplayName().contains(ChatColor.GREEN.toString() + ChatColor.ITALIC + "Deed to ")) {
 			
-			event.setCancelled(true);
+			event.setUseItemInHand(Result.DENY);
 			
 		}
 	}
