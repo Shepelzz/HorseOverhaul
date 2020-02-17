@@ -23,7 +23,7 @@ public class FoalListener implements Listener{
 			
 			if(event.getFather().getScoreboardTags().contains("ho.isNeutered") || event.getMother().getScoreboardTags().contains("ho.isNeutered")) {
 				
-				player.sendMessage("One of these horses is neutered! Why must you be so cruel, with your false promises of parenthood?");
+				player.sendMessage("One of these horses is neutered! The breed attempt fails");
 				Horse father = (Horse)event.getFather();
 				Horse mother = (Horse)event.getMother();
 				father.setLoveModeTicks(0);
