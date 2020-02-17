@@ -35,6 +35,8 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
 //TODO maybe change ho.isNeutered to something like isSterile?
 //TODO add whistle feature?
 //TODO look into testing whether the scoreboard tags can be cleared or not
+//TODO add help command
+//TODO add way to rename horses
 
 
 public class Main extends JavaPlugin{

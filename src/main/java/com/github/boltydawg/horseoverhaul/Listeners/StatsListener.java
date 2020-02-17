@@ -59,8 +59,10 @@ public class StatsListener implements Listener {
 				
 				ArrayList<String> stats = new ArrayList<String>();
 				StatHorse roach = new StatHorse(horse);
-				
-				stats.add(horse.getCustomName() + ":");
+				if(horse.getCustomName() != null)
+					stats.add(horse.getCustomName() + ":");
+				else
+					stats.add("Unclaimed Horse: ");
 				stats.add("Health: " + roach.getHealth());
 				stats.add("Speed: " + Main.df.format(roach.getSpeed()));
 				stats.add("Jump: " + Main.df.format(roach.getJumpHeight()));
