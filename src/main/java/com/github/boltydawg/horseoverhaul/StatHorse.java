@@ -161,8 +161,12 @@ public class StatHorse{
 		
 		if(roach.getCustomName()!=null)
 			msg += (ChatColor.DARK_AQUA.toString() + ChatColor.UNDERLINE + roach.getCustomName() + "'s Stats") + ChatColor.RESET + "\n \n";
-		else
-			msg += (ChatColor.DARK_AQUA.toString() + ChatColor.UNDERLINE + "Horse Stats") + ChatColor.RESET + "\n \n";
+		else {
+			String color = this.roach.getColor().name();
+			color = color.toCharArray()[0] + color.substring(1).toLowerCase();
+			msg += (ChatColor.DARK_AQUA.toString() + ChatColor.UNDERLINE + color + " Horse's Stats") + ChatColor.RESET + "\n \n";
+		}
+			
 		
 		msg += ChatColor.RED + "Health:\n" + printHearts(getHealth()) + " " + ChatColor.RED + Main.df.format(getHealth()) + "\n";
 		msg += ChatColor.GREEN + "Speed:\n" + printSpeed(getSpeed()) + " " + ChatColor.GREEN + Main.df.format(getSpeed()) + "\n";

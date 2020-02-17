@@ -38,12 +38,13 @@ public class OwnershipListener implements Listener {
 		BookMeta met = (BookMeta)deed.getItemMeta();
 		
 		met.setDisplayName(ChatColor.GREEN.toString() + ChatColor.ITALIC + "Deed to " + horsey);
-		met.setAuthor(pname);
+		met.setAuthor(null);
 		
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add(ChatColor.GRAY + "Currently Owned By:");
-		lore.add(ChatColor.GRAY + pname);
+		lore.add(ChatColor.BLUE + "Property of");
+		lore.add(ChatColor.BLUE + pname);
 		met.setLore(lore);
+		
 		
 		met.setPages(horseID.toString(), pID.toString());
 		
@@ -137,12 +138,27 @@ public class OwnershipListener implements Listener {
 						if( main.getItemMeta().getDisplayName().contains(ChatColor.GREEN.toString() + ChatColor.ITALIC + "Deed to ") && main.getType().equals(Material.WRITTEN_BOOK)) {
 							
 							BookMeta met = (BookMeta)main.getItemMeta();
-							UUID horseId = UUID.fromString(met.getPage(1));
 							
-							if(horseId == horse.getUniqueId()) {
-								claimHorse(horse, player, met.getDisplayName());
-								return;
+							if(met.getGeneration().equals(BookMeta.Generation.ORIGINAL)) {
+								
+								UUID horseId = UUID.fromString(met.getPage(1));
+							
+								if(horseId == horse.getUniqueId()) {
+									claimHorse(horse, player, met.getDisplayName());
+									player.getInventory().setItemInMainHand(getDeed(horse.getUniqueId(), horse.getCustomName(), player.getUniqueId(), player.getCustomName()));
+									return;
+								}
 							}
+							else {
+								
+								TextComponent msg = new TextComponent();
+								msg.setText("You need the original copy!");
+								msg.setColor(ChatColor.RED);
+								player.spigot().sendMessage(ChatMessageType.ACTION_BAR,msg);
+								
+							}
+							
+							
 							
 						}
 						
