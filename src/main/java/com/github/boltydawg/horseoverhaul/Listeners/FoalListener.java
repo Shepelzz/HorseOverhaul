@@ -48,6 +48,7 @@ public class FoalListener implements Listener{
 			
 			
 			foal.calculateBirth((Horse)event.getMother(),(Horse)event.getFather());
+			foal.roach.setTamed(true);
 			
 //			StatHorse father = new StatHorse(event.getFather());
 //			StatHorse mother = new StatHorse(event.getMother());

@@ -16,7 +16,7 @@ public class StatHorse{
 	 * fields
 	 */
 	
-	Horse roach;
+	public Horse roach;
 	byte food;
 	
 	
