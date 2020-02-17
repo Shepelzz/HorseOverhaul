@@ -37,6 +37,8 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
 //TODO look into testing whether the scoreboard tags can be cleared or not
 //TODO add help command
 //TODO add way to rename horses
+//TODO add way to "unlock" a horse
+//TODO change way horses are named. Do a chat thing
 
 
 public class Main extends JavaPlugin{
