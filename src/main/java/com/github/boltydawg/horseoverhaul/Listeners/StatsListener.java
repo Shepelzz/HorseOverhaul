@@ -61,8 +61,15 @@ public class StatsListener implements Listener {
 				StatHorse roach = new StatHorse(horse);
 				if(horse.getCustomName() != null)
 					stats.add(horse.getCustomName() + ":");
-				else
-					stats.add("Unclaimed Horse: ");
+				else {
+					String color = horse.getColor().name();
+					color = color.toCharArray()[0] + color.substring(1).toLowerCase();
+					if(horse.isAdult())
+						stats.add(color + " Horse: ");
+					else
+						stats.add(color + " Foal:");
+				}
+					
 				stats.add("Health: " + roach.getHealth());
 				stats.add("Speed: " + Main.df.format(roach.getSpeed()));
 				stats.add("Jump: " + Main.df.format(roach.getJumpHeight()));
