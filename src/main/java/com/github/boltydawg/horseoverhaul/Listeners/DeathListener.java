@@ -13,8 +13,11 @@ public class DeathListener implements Listener {
 		if(event.getEntity() instanceof Horse) {
 			
 			Horse horse = (Horse)event.getEntity();
-			event.getDrops().add(horse.getInventory().getSaddle());
-			event.getDrops().add(horse.getInventory().getArmor());
+			if(!event.getDrops().contains(horse.getInventory().getSaddle()))
+				event.getDrops().add(horse.getInventory().getSaddle());
+			
+			if(!event.getDrops().contains(horse.getInventory().getArmor()))
+				event.getDrops().add(horse.getInventory().getArmor());
 			
 		}
 	}
