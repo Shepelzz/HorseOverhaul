@@ -176,7 +176,7 @@ public class OwnershipListener implements Listener {
 						
 						if(horse.getScoreboardTags().contains("ho.isNeutered")) {
 							
-							player.sendMessage(ChatColor.RED + ("You already neutered "+ horse.getCustomName() + ", you sick bastard!"));
+							player.sendMessage(ChatColor.RED + ("You've already neutered "+ horse.getCustomName() + "!"));
 						}
 						
 						else {
@@ -190,7 +190,7 @@ public class OwnershipListener implements Listener {
 								@Override
 								public void run() {
 									horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_CHICKEN_EGG, 0.9f, 1.3f);
-									player.sendMessage(ChatColor.RED + ("You have successfully cut the cock and balls off of "+ horse.getCustomName() + ". He/she will never breed."));
+									player.sendMessage(ChatColor.RED + ("You have successfully neutered "+ horse.getCustomName() + ". He/she will never breed."));
 								}
 							}.runTaskLater(Main.instance, 20L);
 							
