@@ -2,7 +2,6 @@ package com.github.boltydawg.horseoverhaul;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -12,7 +11,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -120,22 +118,8 @@ public class Main extends JavaPlugin{
 			ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),blankDeed);
 			recipe.addIngredient(1, Material.WRITABLE_BOOK);
 			recipe.addIngredient(1, Material.GOLDEN_CARROT);
+			
 			this.getServer().addRecipe(recipe);
-			
-		}
-		else {
-			
-			Iterator<Recipe> iter = getServer().recipeIterator();
-			
-			while(iter.hasNext()) {
-				
-				if(iter.next().getResult().equals(blankDeed)) {
-					
-					iter.remove();
-					break;
-					
-				}
-			}
 			
 		}
 		if(config.getBoolean("nerfWildHorses")) {
