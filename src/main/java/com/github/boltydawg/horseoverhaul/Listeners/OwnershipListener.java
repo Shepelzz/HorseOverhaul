@@ -126,7 +126,7 @@ public class OwnershipListener implements Listener {
 			if(main.getType().equals(Material.NAME_TAG) || off.getType().equals(Material.NAME_TAG)) {
 				
 				
-				if(horse.getOwner() != null && horse.getScoreboardTags().contains("isOwned") && horse.getOwner().getUniqueId() == player.getUniqueId() ) {
+				if(horse.getOwner() != null && horse.getScoreboardTags().contains("ho.isOwned") && horse.getOwner().getUniqueId() == player.getUniqueId() ) {
 					
 					if(off.equals(getDeed(horse.getUniqueId(), horse.getCustomName(), player.getUniqueId(), player.getName())) 
 							&& main.getItemMeta().hasDisplayName()) {
@@ -151,7 +151,7 @@ public class OwnershipListener implements Listener {
 			
 			else if(event.getHand().equals(EquipmentSlot.HAND)) {
 				
-				if(horse.getOwner() != null && horse.getScoreboardTags().contains("isOwned")) {
+				if(horse.getOwner() != null && horse.getScoreboardTags().contains("ho.isOwned")) {
 					
 					if( horse.getOwner().getUniqueId() != player.getUniqueId() ) {
 						
@@ -261,7 +261,7 @@ public class OwnershipListener implements Listener {
 	private void claimHorse(Horse horse, Player player, String horseName) {
 		
 		horse.setOwner(player);
-		horse.getScoreboardTags().add("isOwned");
+		horse.getScoreboardTags().add("ho.isOwned");
 		horse.setCustomName(horseName);
 		
 		horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_ARMOR, 0.9f, 2.0f);
