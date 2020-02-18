@@ -140,27 +140,30 @@ public class OwnershipListener implements Listener {
 							
 							BookMeta met = (BookMeta)main.getItemMeta();
 							
-							if(met.getGeneration().equals(BookMeta.Generation.ORIGINAL)) {
+							UUID horseId = UUID.fromString(met.getPage(1));
+						
+							if(horseId == horse.getUniqueId()) {
 								
-								UUID horseId = UUID.fromString(met.getPage(1));
-							
-								if(horseId == horse.getUniqueId()) {
+								if(met.getGeneration().equals(BookMeta.Generation.ORIGINAL)) {
+									
+									player.getInventory().setItemInMainHand(null);
 									claimHorse(horse, player, met.getDisplayName());
-									player.getInventory().setItemInMainHand(getDeed(horse.getUniqueId(), horse.getCustomName(), player.getUniqueId(), player.getCustomName()));
-									return;
+
 								}
-							}
-							else {
+								else {
+							
+									TextComponent msg = new TextComponent();
+									msg.setText("You need the original copy!");
+									msg.setColor(ChatColor.RED);
+									player.spigot().sendMessage(ChatMessageType.ACTION_BAR,msg);
+									
+									horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_ANGRY, 1.0F, 1.0F);
+							
+								}
 								
-								TextComponent msg = new TextComponent();
-								msg.setText("You need the original copy!");
-								msg.setColor(ChatColor.RED);
-								player.spigot().sendMessage(ChatMessageType.ACTION_BAR,msg);
-								
-							}
-							
-							
-							
+								event.setCancelled(true);
+								return;
+							}		
 						}
 						
 						horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_ANGRY, 1.0F, 1.0F);
