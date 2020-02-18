@@ -125,9 +125,28 @@ public class OwnershipListener implements Listener {
 			
 			if(main.getType().equals(Material.NAME_TAG) || off.getType().equals(Material.NAME_TAG)) {
 				
-				event.setCancelled(true);
-				player.sendMessage("you can only rename a horse by using a deed!");
 				
+				if(horse.getOwner() != null && horse.getScoreboardTags().contains("isOwned") && horse.getOwner().getUniqueId() == player.getUniqueId() ) {
+					
+					if(off.equals(getDeed(horse.getUniqueId(), horse.getCustomName(), player.getUniqueId(), player.getName())) 
+							&& main.getItemMeta().hasDisplayName()) {
+						
+						player.getInventory().setItemInOffHand(getDeed(horse.getUniqueId(), main.getItemMeta().getDisplayName(), player.getUniqueId(), player.getName()) );
+						
+					}
+					else {
+						
+						event.setCancelled(true);
+						player.sendMessage(ChatColor.RED + "You must be holding this horse's deed in your off hand in order to rename it!");
+						
+					}
+				}
+				else {
+					
+					event.setCancelled(true);
+					player.sendMessage("you can only rename a horse that you own!");
+					
+				}	
 			}
 			
 			else if(event.getHand().equals(EquipmentSlot.HAND)) {
@@ -263,6 +282,7 @@ public class OwnershipListener implements Listener {
 		
 	}
 	
+	@EventHandler
 	public void onRightClick(PlayerInteractEvent event) {
 		
 		if(event.getItem() != null && event.getItem().getItemMeta().hasDisplayName() 
