@@ -86,6 +86,9 @@ public class Main extends JavaPlugin{
 		blankDeed.setItemMeta(met);
 		
 		
+		this.getCommand("horseo").setExecutor(new CommandHorseo());
+		
+		
 		if(config.getBoolean("autoGearEquip")) {
 
 			this.getServer().getPluginManager().registerEvents(new GearListener(), this);
