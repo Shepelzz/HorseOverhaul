@@ -32,11 +32,21 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
 //TODO test breeding algorithm some more
 //TODO test with multiple users
 //TODO test nerfing
+<<<<<<< HEAD
 //TODO fix bug with client side not getting nametag back?
 //TODO maybe change ho.isNeutered to something like isSterile?
 //TODO add whistle feature?
 //TODO look into changing method of storing horse data?
 //TODO add way to "unlock" a horse?
+=======
+//TODO maybe change ho.isNeutered to something like isSterile?
+//TODO add whistle feature?
+//TODO look into testing whether the scoreboard tags can be cleared or not
+//TODO add help command
+//TODO add way to "unlock" a horse
+//TODO change way horses are named. Do a chat thing
+//TODO fix bug with client side not getting nametag back
+>>>>>>> 065b237e75fe5df0cb10e39e59243fb528a78f23
 
 
 public class Main extends JavaPlugin{
