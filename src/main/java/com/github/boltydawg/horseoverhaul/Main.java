@@ -29,6 +29,7 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
  * @author BoltyDawg
  */
 
+//TODO horse capturing system like pokemon?
 //TODO test breeding algorithm some more?
 //TODO fix bug with client side not getting nametag back?
 //TODO maybe change ho.isNeutered to something like isSterile?
