@@ -29,9 +29,7 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
  * @author BoltyDawg
  */
 
-//TODO test breeding algorithm some more
-//TODO test with multiple users
-//TODO test nerfing
+//TODO test breeding algorithm some more?
 //TODO fix bug with client side not getting nametag back?
 //TODO maybe change ho.isNeutered to something like isSterile?
 //TODO add whistle feature?

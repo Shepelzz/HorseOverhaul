@@ -15,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 import com.github.boltydawg.horseoverhaul.StatHorse;
 import com.github.boltydawg.horseoverhaul.Main;
@@ -39,7 +40,7 @@ public class StatsListener implements Listener {
 	
 	public static HashMap<UUID, ArrayList<String>> signStats = new HashMap<UUID, ArrayList<String>>();
 	
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onClick(PlayerInteractEntityEvent event) {
 		
 		if(event.getRightClicked() instanceof Horse) {
@@ -51,7 +52,8 @@ public class StatsListener implements Listener {
 				return;
 			}
 
-			else if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.CARROT_ON_A_STICK)) {
+			else if(event.getHand().equals(EquipmentSlot.HAND) && 
+					event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.CARROT_ON_A_STICK)) {
 				
 				event.setCancelled(true);
 				player.sendMessage(new StatHorse(horse).printStats(!Main.ownership));
