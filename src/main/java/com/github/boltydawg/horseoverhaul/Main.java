@@ -29,6 +29,8 @@ import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
  * @author BoltyDawg
  */
 
+//TODO horse stamina
+	//TODO boosting: consumes a carrot off a carrot on a stick, speeds you up and depletes stamina
 //TODO horse capturing system like pokemon?
 //TODO test breeding algorithm some more?
 //TODO fix bug with client side not getting nametag back?
@@ -50,6 +52,8 @@ public class Main extends JavaPlugin{
 	
 	public static boolean ownership;
 	
+	public static boolean coloredNames;
+	
 	
 	@Override
 	public void onEnable() {
@@ -66,6 +70,8 @@ public class Main extends JavaPlugin{
 		config.addDefault("checkHorseStats", true);
 		config.addDefault("dropHorseGear", true);
 		config.addDefault("horseOwnership", true);
+		config.addDefault("horseOwnership_craftDeeds", true);
+		config.addDefault("horseOwnership_coloredNames", false);
 		config.addDefault("nerfWildHorses", false);
 		config.addDefault("nerfWildHorses_factor", 1.5);
 		config.addDefault("nerfWildHorses_override", false);
@@ -119,12 +125,18 @@ public class Main extends JavaPlugin{
 			
 			ownership = true;
 			
-			ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),blankDeed);
-			recipe.addIngredient(1, Material.WRITABLE_BOOK);
-			recipe.addIngredient(1, Material.GOLDEN_CARROT);
+			if(config.getBoolean("horseOwnership_craftDeeds")) {
+				
+				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),blankDeed);
+				recipe.addIngredient(1, Material.WRITABLE_BOOK);
+				recipe.addIngredient(1, Material.GOLDEN_CARROT);
+				
+				this.getServer().addRecipe(recipe);
+				
+			}
 			
-			this.getServer().addRecipe(recipe);
-			
+			coloredNames = config.getBoolean("horseOwnership_coloredNames");
+				
 		}
 		if(config.getBoolean("nerfWildHorses")) {
 			

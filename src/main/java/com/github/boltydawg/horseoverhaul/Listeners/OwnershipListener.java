@@ -40,7 +40,7 @@ public class OwnershipListener implements Listener {
 		ItemStack deed = new ItemStack(Material.WRITTEN_BOOK);
 		BookMeta met = (BookMeta)deed.getItemMeta();
 		
-		met.setDisplayName(ChatColor.GREEN.toString() + ChatColor.ITALIC + "Deed to " + horsey);
+		met.setDisplayName(ChatColor.GREEN.toString() + "Deed to " + horsey);
 		met.setAuthor(null);
 		met.setGeneration(Generation.ORIGINAL);
 		
@@ -158,9 +158,13 @@ public class OwnershipListener implements Listener {
 					
 					if( !horse.getOwner().getUniqueId().equals(player.getUniqueId()) ) {
 						
-						if( main != null && main.getItemMeta() != null && main.getItemMeta().hasDisplayName() && 
-								main.getItemMeta().getDisplayName().contains(ChatColor.GREEN.toString() + ChatColor.ITALIC + "Deed to ") 
-									&& main.getType().equals(Material.WRITTEN_BOOK) ) {
+						if( main != null && main.getItemMeta() != null && main.getItemMeta().hasDisplayName() 
+								&& main.getItemMeta().getDisplayName().contains("Deed to ")
+								&& main.getItemMeta().getLore() != null
+								&& main.getItemMeta().getLore().get(0).contains("Property of")
+								&& main.getType().equals(Material.WRITTEN_BOOK) ) {
+							//TODO
+							player.sendMessage("hey");
 							
 							BookMeta met = (BookMeta)main.getItemMeta();
 							
@@ -277,7 +281,9 @@ public class OwnershipListener implements Listener {
 	public void onRightClick(PlayerInteractEvent event) {
 		
 		if(event.getItem() != null && event.getItem().getItemMeta().hasDisplayName() 
-				&& event.getItem().getItemMeta().getDisplayName().contains(ChatColor.GREEN.toString() + ChatColor.ITALIC + "Deed to ")) {
+				&& event.getItem().getItemMeta().getDisplayName().contains("Deed to ")
+				&& event.getItem().getItemMeta().getLore() != null 
+				&& event.getItem().getItemMeta().getLore().get(0).contains("Property of")) {
 			
 			event.setUseItemInHand(Result.DENY);
 			

@@ -70,7 +70,10 @@ public class CommandHorseo implements CommandExecutor {
 		msg += ChatColor.GREEN + "Claim a horse as yours by right clicking it with a deed!\n" + ChatColor.RESET;
 		msg += ChatColor.YELLOW + "Craft a deed by combining a golden carrot with a book and quill.\n" + ChatColor.RESET;
 		msg += ChatColor.GREEN + "Other players cannot interact with horses that you own, and equipping your owned horses with armor prevents you from accidentally damaging them :)\n" + ChatColor.RESET;
-		msg += ChatColor.YELLOW + "If you're in the business of selling horses, you can right click a foal that you own with shears to neuter it and prevent it from ever breeding.";
+		msg += ChatColor.YELLOW + "If you're in the business of selling horses, you can right click a foal that you own with shears to neuter it and prevent it from ever breeding.\n" + ChatColor.RESET;
+		msg += ChatColor.GREEN + "If trying to use a nametag on one of your horses, you must be holding its deed in your off hand.\n" + ChatColor.RESET;
+		if(Main.coloredNames)
+			msg += ChatColor.YELLOW + "You can use Color Codes when naming your horses! See "+ ChatColor.UNDERLINE + "https://www.spigotmc.org/attachments/example2-png.188806/";
 		
 		return msg;
 	}

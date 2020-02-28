@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Horse;
@@ -62,7 +63,7 @@ public class StatsListener implements Listener {
 				ArrayList<String> stats = new ArrayList<String>();
 				StatHorse roach = new StatHorse(horse);
 				if(horse.getCustomName() != null)
-					stats.add(horse.getCustomName() + ":");
+					stats.add(horse.getCustomName() + ChatColor.RESET + ":");
 				else {
 					String color = horse.getColor().name();
 					color = color.toCharArray()[0] + color.substring(1).toLowerCase();

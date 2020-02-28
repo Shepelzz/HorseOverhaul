@@ -159,8 +159,27 @@ public class StatHorse{
 	public String printStats(boolean border) {
 		String msg = "";
 		
-		if(roach.getCustomName()!=null)
-			msg += (ChatColor.DARK_AQUA.toString() + ChatColor.UNDERLINE + roach.getCustomName() + "'s Stats") + ChatColor.RESET + "\n \n";
+		if(roach.getCustomName()!=null) {
+			
+			String stripped = ChatColor.stripColor(roach.getCustomName());
+			
+			String line = ChatColor.GRAY.toString();
+			for(int i = 0; i < stripped.length() + 6; i++) {
+				line += "-";
+			}
+			line += "\n" + ChatColor.RESET;
+			
+			msg+= line;
+			
+			if( roach.getCustomName().equals(stripped) )
+				msg += ChatColor.DARK_AQUA;
+			
+			msg += (roach.getCustomName() + "'s Stats" + ChatColor.RESET + "\n");
+			
+			msg += line;
+				
+		}
+			
 		else {
 			String color = this.roach.getColor().name();
 			color = color.toCharArray()[0] + color.substring(1).toLowerCase();
@@ -168,9 +187,9 @@ public class StatHorse{
 		}
 			
 		
-		msg += ChatColor.RED + "Health:\n" + printHearts(getHealth()) + " " + ChatColor.RED + Main.df.format(getHealth()) + "\n";
-		msg += ChatColor.GREEN + "Speed:\n" + printSpeed(getSpeed()) + " " + ChatColor.GREEN + Main.df.format(getSpeed()) + "\n";
-		msg += ChatColor.BLUE + "Jump Height:\n" + printJump(getJumpHeight()) + " " + ChatColor.BLUE + Main.df.format(getJumpHeight()) + "\n";
+		msg += ChatColor.RED + "Health:\n" + printHearts(getHealth()) + " " + ChatColor.RED + Main.df.format(getHealth()) + "h\n";
+		msg += ChatColor.GREEN + "Speed:\n" + printSpeed(getSpeed()) + " " + ChatColor.GREEN + Main.df.format(getSpeed()) + "m/s\n";
+		msg += ChatColor.BLUE + "Jump Height:\n" + printJump(getJumpHeight()) + " " + ChatColor.BLUE + Main.df.format(getJumpHeight()) + "m\n";
 		
 		
 		if(border) {
@@ -178,7 +197,7 @@ public class StatHorse{
 			return bord + "\n" + msg + bord;
 		}
 		else
-			return msg + ChatColor.DARK_GRAY + "Can Breed:\n" + (roach.getScoreboardTags().contains("ho.isNeutered") ? ChatColor.GRAY + "False" : ChatColor.GRAY + "True") + "\n";
+			return msg + ChatColor.YELLOW + "Can Breed:\n" + (roach.getScoreboardTags().contains("ho.isNeutered") ? ChatColor.LIGHT_PURPLE + "False" : ChatColor.LIGHT_PURPLE + "True") + "\n";
 	}
 		
 	private String printJump(double jh) {

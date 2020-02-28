@@ -29,14 +29,30 @@ public class NamePrompt extends StringPrompt {
 	@Override
 	public Prompt acceptInput(ConversationContext context, String input) {
 		
-		if(input.length() > 16) {
+		String name = input;
+		
+		if(Main.coloredNames) {
+			
+			while(name.contains("&")) {
+				
+				int ind = name.indexOf('&');
+				
+				if(ChatColor.getByChar( name.charAt(ind+1) ) != null ) {
+					
+					name = name.substring(0, ind) + ChatColor.getByChar( name.charAt(ind+1) ) + name.substring(ind+2);
+
+				}
+			}
+		}
+		
+		if(ChatColor.stripColor(name).length() > 16) {
 			
 			context.getForWhom().sendRawMessage(ChatColor.RED + "Name too long! Must be at most 16 characters");
 			return new NamePrompt(player,horse);
 			
 		}
 		
-		OwnershipListener.claimHorse(horse, player, input);
+		OwnershipListener.claimHorse(horse, player, name);
 		
 		return StringPrompt.END_OF_CONVERSATION;
 		
