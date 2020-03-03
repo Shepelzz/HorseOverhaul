@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -21,6 +22,7 @@ import com.github.boltydawg.horseoverhaul.Listeners.NerfListener;
 import com.github.boltydawg.horseoverhaul.Listeners.DeathListener;
 import com.github.boltydawg.horseoverhaul.Listeners.OwnershipListener;
 import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
+import com.github.boltydawg.horseoverhaul.Listeners.WhistleListener;
 
 
 /**
@@ -46,14 +48,9 @@ public class Main extends JavaPlugin{
 	
 	public static JavaPlugin instance;
 	
-	public static ItemStack blankDeed;
+	public static ItemStack blankDeed, blankWhistle;
 	
-	public static boolean foodEffects;
-	
-	public static boolean ownership;
-	
-	public static boolean coloredNames;
-	
+	public static boolean foodEffects, ownership, coloredNames;
 	
 	@Override
 	public void onEnable() {
@@ -75,19 +72,11 @@ public class Main extends JavaPlugin{
 		config.addDefault("nerfWildHorses", false);
 		config.addDefault("nerfWildHorses_factor", 1.5);
 		config.addDefault("nerfWildHorses_override", false);
+		config.addDefault("whistle", true);
+		config.addDefault("whistle_recipe", true);
 		
 		config.options().copyDefaults(true);
 		saveConfig();
-		
-		blankDeed = new ItemStack(Material.PAPER);
-		ItemMeta met = blankDeed.getItemMeta();
-		met.setDisplayName("Blank Deed");
-		ArrayList<String> lore = new ArrayList<String>();
-		lore.add(ChatColor.GRAY + "Right click an unclaimed");
-		lore.add(ChatColor.GRAY + "horse to make it yours");
-		met.setLore(lore);
-		blankDeed.setItemMeta(met);
-		
 		
 		this.getCommand("horseo").setExecutor(new CommandHorseo());
 		
@@ -125,6 +114,15 @@ public class Main extends JavaPlugin{
 			
 			ownership = true;
 			
+			blankDeed = new ItemStack(Material.PAPER);
+			ItemMeta met = blankDeed.getItemMeta();
+			met.setDisplayName("Blank Deed");
+			ArrayList<String> lore = new ArrayList<String>();
+			lore.add(ChatColor.GRAY + "Right click an unclaimed");
+			lore.add(ChatColor.GRAY + "horse to make it yours");
+			met.setLore(lore);
+			blankDeed.setItemMeta(met);
+			
 			if(config.getBoolean("horseOwnership_craftDeeds")) {
 				
 				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),blankDeed);
@@ -159,6 +157,27 @@ public class Main extends JavaPlugin{
 			}
 			else
 				NerfListener.override = false;
+		}
+		if(config.getBoolean("whistle")) {
+			
+			//TODO: change this to be a "hollow" whistle, then actually usable whistles store the horse's UUID?
+			blankWhistle = new ItemStack(Material.IRON_NUGGET);
+			ItemMeta met = blankWhistle.getItemMeta();
+			met.setDisplayName(ChatColor.YELLOW + "Blank Whistle");
+			met.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+			blankWhistle.setItemMeta(met);
+			
+			this.getServer().getPluginManager().registerEvents(new WhistleListener(), this);
+			
+			if(config.getBoolean("whistle_recipe")) {
+				
+				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "whistle"), blankWhistle);
+				recipe.addIngredient(1, Material.IRON_INGOT);
+				recipe.addIngredient(1, Material.GOLDEN_CARROT);
+				
+				this.getServer().addRecipe(recipe);
+				
+			}
 		}
 	}
 	
