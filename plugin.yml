@@ -1,10 +1,10 @@
 name: HorseOverhaul
 main: com.github.boltydawg.horseoverhaul.Main
-version: 1.1.0
+version: 1.2.0
 author: BoltyDawg
 description: Better horse breeding and stat viewing
 api-version: 1.15
 commands:
   horseo:
     description: Learn about Horse Overhaul!
-    usage: /horseo <breed | own | stats>
+    usage: "Usage: /horseo [breed, own, stats, whistle]"

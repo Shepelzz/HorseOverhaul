@@ -36,8 +36,6 @@ import com.github.boltydawg.horseoverhaul.Listeners.WhistleListener;
 //TODO horse capturing system like pokemon?
 //TODO test breeding algorithm some more?
 //TODO fix bug with client side not getting nametag back?
-//TODO maybe change ho.isNeutered to something like isSterile?
-//TODO add whistle feature?
 //TODO look into changing method of storing horse data?
 //TODO add way to "unlock" a horse?
 
@@ -50,7 +48,7 @@ public class Main extends JavaPlugin{
 	
 	public static ItemStack blankDeed, blankWhistle;
 	
-	public static boolean foodEffects, ownership, coloredNames;
+	public static boolean foodEffects, ownership, coloredNames, betterBreeding, checkStats, craftDeed, whistle, craftWhistle;
 	
 	@Override
 	public void onEnable() {
@@ -90,6 +88,8 @@ public class Main extends JavaPlugin{
 			
 			this.getServer().getPluginManager().registerEvents(new FoalListener(), this);
 			
+			betterBreeding = true;
+			
 			if(config.getBoolean("betterBreeding_foodEffects")) {
 				
 				foodEffects = true;
@@ -100,6 +100,8 @@ public class Main extends JavaPlugin{
 		if(config.getBoolean("checkHorseStats")) {
 			
 			this.getServer().getPluginManager().registerEvents(new StatsListener(), this);
+			
+			checkStats = true;
 			
 		}
 		
@@ -131,6 +133,8 @@ public class Main extends JavaPlugin{
 				
 				this.getServer().addRecipe(recipe);
 				
+				craftDeed = true;
+				
 			}
 			
 			coloredNames = config.getBoolean("horseOwnership_coloredNames");
@@ -160,14 +164,15 @@ public class Main extends JavaPlugin{
 		}
 		if(config.getBoolean("whistle")) {
 			
-			//TODO: change this to be a "hollow" whistle, then actually usable whistles store the horse's UUID?
+			this.getServer().getPluginManager().registerEvents(new WhistleListener(), this);
+			
+			whistle = true;
+			
 			blankWhistle = new ItemStack(Material.IRON_NUGGET);
 			ItemMeta met = blankWhistle.getItemMeta();
-			met.setDisplayName(ChatColor.YELLOW + "Blank Whistle");
+			met.setDisplayName("Blank Whistle");
 			met.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
 			blankWhistle.setItemMeta(met);
-			
-			this.getServer().getPluginManager().registerEvents(new WhistleListener(), this);
 			
 			if(config.getBoolean("whistle_recipe")) {
 				
@@ -176,6 +181,8 @@ public class Main extends JavaPlugin{
 				recipe.addIngredient(1, Material.GOLDEN_CARROT);
 				
 				this.getServer().addRecipe(recipe);
+				
+				craftWhistle = true;
 				
 			}
 		}

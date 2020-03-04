@@ -163,8 +163,6 @@ public class OwnershipListener implements Listener {
 								&& main.getItemMeta().getLore() != null
 								&& main.getItemMeta().getLore().get(0).contains("Property of")
 								&& main.getType().equals(Material.WRITTEN_BOOK) ) {
-							//TODO
-							player.sendMessage("hey");
 							
 							BookMeta met = (BookMeta)main.getItemMeta();
 							
@@ -255,6 +253,12 @@ public class OwnershipListener implements Listener {
 	
 	public static void claimHorse(Horse horse, Player player, String horseName) {
 		
+		String previousOwner = null;
+		
+		if(horse.getOwner() != null && horse.getScoreboardTags().contains("ho.isOwned")) {
+			previousOwner = horse.getOwner().getName();
+		}
+		
 		horse.setOwner(player);
 		horse.getScoreboardTags().add("ho.isOwned");
 		horse.setCustomName(horseName);
@@ -263,6 +267,18 @@ public class OwnershipListener implements Listener {
 		player.sendRawMessage(ChatColor.GREEN + ("You are now the proud owner of " + horseName + "!"));
 		
 		player.getWorld().playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 0.5f);
+		
+		String info = player.getName() + " claims horse " + horseName;
+		if( previousOwner != null) {
+			info += " from previous owner: " + previousOwner + ", ";
+		}
+		else {
+			info += " from nature, ";
+		}
+		info += "in world: " + horse.getWorld().getName() 
+				+ ", at coords: x=" + (int)horse.getLocation().getX() + " y=" + (int)horse.getLocation().getY() + " z=" + (int)horse.getLocation().getZ();
+		
+		Main.instance.getLogger().info(info);
 		
 		new BukkitRunnable() {
 			

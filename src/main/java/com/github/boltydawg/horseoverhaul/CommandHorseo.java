@@ -42,6 +42,9 @@ public class CommandHorseo implements CommandExecutor {
 			else if(param.equalsIgnoreCase("stats")) {
 				player.sendMessage(helpStats());
 			}
+			else if(param.equalsIgnoreCase("whistle")) {
+				player.sendMessage(helpWhistle());
+			}
 			else if(param.equalsIgnoreCase("pizza"))
 				player.sendMessage("Your gamemode has been updated to Creative Mode");
 			else {
@@ -53,36 +56,102 @@ public class CommandHorseo implements CommandExecutor {
 			
 	}
 	
+	/**
+	 * Strings that are printed out for the help command
+	 */
+	
 	private String helpBreed() {
 		String msg = ChatColor.LIGHT_PURPLE + ChatColor.UNDERLINE.toString() + "HORSE OVERHAUL HELP: Breeding" + ChatColor.RESET + "\n\n";
 		
-		
-		msg += ChatColor.GREEN + "The breeding algorithm has been reworked in a way such that there's more of a focus on generational improvements rather than random luck.\n" + ChatColor.RESET;
-		msg += ChatColor.YELLOW + "You can get better results from your breeding by using better foods: golden apples will prevent the foal from having stats less than the lesser "
-				+ "of the two parents; using enchanted golden apples will give you a foal with max stats, however, it will be sterile and unable to breed in the future.";
-		
+		if( Main.betterBreeding ) {
+			
+			msg += ChatColor.GREEN + "The breeding algorithm has been reworked in a way such that there's more of a focus on generational improvements rather than random luck.\n" + ChatColor.RESET;
+			
+			if( Main.foodEffects ) {
+				msg += ChatColor.YELLOW + "You can get better results from your breeding by using better foods: golden apples will prevent the foal from having stats less than the lesser "
+						+ "of the two parents; using enchanted golden apples will give you a foal with max stats, however, it will be sterile and unable to breed in the future.";
+			}
+		}
+		else {
+			
+			msg += ChatColor.RED + "This feature is currently disabled by your server administrator.";
+			
+		}
 		return msg;
 	}
+	
 	private String helpOwn() {
 		String msg = ChatColor.LIGHT_PURPLE + ChatColor.UNDERLINE.toString() + "HORSE OVERHAUL HELP: Ownership" + ChatColor.RESET + '\n';
 		
-		msg += org.bukkit.ChatColor.GRAY;
-		msg += ChatColor.GREEN + "Claim a horse as yours by right clicking it with a deed!\n" + ChatColor.RESET;
-		msg += ChatColor.YELLOW + "Craft a deed by combining a golden carrot with a book and quill.\n" + ChatColor.RESET;
-		msg += ChatColor.GREEN + "Other players cannot interact with horses that you own, and equipping your owned horses with armor prevents you from accidentally damaging them :)\n" + ChatColor.RESET;
-		msg += ChatColor.YELLOW + "If you're in the business of selling horses, you can right click a foal that you own with shears to neuter it and prevent it from ever breeding.\n" + ChatColor.RESET;
-		msg += ChatColor.GREEN + "If trying to use a nametag on one of your horses, you must be holding its deed in your off hand.\n" + ChatColor.RESET;
-		if(Main.coloredNames)
-			msg += ChatColor.YELLOW + "You can use Color Codes when naming your horses! See "+ ChatColor.UNDERLINE + "https://www.spigotmc.org/attachments/example2-png.188806/";
-		
+		if( Main.ownership ) {
+			
+			if(Main.craftDeed) {
+				msg += ChatColor.GREEN + "Craft a deed by combining a golden carrot with a book and quill.\n" + ChatColor.RESET;
+			}
+			
+			msg += ChatColor.YELLOW + "Claim a horse as yours by right clicking it with a deed!\n" + ChatColor.RESET;
+			msg += ChatColor.GREEN + "Other players cannot interact with horses that you own, and equipping your owned horses with armor prevents you from accidentally damaging them :)\n" + ChatColor.RESET;
+			msg += ChatColor.YELLOW + "If you're in the business of selling horses, you can right click a baby foal that you own with shears to neuter it and prevent it from ever breeding.\n" + ChatColor.RESET;
+			msg += ChatColor.GREEN + "If trying to use a nametag on one of your horses, you must be holding its deed in your off hand.\n" + ChatColor.RESET;
+			if(Main.coloredNames) {
+				msg += ChatColor.YELLOW + "You can use Color Codes when naming your horses! See "+ ChatColor.UNDERLINE + "https://www.spigotmc.org/attachments/example2-png.188806/";
+			}
+		}
+		else {
+			
+			msg += ChatColor.RED + "This feature is currently disabled by your server administrator.";
+			
+		}
 		return msg;
 	}
+	
 	private String helpStats() {
+		
 		String msg = ChatColor.LIGHT_PURPLE + ChatColor.UNDERLINE.toString() + "HORSE OVERHAUL HELP: Checking Stats" + ChatColor.RESET + '\n';
 		
-		msg += org.bukkit.ChatColor.GRAY;
-		msg += ChatColor.GREEN + "Right click a horse while holding a carrot on a stick to see its stats!\n" + ChatColor.RESET;
-		msg += ChatColor.YELLOW + "After viewing a horse's stats, you can display them on a sign by right clicking the sign with your carrot on a stick.\n";
+		if( Main.checkStats ) {
+	
+			msg += ChatColor.GREEN + "Right click a horse while holding a carrot on a stick to see its stats!\n" + ChatColor.RESET;
+			msg += ChatColor.YELLOW + "After viewing a horse's stats, you can display them on a sign by right clicking the sign with your carrot on a stick.\n";
+			if( Main.ownership ) {
+				msg += ChatColor.GREEN + "You can only check the stats of tamed horses that are not owned by other players";
+			}
+			else {
+				msg += ChatColor.GREEN + "You can only check the stats of tamed horses";
+			}
+		}
+		else {
+			
+			msg += ChatColor.RED + "This feature is currently disabled by your server administrator.";
+			
+		}
+		return msg;
+	}
+	
+	private String helpWhistle() {
+		String msg = ChatColor.LIGHT_PURPLE + ChatColor.UNDERLINE.toString() + "HORSE OVERHAUL HELP: Whistles" + ChatColor.RESET + '\n';
+		
+		if( Main.whistle ) {
+			
+			if( Main.craftWhistle ) {
+				
+				msg += ChatColor.GREEN + "You can craft a blank whistle by combining a golden carrot and iron ingot\n" + ChatColor.RESET;
+				
+			}
+			msg += ChatColor.YELLOW + "Once you've obtained a blank whistle, all you need to do is right click the horse you want to link it to, and you'll have yourself a functioning whistle!.\n" + ChatColor.RESET;
+			msg += ChatColor.GREEN + "Right click while holding a whistle to search in a 100x30x100 radius for your horse. If found, you'll be able to see a highlight of it (even through walls) for 10 seconds\n" + ChatColor.RESET;
+			msg += ChatColor.YELLOW + "Be mindful, however, because other players will be able to see your horse's outline too!\n" + ChatColor.RESET;
+			if ( Main.ownership ) {
+				
+				msg += ChatColor.GREEN + "Note: you can only link your whistle to a horse that is not owned by another player. It's recommended that if you intend on claiming a horse, you should do so before carving the whistle.\n" + ChatColor.RESET;
+				
+			}
+		}
+		else {
+			
+			msg += ChatColor.RED + "This feature is currently disabled by your server administrator.";
+			
+		}
 		
 		return msg;
 	}
