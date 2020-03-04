@@ -57,7 +57,9 @@ public class Main extends JavaPlugin{
 		
 		FileConfiguration config = this.getConfig();
 		
-		config.options().header("HorseOverhaul Configuration\n\n   Please read about each option on the Spigot page.");
+		config.options().header("HorseOverhaul Configuration\n\n   Please read about each option on the Spigot page.\n\n"
+				+ "Note from BoltyDawg: sorry about how compact everything is here, I intend on fixing this in the future. "
+				+ "In the mean time, feel free to add your own line-breaks, comments, and to re-order things. Just don't add any indents or spaces!\n");
 		
 		config.addDefault("autoGearEquip", true);
 		config.addDefault("betterBreeding", true);
@@ -70,8 +72,8 @@ public class Main extends JavaPlugin{
 		config.addDefault("nerfWildHorses", false);
 		config.addDefault("nerfWildHorses_factor", 1.5);
 		config.addDefault("nerfWildHorses_override", false);
-		config.addDefault("whistle", true);
-		config.addDefault("whistle_recipe", true);
+		config.addDefault("whistles", true);
+		config.addDefault("whistles_recipe", true);
 		
 		config.options().copyDefaults(true);
 		saveConfig();
@@ -162,7 +164,7 @@ public class Main extends JavaPlugin{
 			else
 				NerfListener.override = false;
 		}
-		if(config.getBoolean("whistle")) {
+		if(config.getBoolean("whistles")) {
 			
 			this.getServer().getPluginManager().registerEvents(new WhistleListener(), this);
 			
@@ -174,7 +176,7 @@ public class Main extends JavaPlugin{
 			met.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
 			blankWhistle.setItemMeta(met);
 			
-			if(config.getBoolean("whistle_recipe")) {
+			if(config.getBoolean("whistles_recipe")) {
 				
 				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "whistle"), blankWhistle);
 				recipe.addIngredient(1, Material.IRON_INGOT);
