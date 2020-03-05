@@ -1,5 +1,6 @@
 package com.github.boltydawg.horseoverhaul.Listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
@@ -21,11 +22,24 @@ public class FoalListener implements Listener{
 			
 			Player player = (Player)event.getBreeder();
 			
-			if(event.getFather().getScoreboardTags().contains("ho.isNeutered") || event.getMother().getScoreboardTags().contains("ho.isNeutered")) {
+			boolean fneut = event.getFather().getScoreboardTags().contains("ho.isNeutered");
+			boolean mneut = event.getMother().getScoreboardTags().contains("ho.isNeutered");
+			if( fneut || mneut ) {
 				
-				player.sendMessage("One of these horses is neutered! The breed attempt fails");
 				Horse father = (Horse)event.getFather();
 				Horse mother = (Horse)event.getMother();
+				
+				String r = ChatColor.RESET + ChatColor.RED.toString();
+				if ( fneut && mneut ) {
+					player.sendMessage( r + "Both " + father.getName() + r + " and " + mother.getName() + r + " are neutered! The breed attempt fails");
+				}
+				else if( fneut ) {
+					player.sendMessage( r + father.getName() + r + " is neutered! The breed attempt fails");
+				}
+				else {
+					player.sendMessage( r + mother.getName() + r + " is neutered! The breed attempt fails");
+				}
+				
 				father.setLoveModeTicks(0);
 				mother.setLoveModeTicks(0);
 				event.setCancelled(true);

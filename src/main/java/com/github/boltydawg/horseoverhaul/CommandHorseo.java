@@ -138,12 +138,18 @@ public class CommandHorseo implements CommandExecutor {
 				msg += ChatColor.GREEN + "You can craft a blank whistle by combining a golden carrot and iron ingot\n" + ChatColor.RESET;
 				
 			}
-			msg += ChatColor.YELLOW + "Once you've obtained a blank whistle, all you need to do is right click the horse you want to link it to, and you'll have yourself a functioning whistle!.\n" + ChatColor.RESET;
-			msg += ChatColor.GREEN + "Right click while holding a whistle to search in a 100x30x100 radius for your horse. If found, you'll be able to see a highlight of it (even through walls) for 10 seconds\n" + ChatColor.RESET;
-			msg += ChatColor.YELLOW + "Be mindful, however, because other players will be able to see your horse's outline too!\n" + ChatColor.RESET;
+			msg += ChatColor.YELLOW + "Once you've obtained a blank whistle, all you need to do is right click the horse you want to link it to, and you'll have yourself a functioning whistle!\n" + ChatColor.RESET;
+			if ( Main.whistleTP ) {
+				msg += ChatColor.GREEN + "Right click while holding a whistle to search in a 100x30x100 radius for your horse. If found, it will be teleported to your location!\n" + ChatColor.RESET + ChatColor.YELLOW;
+			}
+			else {
+				msg += ChatColor.GREEN + "Right click while holding a whistle to search in a 100x30x100 radius for your horse. If found, you'll be able to see a highlight of it (even through walls) for 10 seconds\n" + ChatColor.RESET;
+				msg += ChatColor.YELLOW + "Be mindful, however, because other players will be able to see your horse's outline too!\n" + ChatColor.RESET + ChatColor.GREEN;
+			}
+			
 			if ( Main.ownership ) {
 				
-				msg += ChatColor.GREEN + "Note: you can only link your whistle to a horse that is not owned by another player. It's recommended that if you intend on claiming a horse, you should do so before carving the whistle.\n" + ChatColor.RESET;
+				msg += "Note: you can only link your whistle to a horse that is not owned by another player. It's recommended that if you intend on claiming a horse, you should do so before carving the whistle.\n" + ChatColor.RESET;
 				
 			}
 		}

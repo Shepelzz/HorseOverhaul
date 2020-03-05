@@ -31,6 +31,7 @@ import com.github.boltydawg.horseoverhaul.Listeners.WhistleListener;
  * @author BoltyDawg
  */
 
+//TODO horse blank whistles let user call horse by name
 //TODO horse stamina
 	//TODO boosting: consumes a carrot off a carrot on a stick, speeds you up and depletes stamina
 //TODO horse capturing system like pokemon?
@@ -48,7 +49,7 @@ public class Main extends JavaPlugin{
 	
 	public static ItemStack blankDeed, blankWhistle;
 	
-	public static boolean foodEffects, ownership, coloredNames, betterBreeding, checkStats, craftDeed, whistle, craftWhistle;
+	public static boolean foodEffects, ownership, coloredNames, betterBreeding, checkStats, craftDeed, whistle, craftWhistle, whistleTP;
 	
 	@Override
 	public void onEnable() {
@@ -74,6 +75,7 @@ public class Main extends JavaPlugin{
 		config.addDefault("nerfWildHorses_override", false);
 		config.addDefault("whistles", true);
 		config.addDefault("whistles_recipe", true);
+		config.addDefault("whistles_teleport", false);
 		
 		config.options().copyDefaults(true);
 		saveConfig();
@@ -185,6 +187,11 @@ public class Main extends JavaPlugin{
 				this.getServer().addRecipe(recipe);
 				
 				craftWhistle = true;
+				
+			}
+			if ( config.getBoolean("whistles_teleport") ) {
+				
+				whistleTP = true;
 				
 			}
 		}

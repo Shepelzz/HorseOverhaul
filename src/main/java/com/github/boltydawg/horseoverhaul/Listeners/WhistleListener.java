@@ -89,7 +89,14 @@ public class WhistleListener implements Listener {
 							if( horse.getUniqueId().toString().equals(horseId) ) {
 								
 								found = true;
-								horse.addPotionEffect( new PotionEffect( PotionEffectType.GLOWING, 200, 1, false, false ) );
+								
+								if( Main.whistleTP ) {
+									horse.teleport(player);
+								}
+								else {
+									horse.addPotionEffect( new PotionEffect( PotionEffectType.GLOWING, 200, 1, false, false ) );
+								}
+								
 								horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_ANGRY, 1.0f, 1.0f);
 								break;
 								
