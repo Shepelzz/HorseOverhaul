@@ -37,6 +37,10 @@ public class WhistleListener implements Listener {
 	
 	private static HashMap<UUID,Integer> whistleBlowers = new HashMap<UUID,Integer>();
 	
+	public static ItemStack blankWhistle;
+	
+	public static boolean whistle, craftWhistle ,whistleTP;
+	
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
 		
@@ -90,7 +94,7 @@ public class WhistleListener implements Listener {
 								
 								found = true;
 								
-								if( Main.whistleTP ) {
+								if( WhistleListener.whistleTP ) {
 									horse.teleport(player);
 								}
 								else {
@@ -167,7 +171,7 @@ public class WhistleListener implements Listener {
 					item = player.getInventory().getItemInOffHand();
 				}
 				
-				if(item.isSimilar(Main.blankWhistle)) {
+				if(item.isSimilar(WhistleListener.blankWhistle)) {
 					
 					ItemMeta met = item.getItemMeta();
 					met.getPersistentDataContainer().set(new NamespacedKey(Main.instance, "whistle"), PersistentDataType.STRING, horse.getUniqueId().toString());

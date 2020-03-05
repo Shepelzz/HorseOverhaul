@@ -34,6 +34,11 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class OwnershipListener implements Listener {
+		
+	public static ItemStack blankDeed;
+	
+	public static boolean ownership, coloredNames, craftDeed;
+	
 	
 	private static ItemStack getDeed(UUID horseID, String horsey, UUID pID, String pname) {
 		
@@ -229,7 +234,7 @@ public class OwnershipListener implements Listener {
 					
 				}
 				else if(main != null && horse.isTamed()) {
-					if(main.isSimilar(Main.blankDeed)) {
+					if(main.isSimilar(OwnershipListener.blankDeed)) {
 					
 						event.setCancelled(true);
 						
@@ -251,6 +256,25 @@ public class OwnershipListener implements Listener {
 		}
 	}
 	
+	@EventHandler
+	public void onRightClick(PlayerInteractEvent event) {
+		
+		if(event.getItem() != null && event.getItem().getItemMeta().hasDisplayName() 
+				&& event.getItem().getItemMeta().getDisplayName().contains("Deed to ")
+				&& event.getItem().getItemMeta().getLore() != null 
+				&& event.getItem().getItemMeta().getLore().get(0).contains("Property of")) {
+			
+			event.setUseItemInHand(Result.DENY);
+			
+		}
+	}
+	
+	/**
+	 * Handles the claiming of a horse
+	 * @param horse
+	 * @param player
+	 * @param horseName
+	 */
 	public static void claimHorse(Horse horse, Player player, String horseName) {
 		
 		String previousOwner = null;
@@ -291,18 +315,5 @@ public class OwnershipListener implements Listener {
 		}.runTaskLater(Main.instance, 4);
 		
 		
-	}
-	
-	@EventHandler
-	public void onRightClick(PlayerInteractEvent event) {
-		
-		if(event.getItem() != null && event.getItem().getItemMeta().hasDisplayName() 
-				&& event.getItem().getItemMeta().getDisplayName().contains("Deed to ")
-				&& event.getItem().getItemMeta().getLore() != null 
-				&& event.getItem().getItemMeta().getLore().get(0).contains("Property of")) {
-			
-			event.setUseItemInHand(Result.DENY);
-			
-		}
 	}
 }

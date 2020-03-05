@@ -16,7 +16,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.boltydawg.horseoverhaul.Listeners.FoalListener;
+import com.github.boltydawg.horseoverhaul.Listeners.BreedingListener;
 import com.github.boltydawg.horseoverhaul.Listeners.GearListener;
 import com.github.boltydawg.horseoverhaul.Listeners.NerfListener;
 import com.github.boltydawg.horseoverhaul.Listeners.DeathListener;
@@ -46,10 +46,6 @@ public class Main extends JavaPlugin{
 	public static DecimalFormat df = new DecimalFormat("0.00");
 	
 	public static JavaPlugin instance;
-	
-	public static ItemStack blankDeed, blankWhistle;
-	
-	public static boolean foodEffects, ownership, coloredNames, betterBreeding, checkStats, craftDeed, whistle, craftWhistle, whistleTP;
 	
 	@Override
 	public void onEnable() {
@@ -90,13 +86,13 @@ public class Main extends JavaPlugin{
 		}
 		if(config.getBoolean("betterBreeding")) {
 			
-			this.getServer().getPluginManager().registerEvents(new FoalListener(), this);
+			this.getServer().getPluginManager().registerEvents(new BreedingListener(), this);
 			
-			betterBreeding = true;
+			BreedingListener.betterBreeding = true;
 			
 			if(config.getBoolean("betterBreeding_foodEffects")) {
 				
-				foodEffects = true;
+				BreedingListener.foodEffects = true;
 				
 			}
 			
@@ -105,7 +101,7 @@ public class Main extends JavaPlugin{
 			
 			this.getServer().getPluginManager().registerEvents(new StatsListener(), this);
 			
-			checkStats = true;
+			StatsListener.checkStats = true;
 			
 		}
 		
@@ -118,30 +114,30 @@ public class Main extends JavaPlugin{
 			
 			this.getServer().getPluginManager().registerEvents(new OwnershipListener(), this);
 			
-			ownership = true;
+			OwnershipListener.ownership = true;
 			
-			blankDeed = new ItemStack(Material.PAPER);
-			ItemMeta met = blankDeed.getItemMeta();
+			OwnershipListener.blankDeed = new ItemStack(Material.PAPER);
+			ItemMeta met = OwnershipListener.blankDeed.getItemMeta();
 			met.setDisplayName("Blank Deed");
 			ArrayList<String> lore = new ArrayList<String>();
 			lore.add(ChatColor.GRAY + "Right click an unclaimed");
 			lore.add(ChatColor.GRAY + "horse to make it yours");
 			met.setLore(lore);
-			blankDeed.setItemMeta(met);
+			OwnershipListener.blankDeed.setItemMeta(met);
 			
 			if(config.getBoolean("horseOwnership_craftDeeds")) {
 				
-				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),blankDeed);
+				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),OwnershipListener.blankDeed);
 				recipe.addIngredient(1, Material.WRITABLE_BOOK);
 				recipe.addIngredient(1, Material.GOLDEN_CARROT);
 				
 				this.getServer().addRecipe(recipe);
 				
-				craftDeed = true;
+				OwnershipListener.craftDeed = true;
 				
 			}
 			
-			coloredNames = config.getBoolean("horseOwnership_coloredNames");
+			OwnershipListener.coloredNames = config.getBoolean("horseOwnership_coloredNames");
 				
 		}
 		if(config.getBoolean("nerfWildHorses")) {
@@ -170,28 +166,28 @@ public class Main extends JavaPlugin{
 			
 			this.getServer().getPluginManager().registerEvents(new WhistleListener(), this);
 			
-			whistle = true;
+			WhistleListener.whistle = true;
 			
-			blankWhistle = new ItemStack(Material.IRON_NUGGET);
-			ItemMeta met = blankWhistle.getItemMeta();
+			WhistleListener.blankWhistle = new ItemStack(Material.IRON_NUGGET);
+			ItemMeta met = WhistleListener.blankWhistle.getItemMeta();
 			met.setDisplayName("Blank Whistle");
 			met.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-			blankWhistle.setItemMeta(met);
+			WhistleListener.blankWhistle.setItemMeta(met);
 			
 			if(config.getBoolean("whistles_recipe")) {
 				
-				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "whistle"), blankWhistle);
+				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "whistle"), WhistleListener.blankWhistle);
 				recipe.addIngredient(1, Material.IRON_INGOT);
 				recipe.addIngredient(1, Material.GOLDEN_CARROT);
 				
 				this.getServer().addRecipe(recipe);
 				
-				craftWhistle = true;
+				WhistleListener.craftWhistle = true;
 				
 			}
 			if ( config.getBoolean("whistles_teleport") ) {
 				
-				whistleTP = true;
+				WhistleListener.whistleTP = true;
 				
 			}
 		}

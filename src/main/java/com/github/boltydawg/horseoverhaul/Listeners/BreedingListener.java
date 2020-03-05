@@ -11,17 +11,21 @@ import org.bukkit.event.entity.EntityBreedEvent;
 
 import com.github.boltydawg.horseoverhaul.StatHorse;
 
-public class FoalListener implements Listener{
+public class BreedingListener implements Listener{
 	
+	public static boolean betterBreeding, foodEffects;
+
 	@EventHandler
 	public void onBreed(EntityBreedEvent event) {
 		
 		if(event.getEntityType().equals(EntityType.HORSE) && event.getBreeder() instanceof Player) {
 			
+			//ensures that the two parents are horses
 			if(!(event.getFather() instanceof Horse && event.getMother() instanceof Horse)) return;
 			
 			Player player = (Player)event.getBreeder();
 			
+			//handle if either of the parents are neutered
 			boolean fneut = event.getFather().getScoreboardTags().contains("ho.isNeutered");
 			boolean mneut = event.getMother().getScoreboardTags().contains("ho.isNeutered");
 			if( fneut || mneut ) {
@@ -47,6 +51,7 @@ public class FoalListener implements Listener{
 				
 			}
 			
+			//set the stats based off what what breeding food was used
 			StatHorse foal;
 			if(event.getBredWith().getType().equals(Material.ENCHANTED_GOLDEN_APPLE)) {
 				

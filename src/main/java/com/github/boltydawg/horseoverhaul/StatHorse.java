@@ -5,6 +5,8 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
 
+import com.github.boltydawg.horseoverhaul.Listeners.BreedingListener;
+
 
 /**
  * @see https://minecraft.gamepedia.com/Attribute
@@ -36,7 +38,7 @@ public class StatHorse{
 	
 	public StatHorse(LivingEntity horse, byte f) {
 		roach = (Horse)horse;
-		if(Main.foodEffects)
+		if(BreedingListener.foodEffects)
 			food = f;
 		else
 			food = 0;

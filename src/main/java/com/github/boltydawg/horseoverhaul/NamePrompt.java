@@ -31,7 +31,7 @@ public class NamePrompt extends StringPrompt {
 		
 		String name = input;
 		
-		if(Main.coloredNames) {
+		if(OwnershipListener.coloredNames) {
 			
 			while(name.contains("&")) {
 				
@@ -57,6 +57,4 @@ public class NamePrompt extends StringPrompt {
 		return StringPrompt.END_OF_CONVERSATION;
 		
 	}
-	
-	
 }

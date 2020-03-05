@@ -29,8 +29,10 @@ public class StatsListener implements Listener {
 	 *  allow players to store the stats of the last horse they inspected to a sign.
 	*/
 	 
-	 
-	 
+	public static HashMap<UUID, ArrayList<String>> signStats = new HashMap<UUID, ArrayList<String>>();
+	
+	public static boolean checkStats;
+	
 	/**
 	 * @param event - event triggered when a player right clicks a horse
 	 * 
@@ -38,9 +40,6 @@ public class StatsListener implements Listener {
 	 * 	listener, and if the ownership listener wants to cancel the event, it needs to
 	 * 	do so before this event runs
 	 */
-	
-	public static HashMap<UUID, ArrayList<String>> signStats = new HashMap<UUID, ArrayList<String>>();
-	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onClick(PlayerInteractEntityEvent event) {
 		
@@ -57,7 +56,7 @@ public class StatsListener implements Listener {
 					event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.CARROT_ON_A_STICK)) {
 				
 				event.setCancelled(true);
-				player.sendMessage(new StatHorse(horse).printStats(!Main.ownership));
+				player.sendMessage(new StatHorse(horse).printStats(!OwnershipListener.ownership));
 				
 				
 				ArrayList<String> stats = new ArrayList<String>();
