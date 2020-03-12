@@ -114,7 +114,7 @@ public class StatHorse{
 		else
 			max = max * (Math.random() * 0.25 + 0.9);
 		
-		return Math.random() * (max-min) + min;
+		return Math.min(1.0, Math.random() * (max-min) + min);
 	}
 	
 	/**
