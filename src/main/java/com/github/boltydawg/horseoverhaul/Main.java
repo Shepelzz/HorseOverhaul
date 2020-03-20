@@ -31,12 +31,8 @@ import com.github.boltydawg.horseoverhaul.Listeners.WhistleListener;
  * @author BoltyDawg
  */
 
-//TODO horse blank whistles let user call horse by name
-//TODO horse stamina
-	//TODO boosting: consumes a carrot off a carrot on a stick, speeds you up and depletes stamina
 //TODO horse capturing system like pokemon?
 //TODO test breeding algorithm some more?
-//TODO fix bug with client side not getting nametag back?
 //TODO look into changing method of storing horse data?
 //TODO add way to "unlock" a horse?
 
