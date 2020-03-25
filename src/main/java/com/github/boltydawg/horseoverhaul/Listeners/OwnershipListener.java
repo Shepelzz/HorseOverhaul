@@ -265,9 +265,11 @@ public class OwnershipListener implements Listener {
 	@EventHandler
 	public void onRightClick(PlayerInteractEvent event) {
 		
-		if(event.getItem() != null && event.getItem().getItemMeta().hasDisplayName() 
+		if(event.getItem() != null && Material.WRITTEN_BOOK.equals(event.getItem().getType())
+				&& event.getItem().hasItemMeta()
+				&& event.getItem().getItemMeta().hasDisplayName() 
 				&& event.getItem().getItemMeta().getDisplayName().contains("Deed to ")
-				&& event.getItem().getItemMeta().getLore() != null 
+				&& event.getItem().getItemMeta().hasLore()
 				&& event.getItem().getItemMeta().getLore().get(0).contains("Property of")) {
 			
 			event.setUseItemInHand(Result.DENY);
