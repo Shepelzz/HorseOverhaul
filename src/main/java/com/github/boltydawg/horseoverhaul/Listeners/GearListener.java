@@ -16,24 +16,27 @@ public class GearListener implements Listener {
 			
 			Horse horse = (Horse)event.getRightClicked();
 			
-			if(!event.getPlayer().isSneaking()) {
+			if( horse.isTamed() ) {
 				
-				ItemStack hand = event.getPlayer().getInventory().getItemInMainHand();
-				
-				if( hand.getType().equals(Material.SADDLE) && horse.getInventory().getSaddle() == null ) {
+				if(!event.getPlayer().isSneaking()) {
 					
-					horse.getInventory().setSaddle(hand);
-					event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-					event.setCancelled(true);
+					ItemStack hand = event.getPlayer().getInventory().getItemInMainHand();
 					
-				}
-				
-				else if(hand.getType().name().contains("HORSE_ARMOR") && horse.getInventory().getArmor() == null) {
+					if( hand.getType().equals(Material.SADDLE) && horse.getInventory().getSaddle() == null ) {
+						
+						horse.getInventory().setSaddle(hand);
+						event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+						event.setCancelled(true);
+						
+					}
 					
-					horse.getInventory().setArmor(hand);
-					event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-					event.setCancelled(true);
-					
+					else if(hand.getType().name().contains("HORSE_ARMOR") && horse.getInventory().getArmor() == null) {
+						
+						horse.getInventory().setArmor(hand);
+						event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+						event.setCancelled(true);
+						
+					}
 				}
 			}
 		}
