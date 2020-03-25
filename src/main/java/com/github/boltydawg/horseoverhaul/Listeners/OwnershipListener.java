@@ -233,9 +233,10 @@ public class OwnershipListener implements Listener {
 					}
 					
 				}
-				else if(main != null && horse.isTamed()) {
-					if(main.isSimilar(OwnershipListener.blankDeed)) {
-					
+				else if(main != null && main.isSimilar(OwnershipListener.blankDeed)) {
+						
+					if( horse.isTamed() ) {
+						
 						event.setCancelled(true);
 						
 						if(player.isConversing()) {
@@ -250,7 +251,12 @@ public class OwnershipListener implements Listener {
 						ConversationFactory cf = new ConversationFactory(Main.instance);
 						Conversation conv = cf.withFirstPrompt(new NamePrompt(player,horse)).withLocalEcho(true).buildConversation(player);
 						conv.begin();
-					}	
+						
+					}
+					else {
+						player.sendMessage(ChatColor.RED + "You must tame this horse before claiming it!");
+					}
+					
 				}
 			}
 		}
