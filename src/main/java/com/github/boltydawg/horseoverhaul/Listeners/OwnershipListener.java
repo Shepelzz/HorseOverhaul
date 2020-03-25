@@ -163,9 +163,9 @@ public class OwnershipListener implements Listener {
 					
 					if( !horse.getOwner().getUniqueId().equals(player.getUniqueId()) ) {
 						
-						if( main != null && main.getItemMeta() != null && main.getItemMeta().hasDisplayName() 
+						if( main != null && main.hasItemMeta() && main.getItemMeta().hasDisplayName() 
 								&& main.getItemMeta().getDisplayName().contains("Deed to ")
-								&& main.getItemMeta().getLore() != null
+								&& main.getItemMeta().hasLore()
 								&& main.getItemMeta().getLore().get(0).contains("Property of")
 								&& main.getType().equals(Material.WRITTEN_BOOK) ) {
 							

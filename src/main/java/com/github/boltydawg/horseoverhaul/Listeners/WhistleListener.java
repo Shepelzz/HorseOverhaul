@@ -49,7 +49,7 @@ public class WhistleListener implements Listener {
 			ItemStack item = event.getItem();
 			
 			//player right clicks while holding a whistle
-			if( item != null && item.getType().equals(Material.IRON_NUGGET) && item.getItemMeta().getItemFlags().contains(ItemFlag.HIDE_UNBREAKABLE) ) {
+			if( item != null && item.getType().equals(Material.IRON_NUGGET) && item.hasItemMeta() && item.getItemMeta().getItemFlags().contains(ItemFlag.HIDE_UNBREAKABLE) ) {
 				
 				Player player = event.getPlayer();
 				
