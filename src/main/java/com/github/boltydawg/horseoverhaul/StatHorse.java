@@ -70,12 +70,9 @@ public class StatHorse{
 			roach.setJumpStrength(1.0);
 			roach.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(30);
 			roach.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.3375);
+			return;
 		}
 		double fj, fh, fs, mj, mh, ms;
-		double boost = 1.0;
-		
-		if(food == (byte)1)
-			boost = 1.10;
 		
 		fj = father.getJumpStrength();
 		fh = father.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
@@ -85,9 +82,9 @@ public class StatHorse{
 		mh = mother.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
 		ms = mother.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue();
 		
-		roach.setJumpStrength(boost * calcJump(fj, mj));
-		roach.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(boost*calcHealth(fh, mh));
-		roach.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(boost*calcSpeed(fs, ms));
+		roach.setJumpStrength(calcJump(fj, mj));
+		roach.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(calcHealth(fh, mh));
+		roach.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(calcSpeed(fs, ms));
 	}
 	
 	
@@ -101,8 +98,6 @@ public class StatHorse{
 	 * @return double on scale of 0-1.0 that will determine the child's attribute
 	 */
 	private double randomizer(double f, double m) {
-		if(food == 2)
-			return 1.0;
 		double min = f < m ? f : m;
 		double max = f > m ? f : m;
 		
@@ -114,7 +109,11 @@ public class StatHorse{
 		else
 			max = max * (Math.random() * 0.25 + 0.9);
 		
-		return Math.min(1.0, Math.random() * (max-min) + min);
+		double boost = 1.0;	
+		if(food == (byte)1)
+			boost = 1.10;
+		
+		return Math.min(1.0, boost * (Math.random() * (max-min) + min));
 	}
 	
 	/**
