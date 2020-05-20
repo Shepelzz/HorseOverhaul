@@ -58,6 +58,7 @@ public class Main extends JavaPlugin{
 		config.addDefault("betterBreeding", true);
 		config.addDefault("betterBreeding_foodEffects",true);
 		config.addDefault("checkHorseStats", true);
+		config.addDefault("checkHorseStats_untamed", false);
 		config.addDefault("dropHorseGear", true);
 		config.addDefault("horseOwnership", true);
 		config.addDefault("horseOwnership_craftDeeds", true);
@@ -99,6 +100,13 @@ public class Main extends JavaPlugin{
 			
 			StatsListener.checkStats = true;
 			
+			if(config.getBoolean("checkHorseStats_untamed")) {
+				
+				StatsListener.untamed = true;
+				
+			}
+			else
+				StatsListener.untamed = false;
 		}
 		
 		if(config.getBoolean("dropHorseGear")) {

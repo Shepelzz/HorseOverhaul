@@ -31,7 +31,7 @@ public class StatsListener implements Listener {
 	 
 	public static HashMap<UUID, ArrayList<String>> signStats = new HashMap<UUID, ArrayList<String>>();
 	
-	public static boolean checkStats;
+	public static boolean checkStats, untamed;
 	
 	/**
 	 * @param event - event triggered when a player right clicks a horse
@@ -47,7 +47,7 @@ public class StatsListener implements Listener {
 			
 			Player player = event.getPlayer();
 			Horse horse = (Horse)event.getRightClicked();
-			if(!horse.isTamed() || event.isCancelled()) {
+			if(event.isCancelled() || (!horse.isTamed() && !untamed) ) {
 				
 				return;
 			}
