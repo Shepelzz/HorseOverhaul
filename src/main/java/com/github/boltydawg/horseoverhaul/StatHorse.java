@@ -110,7 +110,7 @@ public class StatHorse{
 		
 		if(food!=0 && foal<min) foal = min;
 		
-		return Math.max(foal, 1.0);
+		return Math.min(foal, 1.0);
 		
 	}
 	
