@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Horse;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -156,12 +156,11 @@ public class Main extends JavaPlugin{
 				
 				for (World w: instance.getServer().getWorlds()){
 					for(LivingEntity e: w.getLivingEntities()) {
-						if(e.isValid() && e instanceof Horse && !e.getScoreboardTags().contains("ho.isNerfed")) {
-							NerfListener.nerf((Horse)e);
+						if(e.isValid() && e instanceof AbstractHorse && !e.getScoreboardTags().contains("ho.isNerfed")) {
+							NerfListener.nerf((AbstractHorse)e);
 						}
 					}
 				}
-				
 			}
 			else
 				NerfListener.override = false;
