@@ -100,20 +100,18 @@ public class StatHorse{
 	private double randomizer(double f, double m) {
 		double min = f < m ? f : m;
 		double max = f > m ? f : m;
+		double nmax, nmin;
 		
-		if(food == 0)
-			min = min * (Math.random() * 0.3 + 0.9);
+		double offset = Math.pow(max-min, 3) * 3.5;
+		nmax = max + ( (1-max-offset) / 4 );
+		nmin = min - ( (1-min) /5.5);
 		
-		if(max > .8)
-			max += (1-max)/1.5;
-		else
-			max = max * (Math.random() * 0.25 + 0.9);
+		double foal = Math.random() * (nmax-nmin) + nmin;
 		
-		double boost = 1.0;	
-		if(food == (byte)1)
-			boost = 1.10;
+		if(food!=0 && foal<min) foal = min;
 		
-		return Math.min(1.0, boost * (Math.random() * (max-min) + min));
+		return Math.max(foal, 1.0);
+		
 	}
 	
 	/**
