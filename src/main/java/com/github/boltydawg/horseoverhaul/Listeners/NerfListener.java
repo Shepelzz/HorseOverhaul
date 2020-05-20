@@ -1,9 +1,8 @@
 package com.github.boltydawg.horseoverhaul.Listeners;
 
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -20,11 +19,11 @@ public class NerfListener implements Listener{
 	@EventHandler
 	public void onSpawn(CreatureSpawnEvent event){
 		
-		if(event.getEntityType().equals(EntityType.HORSE)) {
+		if(event.getEntity() instanceof AbstractHorse) {
 			
 			if(event.getSpawnReason().equals(SpawnReason.NATURAL)) {
 					
-				nerf((Horse)event.getEntity());
+				nerf((AbstractHorse)event.getEntity());
 			}
 			
 			else if(override) {
@@ -43,9 +42,9 @@ public class NerfListener implements Listener{
 			
 			for(Entity e : event.getChunk().getEntities()) {
 				
-				if(e instanceof Horse) {
+				if(e instanceof AbstractHorse) {
 					
-					nerf((Horse)e);
+					nerf((AbstractHorse)e);
 				}
 			}
 		}
@@ -53,17 +52,17 @@ public class NerfListener implements Listener{
 			
 			for(Entity e : event.getChunk().getEntities()) {
 				
-				if(e instanceof Horse) {
+				if(e instanceof AbstractHorse) {
 					
 					if(!e.getScoreboardTags().contains("ho.isNerfed"))
-						nerf((Horse)e);
+						nerf((AbstractHorse)e);
 					
 				}
 			}
 		}
 	}
 	
-	public static void nerf(Horse horse) {
+	public static void nerf(AbstractHorse horse) {
 		
 		if(override) {
 			
