@@ -4,7 +4,7 @@
 
   <groupId>com.github.boltydawg</groupId>
   <artifactId>horseoverhaul</artifactId>
-  <version>1.2.3</version>
+  <version>1.2.4</version>
   <packaging>jar</packaging>
 
   <name>horseoverhaul</name>
