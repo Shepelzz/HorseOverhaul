@@ -40,7 +40,7 @@ public class WhistleListener implements Listener {
 	
 	public static ItemStack blankWhistle;
 	
-	public static boolean whistle, craftWhistle ,whistleTP;
+	public static boolean whistle, craftWhistle, whistleTP;
 	
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
@@ -111,10 +111,13 @@ public class WhistleListener implements Listener {
 						
 					}
 					
-					if(!found) {
-						
-						player.sendMessage(ChatColor.RED + "No response...");
-						
+					if(found) {
+						TextComponent txt = new TextComponent(ChatColor.GREEN + "Horse located!");
+						player.spigot().sendMessage(ChatMessageType.ACTION_BAR, txt);
+					}
+					else {
+						TextComponent txt = new TextComponent(ChatColor.RED + "No response...");
+						player.spigot().sendMessage(ChatMessageType.ACTION_BAR, txt);
 					}
 					
 					//put the player on cool-down, as to not overload the server
