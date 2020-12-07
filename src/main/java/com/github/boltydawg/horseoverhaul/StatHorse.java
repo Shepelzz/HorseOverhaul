@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Horse;
-import org.bukkit.entity.LivingEntity;
 
 import com.github.boltydawg.horseoverhaul.Listeners.BreedingListener;
 
@@ -31,18 +30,10 @@ public class StatHorse{
 		roach = horse;
 		food = 0;
 	}
-// TODO double check the constructor
-//	public StatHorse(LivingEntity horse) {
-//		roach = (AbstractHorse)horse;
-//		food = 0;
-//	}
 	
-	public StatHorse(LivingEntity horse, byte f) {
+	public StatHorse(AbstractHorse horse, byte f) {
 		roach = (AbstractHorse)horse;
-		if(BreedingListener.foodEffects)
-			food = f;
-		else
-			food = 0;
+		food = BreedingListener.foodEffects ? f : 0;
 	}
 	
 	
