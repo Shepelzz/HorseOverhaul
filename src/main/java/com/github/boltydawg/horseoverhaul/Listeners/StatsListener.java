@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,11 +44,11 @@ public class StatsListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onClick(PlayerInteractEntityEvent event) {
 		
-		if(event.getRightClicked() instanceof Horse) {
+		if(event.getRightClicked() instanceof AbstractHorse) {
 			
 			Player player = event.getPlayer();
-			Horse horse = (Horse)event.getRightClicked();
-			if(event.isCancelled() || (!horse.isTamed() && !untamed) ) {
+			AbstractHorse abHorse = (AbstractHorse)event.getRightClicked();
+			if(event.isCancelled() || (!abHorse.isTamed() && !untamed) ) {
 				
 				return;
 			}
@@ -56,20 +57,26 @@ public class StatsListener implements Listener {
 					event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.CARROT_ON_A_STICK)) {
 				
 				event.setCancelled(true);
-				player.sendMessage(new StatHorse(horse).printStats(!OwnershipListener.ownership));
+				player.sendMessage(new StatHorse(abHorse).printStats(!OwnershipListener.ownership));
 				
 				
 				ArrayList<String> stats = new ArrayList<String>();
-				StatHorse roach = new StatHorse(horse);
-				if(horse.getCustomName() != null)
-					stats.add(horse.getCustomName() + ChatColor.RESET + ":");
-				else {
+				StatHorse roach = new StatHorse(abHorse);
+				if(abHorse.getCustomName() != null)
+					stats.add(abHorse.getCustomName() + ChatColor.RESET + ":");
+				else if (event.getRightClicked() instanceof Horse) {
+					Horse horse = (Horse)event.getRightClicked();
 					String color = horse.getColor().name();
 					color = color.toCharArray()[0] + color.substring(1).toLowerCase();
 					if(horse.isAdult())
 						stats.add(color + " Horse: ");
 					else
 						stats.add(color + " Foal:");
+				}
+				else {
+					String type = abHorse.getType().name();
+					type = type.toCharArray()[0] + type.substring(1).toLowerCase();
+					stats.add(type + " Horse: ");
 				}
 					
 				stats.add("Health: " + roach.getHealth());
