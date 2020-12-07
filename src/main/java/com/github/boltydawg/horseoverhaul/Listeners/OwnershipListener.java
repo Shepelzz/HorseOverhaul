@@ -9,6 +9,7 @@ import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Horse;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -65,37 +66,39 @@ public class OwnershipListener implements Listener {
 	@EventHandler
 	public void onDamage(EntityDamageByEntityEvent event) {
 		
-		if(event.getEntity() instanceof Horse) {
+		if(event.getEntity() instanceof AbstractHorse) {
 			
-			Horse horse = (Horse) event.getEntity();
+			AbstractHorse abHorse = (AbstractHorse) event.getEntity();
 			
-			if(horse.getOwner() != null && horse.getInventory().getArmor() != null && horse.getScoreboardTags().contains("ho.isOwned")) {
+			if(abHorse.getOwner() != null && abHorse.getScoreboardTags().contains("ho.isOwned")) {
 				
-				if(event.getDamager() instanceof Player) {
+				if(event.getEntity() instanceof Horse && ((Horse)event.getEntity()).getInventory().getArmor() != null) {
+					if(event.getDamager() instanceof Player) {
 
-					Player player = (Player) event.getDamager();
-					
-					if(horse.getOwner().getUniqueId().equals(player.getUniqueId())) {
+						Player player = (Player) event.getDamager();
 						
-						event.setCancelled(true);
-						horse.getWorld().playSound(horse.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.5F, 1.3F);
-						
-					}
-				}
-
-				else if(event.getDamager() instanceof Arrow) {
-					
-					Arrow arrow = (Arrow) event.getDamager();
-					
-					if(arrow.getShooter() != null && arrow.getShooter() instanceof Player) {
-						
-						Player player = (Player) arrow.getShooter();
-						
-						if(horse.getOwner().getUniqueId().equals(player.getUniqueId())) {
+						if(abHorse.getOwner().getUniqueId().equals(player.getUniqueId())) {
 							
 							event.setCancelled(true);
-							horse.getWorld().playSound(horse.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.5F, 1.3F);
+							abHorse.getWorld().playSound(abHorse.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.5F, 1.3F);
 							
+						}
+					}
+	
+					else if(event.getDamager() instanceof Arrow) {
+						
+						Arrow arrow = (Arrow) event.getDamager();
+						
+						if(arrow.getShooter() != null && arrow.getShooter() instanceof Player) {
+							
+							Player player = (Player) arrow.getShooter();
+							
+							if(abHorse.getOwner().getUniqueId().equals(player.getUniqueId())) {
+								
+								event.setCancelled(true);
+								abHorse.getWorld().playSound(abHorse.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.5F, 1.3F);
+								
+							}
 						}
 					}
 				}
@@ -106,15 +109,15 @@ public class OwnershipListener implements Listener {
 	@EventHandler
 	public void onTame(EntityTameEvent event) {
 		
-		if(event.getEntity() instanceof Horse) {
+		if(event.getEntity() instanceof AbstractHorse) {
 			
-			Horse horse = ((Horse)event.getEntity());
+			AbstractHorse abHorse = (AbstractHorse)event.getEntity();
 			
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					horse.setOwner(null);
-					horse.setTamed(true);
+					abHorse.setOwner(null);
+					abHorse.setTamed(true);
 				}
 			}.runTaskLater(Main.instance, 1L);
 			
@@ -124,22 +127,22 @@ public class OwnershipListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW)
 	public void onClickHorse(PlayerInteractEntityEvent event) {
 		
-		if(event.getRightClicked() instanceof Horse) {
+		if(event.getRightClicked() instanceof AbstractHorse) {
 			
 			Player player = event.getPlayer();
-			Horse horse = (Horse)event.getRightClicked();
+			AbstractHorse abHorse = (AbstractHorse)event.getRightClicked();
 			ItemStack main = player.getInventory().getItemInMainHand();
 			ItemStack off = player.getInventory().getItemInOffHand();
 			
 			if(Material.NAME_TAG.equals(main.getType()) || Material.NAME_TAG.equals(off.getType())) {
 				
 				
-				if(horse.getOwner() != null && horse.getScoreboardTags().contains("ho.isOwned") && horse.getOwner().getUniqueId().equals(player.getUniqueId()) ) {
+				if(abHorse.getOwner() != null && abHorse.getScoreboardTags().contains("ho.isOwned") && abHorse.getOwner().getUniqueId().equals(player.getUniqueId()) ) {
 					
-					if(main != null && off != null && off.equals(getDeed(horse.getUniqueId(), horse.getCustomName(), player.getUniqueId(), player.getName())) 
+					if(main != null && off != null && off.equals(getDeed(abHorse.getUniqueId(), abHorse.getCustomName(), player.getUniqueId(), player.getName())) 
 							&& main.getItemMeta().hasDisplayName()) {
 						
-						player.getInventory().setItemInOffHand(getDeed(horse.getUniqueId(), main.getItemMeta().getDisplayName(), player.getUniqueId(), player.getName()) );
+						player.getInventory().setItemInOffHand(getDeed(abHorse.getUniqueId(), main.getItemMeta().getDisplayName(), player.getUniqueId(), player.getName()) );
 						
 					}
 					else {
@@ -159,9 +162,9 @@ public class OwnershipListener implements Listener {
 			
 			else if(event.getHand().equals(EquipmentSlot.HAND)) {
 				
-				if(horse.getOwner() != null && horse.getScoreboardTags().contains("ho.isOwned")) {
+				if(abHorse.getOwner() != null && abHorse.getScoreboardTags().contains("ho.isOwned")) {
 					
-					if( !horse.getOwner().getUniqueId().equals(player.getUniqueId()) ) {
+					if( !abHorse.getOwner().getUniqueId().equals(player.getUniqueId()) ) {
 						
 						if( main != null && main.hasItemMeta() && main.getItemMeta().hasDisplayName() 
 								&& main.getItemMeta().getDisplayName().contains("Deed to ")
@@ -173,12 +176,12 @@ public class OwnershipListener implements Listener {
 							
 							UUID horseId = UUID.fromString(met.getPage(1));
 						
-							if(horse.getUniqueId().equals(horseId)) {
+							if(abHorse.getUniqueId().equals(horseId)) {
 								
 								if(Generation.ORIGINAL.equals(met.getGeneration())) {
 									
 									player.getInventory().setItemInMainHand(null);
-									claimHorse(horse, player, horse.getCustomName());
+									claimHorse(abHorse, player, abHorse.getCustomName());
 
 								}
 								else {
@@ -188,7 +191,7 @@ public class OwnershipListener implements Listener {
 									msg.setColor(ChatColor.RED);
 									player.spigot().sendMessage(ChatMessageType.ACTION_BAR,msg);
 									
-									horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_ANGRY, 0.8F, 1.0F);
+									abHorse.getWorld().playSound(abHorse.getLocation(), Sound.ENTITY_HORSE_ANGRY, 0.8F, 1.0F);
 							
 								}
 								
@@ -197,35 +200,35 @@ public class OwnershipListener implements Listener {
 							}		
 						}
 						
-						horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_ANGRY, 0.8F, 1.0F);
+						abHorse.getWorld().playSound(abHorse.getLocation(), Sound.ENTITY_HORSE_ANGRY, 0.8F, 1.0F);
 						event.setCancelled(true);
 				
 						TextComponent msg = new TextComponent();
-						msg.setText(player.getServer().getOfflinePlayer(horse.getOwner().getUniqueId()).getName() + " owns this horse!");
+						msg.setText(player.getServer().getOfflinePlayer(abHorse.getOwner().getUniqueId()).getName() + " owns this horse!");
 						msg.setColor(ChatColor.RED);
 						player.spigot().sendMessage(ChatMessageType.ACTION_BAR,msg);
 						
 					}
 					
-					else if( !horse.isAdult() && Material.SHEARS.equals(main.getType())) {
+					else if( !abHorse.isAdult() && Material.SHEARS.equals(main.getType())) {
 						
-						if(horse.getScoreboardTags().contains("ho.isNeutered")) {
+						if(abHorse.getScoreboardTags().contains("ho.isNeutered")) {
 							
-							player.sendMessage(ChatColor.RED + ("You've already neutered "+ horse.getCustomName() + "!"));
+							player.sendMessage(ChatColor.RED + ("You've already neutered "+ abHorse.getCustomName() + "!"));
 						}
 						
 						else {
 							
-							horse.getScoreboardTags().add("ho.isNeutered");
+							abHorse.getScoreboardTags().add("ho.isNeutered");
 							
-							horse.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 10));
-							horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_DEATH, 1.2f, 1.5f);
+							abHorse.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 10));
+							abHorse.getWorld().playSound(abHorse.getLocation(), Sound.ENTITY_HORSE_DEATH, 1.2f, 1.5f);
 							
 							new BukkitRunnable() {
 								@Override
 								public void run() {
-									horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_CHICKEN_EGG, 0.9f, 1.3f);
-									player.sendMessage(ChatColor.RED + ("You have successfully neutered "+ horse.getCustomName() + ". He/she will never breed."));
+									abHorse.getWorld().playSound(abHorse.getLocation(), Sound.ENTITY_CHICKEN_EGG, 0.9f, 1.3f);
+									player.sendMessage(ChatColor.RED + ("You have successfully neutered "+ abHorse.getCustomName() + ". He/she will never breed."));
 								}
 							}.runTaskLater(Main.instance, 20L);
 							
@@ -235,7 +238,7 @@ public class OwnershipListener implements Listener {
 				}
 				else if(main != null && main.isSimilar(OwnershipListener.blankDeed)) {
 						
-					if( horse.isTamed() ) {
+					if( abHorse.isTamed() ) {
 						
 						event.setCancelled(true);
 						
@@ -249,7 +252,7 @@ public class OwnershipListener implements Listener {
 						player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
 						
 						ConversationFactory cf = new ConversationFactory(Main.instance);
-						Conversation conv = cf.withFirstPrompt(new NamePrompt(player,horse)).withLocalEcho(true).buildConversation(player);
+						Conversation conv = cf.withFirstPrompt(new NamePrompt(player,abHorse)).withLocalEcho(true).buildConversation(player);
 						conv.begin();
 						
 					}
@@ -279,23 +282,23 @@ public class OwnershipListener implements Listener {
 	
 	/**
 	 * Handles the claiming of a horse
-	 * @param horse
+	 * @param abHorse
 	 * @param player
 	 * @param horseName
 	 */
-	public static void claimHorse(Horse horse, Player player, String horseName) {
+	public static void claimHorse(AbstractHorse abHorse, Player player, String horseName) {
 		
 		String previousOwner = null;
 		
-		if(horse.getOwner() != null && horse.getScoreboardTags().contains("ho.isOwned")) {
-			previousOwner = horse.getOwner().getName();
+		if(abHorse.getOwner() != null && abHorse.getScoreboardTags().contains("ho.isOwned")) {
+			previousOwner = abHorse.getOwner().getName();
 		}
 		
-		horse.setOwner(player);
-		horse.getScoreboardTags().add("ho.isOwned");
-		horse.setCustomName(horseName);
+		abHorse.setOwner(player);
+		abHorse.getScoreboardTags().add("ho.isOwned");
+		abHorse.setCustomName(horseName);
 		
-		horse.getWorld().playSound(horse.getLocation(), Sound.ENTITY_HORSE_ARMOR, 0.9f, 2.0f);
+		abHorse.getWorld().playSound(abHorse.getLocation(), Sound.ENTITY_HORSE_ARMOR, 0.9f, 2.0f);
 		player.sendRawMessage(ChatColor.GREEN + ("You are now the proud owner of " + horseName + "!"));
 		
 		player.getWorld().playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 0.5f);
@@ -307,8 +310,8 @@ public class OwnershipListener implements Listener {
 		else {
 			info += " from nature, ";
 		}
-		info += "in world: " + horse.getWorld().getName() 
-				+ ", at coords: x=" + (int)horse.getLocation().getX() + " y=" + (int)horse.getLocation().getY() + " z=" + (int)horse.getLocation().getZ();
+		info += "in world: " + abHorse.getWorld().getName() 
+				+ ", at coords: x=" + (int)abHorse.getLocation().getX() + " y=" + (int)abHorse.getLocation().getY() + " z=" + (int)abHorse.getLocation().getZ();
 		
 		Main.instance.getLogger().info(info);
 		
@@ -317,7 +320,7 @@ public class OwnershipListener implements Listener {
 			@Override
 			public void run() {
 				
-				player.getInventory().addItem(getDeed(horse.getUniqueId(), horse.getCustomName(), player.getUniqueId(), player.getName()));
+				player.getInventory().addItem(getDeed(abHorse.getUniqueId(), abHorse.getCustomName(), player.getUniqueId(), player.getName()));
 				
 			}
 		}.runTaskLater(Main.instance, 4);
