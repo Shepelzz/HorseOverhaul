@@ -1,6 +1,7 @@
 package com.github.boltydawg.horseoverhaul.Listeners;
 
 import org.bukkit.Material;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Horse;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,30 +13,32 @@ public class GearListener implements Listener {
 	@EventHandler
 	public void clickEntity(PlayerInteractEntityEvent event) {
 		
-		if(event.getRightClicked() instanceof Horse) {
+		if(event.getRightClicked() instanceof AbstractHorse) {
 			
-			Horse horse = (Horse)event.getRightClicked();
+			AbstractHorse abHorse = (AbstractHorse)event.getRightClicked();
 			
-			if( horse.isTamed() ) {
+			if( abHorse.isTamed() ) {
 				
 				if(!event.getPlayer().isSneaking()) {
 					
 					ItemStack hand = event.getPlayer().getInventory().getItemInMainHand();
 					
-					if( hand.getType().equals(Material.SADDLE) && horse.getInventory().getSaddle() == null ) {
+					if( hand.getType().equals(Material.SADDLE) && abHorse.getInventory().getSaddle() == null ) {
 						
-						horse.getInventory().setSaddle(hand);
+						abHorse.getInventory().setSaddle(hand);
 						event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 						event.setCancelled(true);
 						
 					}
 					
-					else if(hand.getType().name().contains("HORSE_ARMOR") && horse.getInventory().getArmor() == null) {
+					else if(hand.getType().name().contains("HORSE_ARMOR") && event.getRightClicked() instanceof Horse) {
+						Horse horse = (Horse)event.getRightClicked();
 						
-						horse.getInventory().setArmor(hand);
-						event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-						event.setCancelled(true);
-						
+						if(horse.getInventory().getArmor() == null) {
+							horse.getInventory().setArmor(hand);
+							event.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+							event.setCancelled(true);
+						}
 					}
 				}
 			}

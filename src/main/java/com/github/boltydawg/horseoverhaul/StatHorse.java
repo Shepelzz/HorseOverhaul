@@ -2,8 +2,8 @@ package com.github.boltydawg.horseoverhaul;
 
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Horse;
-import org.bukkit.entity.LivingEntity;
 
 import com.github.boltydawg.horseoverhaul.Listeners.BreedingListener;
 
@@ -18,7 +18,7 @@ public class StatHorse{
 	 * fields
 	 */
 	
-	public Horse roach;
+	public AbstractHorse roach;
 	byte food;
 	
 	
@@ -26,22 +26,14 @@ public class StatHorse{
 	 * constructors
 	 */
 	
-	public StatHorse(Horse horse) {
+	public StatHorse(AbstractHorse horse) {
 		roach = horse;
 		food = 0;
 	}
 	
-	public StatHorse(LivingEntity horse) {
-		roach = (Horse)horse;
-		food = 0;
-	}
-	
-	public StatHorse(LivingEntity horse, byte f) {
-		roach = (Horse)horse;
-		if(BreedingListener.foodEffects)
-			food = f;
-		else
-			food = 0;
+	public StatHorse(AbstractHorse horse, byte f) {
+		roach = (AbstractHorse)horse;
+		food = BreedingListener.foodEffects ? f : 0;
 	}
 	
 	
@@ -65,7 +57,7 @@ public class StatHorse{
 	}
 	
 	
-	public void calculateBirth(Horse mother, Horse father) {
+	public void calculateBirth(AbstractHorse mother, AbstractHorse father) {
 		if(food == (byte)2) {
 			roach.setJumpStrength(1.0);
 			roach.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(30);
@@ -178,11 +170,17 @@ public class StatHorse{
 			msg += line;
 				
 		}
-			
-		else {
-			String color = this.roach.getColor().name();
+		
+		else if (roach instanceof Horse) {
+			String color = ((Horse)this.roach).getColor().name();
 			color = color.toCharArray()[0] + color.substring(1).toLowerCase();
 			msg += (ChatColor.DARK_AQUA.toString() + ChatColor.UNDERLINE + color + " Horse's Stats") + ChatColor.RESET + "\n \n";
+		}
+		
+		else {
+			String type = roach.getType().name();
+			type = type.toCharArray()[0] + type.substring(1).toLowerCase();
+			msg += (ChatColor.DARK_AQUA.toString() + ChatColor.UNDERLINE + type + "'s Stats") + ChatColor.RESET + "\n \n";
 		}
 			
 		
