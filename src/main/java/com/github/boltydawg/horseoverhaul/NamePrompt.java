@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
-import org.bukkit.entity.Horse;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Player;
 
 import com.github.boltydawg.horseoverhaul.Listeners.OwnershipListener;
@@ -12,17 +12,17 @@ import com.github.boltydawg.horseoverhaul.Listeners.OwnershipListener;
 public class NamePrompt extends StringPrompt {
 	
 	private Player player;
-	private Horse horse;
+	private AbstractHorse abHorse;
 
-	public NamePrompt(Player player, Horse horse) {
+	public NamePrompt(Player player, AbstractHorse horse) {
 		this.player = player;
-		this.horse = horse;
+		this.abHorse = horse;
 	}
 
 	@Override
 	public String getPromptText(ConversationContext context) {
 		
-		return ChatColor.BLUE + "What would you like to name your new horse?" + ChatColor.RESET + '\n' + ChatColor.GRAY + "(type your answer in chat)";
+		return ChatColor.BLUE + "What would you like to name your new steed?" + ChatColor.RESET + '\n' + ChatColor.GRAY + "(type your answer in chat)";
 		
 	}
 
@@ -48,11 +48,11 @@ public class NamePrompt extends StringPrompt {
 		if(ChatColor.stripColor(name).length() > 16) {
 			
 			context.getForWhom().sendRawMessage(ChatColor.RED + "Name too long! Must be at most 16 characters");
-			return new NamePrompt(player,horse);
+			return new NamePrompt(player,abHorse);
 			
 		}
 		
-		OwnershipListener.claimHorse(horse, player, name);
+		OwnershipListener.claimHorse(abHorse, player, name);
 		
 		return StringPrompt.END_OF_CONVERSATION;
 		
