@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
+import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
@@ -49,7 +50,8 @@ public class WhistleListener implements Listener {
 			ItemStack item = event.getItem();
 			
 			//player right clicks while holding a whistle
-			if( item != null && item.getType().equals(Material.IRON_NUGGET) && item.hasItemMeta() && item.getItemMeta().getItemFlags().contains(ItemFlag.HIDE_UNBREAKABLE) ) {
+			if( item != null && item.getType().equals(Material.IRON_NUGGET) && item.hasItemMeta() && 
+					item.getItemMeta().getItemFlags() != null && item.getItemMeta().getItemFlags().contains(ItemFlag.HIDE_UNBREAKABLE) ) {
 				
 				Player player = event.getPlayer();
 				
@@ -156,10 +158,10 @@ public class WhistleListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onClickEntity (PlayerInteractEntityEvent event) {
 		
-		if(!event.isCancelled() && event.getRightClicked() instanceof Horse) {
+		if(!event.isCancelled() && event.getRightClicked() instanceof AbstractHorse) {
 			
-			Horse horse = (Horse)event.getRightClicked();
-			if(horse.isTamed()) {
+			AbstractHorse abHorse = (AbstractHorse)event.getRightClicked();
+			if(abHorse.isTamed()) {
 				
 				Player player = event.getPlayer();
 				
@@ -173,8 +175,18 @@ public class WhistleListener implements Listener {
 				
 				if(item.isSimilar(WhistleListener.blankWhistle)) {
 					
+					if(! (event.getRightClicked() instanceof Horse) ) {
+						player.sendMessage(ChatColor.YELLOW + "Only horses can hear the sound of your whistle.");
+						
+						event.setCancelled(true);
+						return;
+					}
+					
+					Horse horse = (Horse)event.getRightClicked();
+					
 					ItemMeta met = item.getItemMeta();
 					met.getPersistentDataContainer().set(new NamespacedKey(Main.instance, "whistle"), PersistentDataType.STRING, horse.getUniqueId().toString());
+					
 					if(horse.getCustomName() == null) {
 						String color = horse.getColor().name();
 						color = color.toCharArray()[0] + color.substring(1).toLowerCase();
