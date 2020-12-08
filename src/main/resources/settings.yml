@@ -12,37 +12,44 @@
 config-version: 1.0
 
 # Automatically equip gear when right clicking your mount rather than needing to open its inventory
-autoGearEquip: true
+autoGearEquip: 
+  enabled: true
 
 
 # Better breeding algorithm:
-betterBreeding: true
-    foodEffects: true
+betterBreeding: 
+  enabled: true
+  foodEffects: true
 
 
 # Check the stats of mounts
-checkStats: true
-    requireTamed: true
+checkStats: 
+  enabled: true
+  requireTamed: true
 
 
 # Mounts have a 100% chance of dropping all of their gear upon death (saddle/armor)
-dropGear: true
+dropGear:
+  enabled: true
 
 
 # Players can claim ownership over mounts
-horseOwnership: true
-    craftingRecipe: true
-    coloredNames: true
+ownership: 
+  enabled: true
+  craftingRecipe: true
+  coloredNames: false
 
 
-# Nerf the stats of horses that were born in the wild
+# Nerf the stats of mounts that were born in the wild
 # Be sure to read about this one on the spigot page
-nerfWildHorses: true
-    factor: 1.5
-    override: true
+nerfWildSpawns: 
+  enabled: false
+  factor: 1.5
+  override: false
 
 
 # Allow the use of whistles
-whistles: true
-    craftingRecipe: true
-    teleport: false
+whistles: 
+  enabled: true
+  craftingRecipe: true
+  teleport: false

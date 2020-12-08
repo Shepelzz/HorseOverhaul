@@ -3,14 +3,13 @@ package com.github.boltydawg.horseoverhaul;
 import java.io.File;
 import java.io.IOException;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CustomConfig {
 	
 	private static File file;
-	private static FileConfiguration customFile;
+	private static YamlConfiguration customFile;
 	
 	private static final double VERSION = 1.0;
 	private static final String NAME = "settings.yml";
@@ -23,13 +22,32 @@ public class CustomConfig {
 		file = fetchConfigFile(Main.instance);
 		customFile = YamlConfiguration.loadConfiguration(file);
 		verifyVersion();
+		
+		customFile.addDefault("autoGearEquip.enabled", true);
+		customFile.addDefault("betterBreeding.enabled", true);
+		customFile.addDefault("betterBreeding.foodEffects",true);
+		customFile.addDefault("checkStats.enabled", true);
+		customFile.addDefault("checkStats.requireTamed", true);
+		customFile.addDefault("dropGear.enabled", true);
+		customFile.addDefault("ownership.enabled", true);
+		customFile.addDefault("ownership.craftingRecipe", true);
+		customFile.addDefault("ownership.coloredNames", false);
+		customFile.addDefault("nerfWildSpawns.enabled", false);
+		customFile.addDefault("nerfWildSpawns.factor", 1.5);
+		customFile.addDefault("nerfWildSpawns.override", false);
+		customFile.addDefault("whistles.enabled", true);
+		customFile.addDefault("whistles.craftingRecipe", true);
+		customFile.addDefault("whistles.teleport", false);
+		
+		customFile.options().copyDefaults(true);
+		save();
 	}
 	
 	/**
 	 * getter for our custom {@link FileConfiguration}
 	 * @return FileConfiguration
 	 */
-	public static FileConfiguration getConfig() {
+	public static YamlConfiguration getConfig() {
 		return customFile;
 	}
 	
@@ -62,7 +80,7 @@ public class CustomConfig {
 		
 		if(!file.exists()) {
 			plugin.saveResource(NAME, false);
-			plugin.getLogger().info("created " + NAME);
+			plugin.getLogger().info("creating " + NAME);
 			return fetchConfigFile(plugin);
 		}
 		
