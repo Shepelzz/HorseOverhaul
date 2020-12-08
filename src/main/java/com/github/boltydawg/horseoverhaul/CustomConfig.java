@@ -3,15 +3,15 @@ package com.github.boltydawg.horseoverhaul;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CustomConfig {
 	
 	private static File file;
-	private static YamlConfiguration customFile;
+	private static FileConfiguration customFile;
 	
-	private static final double VERSION = 1.0;
 	private static final String NAME = "settings.yml";
 	
 	
@@ -21,7 +21,6 @@ public class CustomConfig {
 	public static void setup() {
 		file = fetchConfigFile(Main.instance);
 		customFile = YamlConfiguration.loadConfiguration(file);
-		verifyVersion();
 		
 		customFile.addDefault("autoGearEquip.enabled", true);
 		customFile.addDefault("betterBreeding.enabled", true);
@@ -40,6 +39,8 @@ public class CustomConfig {
 		customFile.addDefault("whistles.teleport", false);
 		
 		customFile.options().copyDefaults(true);
+		customFile.options().header("HorseOverhaul Configuration\n\nSee https://www.spigotmc.org/resources/horse-overhaul.75448/ for more information about each option\n\n");
+		
 		save();
 	}
 	
@@ -47,7 +48,7 @@ public class CustomConfig {
 	 * getter for our custom {@link FileConfiguration}
 	 * @return FileConfiguration
 	 */
-	public static YamlConfiguration getConfig() {
+	public static FileConfiguration getConfig() {
 		return customFile;
 	}
 	
@@ -57,7 +58,8 @@ public class CustomConfig {
 	public static void save() {
 		try {
 			customFile.save(file);
-		} catch(IOException e) {
+		} 
+		catch(IOException e) {
 			Main.instance.getLogger().warning("Error saving config, please report this to BoltyDawg:\n" + e.toString());
 		}
 	}
@@ -79,20 +81,15 @@ public class CustomConfig {
 		File file = new File(plugin.getDataFolder(), NAME);
 		
 		if(!file.exists()) {
-			plugin.saveResource(NAME, false);
-			plugin.getLogger().info("creating " + NAME);
-			return fetchConfigFile(plugin);
+			try {
+				file.createNewFile();
+				plugin.getLogger().info("creating " + NAME);
+			} 
+			catch (IOException e) {
+				Main.instance.getLogger().warning("Error creating config, please report this to BoltyDawg:\n" + e.toString());
+			}	
 		}
 		
 		return file;
-	}
-	/**
-	 * Verifies that the current config version is the most up to date one
-	 */
-	private static void verifyVersion() {
-		// check if user is using the most up to date version of the config
-		if( customFile.getDouble("config-version") != VERSION ) {
-			Main.instance.getLogger().warning("Invalid config version!");
-		}
 	}
 }

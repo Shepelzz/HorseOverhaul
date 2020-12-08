@@ -50,12 +50,23 @@ public class Main extends JavaPlugin{
 		
 		// setup config
 		CustomConfig.setup();
-		FileConfiguration config = CustomConfig.getConfig();
+		this.readConfig(CustomConfig.getConfig());
 		
 		// commands
 		this.getCommand("horseo").setExecutor(new CommandHorseo());
-		
-		
+	}
+	
+	@Override
+	public void onDisable() {
+		this.getLogger().info("Saving config");
+		CustomConfig.save();
+	}
+	
+	/**
+	 * read and set the config's values
+	 * @param config
+	 */
+	public void readConfig(FileConfiguration config) {
 		if(config.getBoolean("autoGearEquip.enabled")) {
 
 			this.getServer().getPluginManager().registerEvents(new GearListener(), this);
