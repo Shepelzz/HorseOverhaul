@@ -38,6 +38,7 @@
         <directory>${project.basedir}/src/main/resources</directory>
         <includes>
           <include>plugin.yml</include>
+          <include>newconf.yml</include>
         </includes>
       </resource>
     </resources>
