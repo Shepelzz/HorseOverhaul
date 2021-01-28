@@ -38,7 +38,9 @@ public class CommandHorseo implements CommandExecutor {
 			if(!(sender instanceof Player)) {
 				//no need to check permissions
 				if (param.equalsIgnoreCase("reload")) {
+					sender.sendMessage("Reloading HorseOverhaul...");
 					CustomConfig.reload();
+					sender.sendMessage("Done.");
 					return true;
 				}
 				return false;
@@ -64,7 +66,10 @@ public class CommandHorseo implements CommandExecutor {
 			}
 			else if (param.equalsIgnoreCase("reload")) {
 				if (player.hasPermission("horseo.reload")) {
+					sender.sendMessage("Reloading HorseOverhaul...");
 					CustomConfig.reload();
+					sender.sendMessage("Done.");
+					return true;
 				}
 				else {
 					player.sendMessage(ChatColor.DARK_AQUA + "[Horse Overhaul]" + ChatColor.RESET + ChatColor.RED + "You do not have permission to use this command");

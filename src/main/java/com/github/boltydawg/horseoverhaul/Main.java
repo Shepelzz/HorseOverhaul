@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
@@ -42,10 +43,19 @@ public class Main extends JavaPlugin{
 	
 	public static JavaPlugin instance;
 	
+	private BreedingListener breeding = new BreedingListener();
+	private StatsListener stats = new StatsListener();
+	private OwnershipListener ownership = new OwnershipListener();
+	private NerfListener nerf = new NerfListener();
+	private WhistleListener whistle = new WhistleListener();
+	
 	@Override
 	public void onEnable() {
 		
 		instance = this;
+		
+		//set constant listeners
+		this.getServer().getPluginManager().registerEvents(new GearListener(), this);
 		
 		// setup config
 		CustomConfig.setup();
@@ -66,9 +76,10 @@ public class Main extends JavaPlugin{
 	 * @param config
 	 */
 	public void readConfig(FileConfiguration config) {
+		
 		if(config.getBoolean("betterBreeding.enabled")) {
 			
-			this.getServer().getPluginManager().registerEvents(new BreedingListener(), this);
+			this.getServer().getPluginManager().registerEvents(breeding, this);
 			
 			BreedingListener.betterBreeding = true;
 			
@@ -79,9 +90,14 @@ public class Main extends JavaPlugin{
 			}
 			
 		}
+		else {
+			// Unregister the listener, for the case usage of /horseo reload
+			HandlerList.unregisterAll(breeding);
+		}
+		
 		if(config.getBoolean("checkStats.enabled")) {
 			
-			this.getServer().getPluginManager().registerEvents(new StatsListener(), this);
+			this.getServer().getPluginManager().registerEvents(stats, this);
 			
 			StatsListener.checkStats = true;
 			
@@ -93,9 +109,14 @@ public class Main extends JavaPlugin{
 			else
 				StatsListener.untamed = false;
 		}
+		else {
+			// Unregister the listener, for the case usage of /horseo reload
+			HandlerList.unregisterAll(stats);
+		}
+		
 		if(config.getBoolean("ownership.enabled")) {
 			
-			this.getServer().getPluginManager().registerEvents(new OwnershipListener(), this);
+			this.getServer().getPluginManager().registerEvents(ownership, this);
 			
 			OwnershipListener.ownership = true;
 			
@@ -123,9 +144,14 @@ public class Main extends JavaPlugin{
 			OwnershipListener.coloredNames = config.getBoolean("ownership.coloredNames");
 				
 		}
+		else {
+			// Unregister the listener, for the case usage of /horseo reload
+			HandlerList.unregisterAll(ownership);
+		}
+		
 		if(config.getBoolean("nerfWildSpawns.enabled")) {
 			
-			this.getServer().getPluginManager().registerEvents(new NerfListener(), this);
+			this.getServer().getPluginManager().registerEvents(nerf, this);
 			
 			NerfListener.nerf = config.getDouble("nerfWildSpawns.factor", 1.5);
 			
@@ -144,9 +170,14 @@ public class Main extends JavaPlugin{
 			else
 				NerfListener.override = false;
 		}
+		else {
+			// Unregister the listener, for the case usage of /horseo reload
+			HandlerList.unregisterAll(nerf);
+		}
+		
 		if(config.getBoolean("whistles.enabled")) {
 			
-			this.getServer().getPluginManager().registerEvents(new WhistleListener(), this);
+			this.getServer().getPluginManager().registerEvents(whistle, this);
 			
 			WhistleListener.whistle = true;
 			
@@ -172,6 +203,10 @@ public class Main extends JavaPlugin{
 				WhistleListener.whistleTP = true;
 				
 			}
+		}
+		else {
+			// Unregister the listener, for the case usage of /horseo reload
+			HandlerList.unregisterAll(whistle);
 		}
 	}
 	
