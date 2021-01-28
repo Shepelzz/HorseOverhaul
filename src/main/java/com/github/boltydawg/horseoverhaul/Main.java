@@ -43,11 +43,11 @@ public class Main extends JavaPlugin{
 	
 	public static JavaPlugin instance;
 	
-	private BreedingListener breeding = new BreedingListener();
-	private StatsListener stats = new StatsListener();
-	private OwnershipListener ownership = new OwnershipListener();
-	private NerfListener nerf = new NerfListener();
-	private WhistleListener whistle = new WhistleListener();
+	private BreedingListener breeding;
+	private StatsListener stats;
+	private OwnershipListener ownership;
+	private NerfListener nerf;
+	private WhistleListener whistle;
 	
 	@Override
 	public void onEnable() {
@@ -56,6 +56,9 @@ public class Main extends JavaPlugin{
 		
 		//set constant listeners
 		this.getServer().getPluginManager().registerEvents(new GearListener(), this);
+		
+		//unitialize any existing listeners
+		this.removeListeners();
 		
 		// setup config
 		CustomConfig.setup();
@@ -78,46 +81,39 @@ public class Main extends JavaPlugin{
 	public void readConfig(FileConfiguration config) {
 		
 		if(config.getBoolean("betterBreeding.enabled")) {
+			//initialize 
+			this.breeding = new BreedingListener();
 			
+			//register listener
 			this.getServer().getPluginManager().registerEvents(breeding, this);
 			
+			//set other fields
 			BreedingListener.betterBreeding = true;
-			
-			if(config.getBoolean("betterBreeding.foodEffects")) {
 				
-				BreedingListener.foodEffects = true;
-				
-			}
-			
-		}
-		else {
-			// Unregister the listener, for the case usage of /horseo reload
-			HandlerList.unregisterAll(breeding);
+			BreedingListener.foodEffects = config.getBoolean("betterBreeding.foodEffects");
 		}
 		
 		if(config.getBoolean("checkStats.enabled")) {
+			//initialize 
+			this.stats = new StatsListener();
 			
+			//register listener
 			this.getServer().getPluginManager().registerEvents(stats, this);
 			
+			//set other fields
 			StatsListener.checkStats = true;
 			
-			if(config.getBoolean("checkStats.requireTamed")) {
-				
-				StatsListener.untamed = true;
-				
-			}
-			else
-				StatsListener.untamed = false;
-		}
-		else {
-			// Unregister the listener, for the case usage of /horseo reload
-			HandlerList.unregisterAll(stats);
+			StatsListener.untamed = config.getBoolean("checkStats.requireTamed");
 		}
 		
 		if(config.getBoolean("ownership.enabled")) {
+			//initialize
+			this.ownership = new OwnershipListener();
 			
+			//register the listener
 			this.getServer().getPluginManager().registerEvents(ownership, this);
 			
+			//set other fields
 			OwnershipListener.ownership = true;
 			
 			OwnershipListener.blankDeed = new ItemStack(Material.PAPER);
@@ -144,15 +140,15 @@ public class Main extends JavaPlugin{
 			OwnershipListener.coloredNames = config.getBoolean("ownership.coloredNames");
 				
 		}
-		else {
-			// Unregister the listener, for the case usage of /horseo reload
-			HandlerList.unregisterAll(ownership);
-		}
 		
 		if(config.getBoolean("nerfWildSpawns.enabled")) {
+			//initialize
+			this.nerf = new NerfListener();
 			
+			//register the listener
 			this.getServer().getPluginManager().registerEvents(nerf, this);
 			
+			//set other fields
 			NerfListener.nerf = config.getDouble("nerfWildSpawns.factor", 1.5);
 			
 			if(config.getBoolean("nerfWildSpawns.override")) {
@@ -170,15 +166,15 @@ public class Main extends JavaPlugin{
 			else
 				NerfListener.override = false;
 		}
-		else {
-			// Unregister the listener, for the case usage of /horseo reload
-			HandlerList.unregisterAll(nerf);
-		}
 		
 		if(config.getBoolean("whistles.enabled")) {
+			//initialize
+			this.whistle = new WhistleListener();
 			
+			//register the listener
 			this.getServer().getPluginManager().registerEvents(whistle, this);
 			
+			//set other fields
 			WhistleListener.whistle = true;
 			
 			WhistleListener.blankWhistle = new ItemStack(Material.IRON_NUGGET);
@@ -198,15 +194,55 @@ public class Main extends JavaPlugin{
 				WhistleListener.craftWhistle = true;
 				
 			}
-			if ( config.getBoolean("whistles.teleport") ) {
+			else
+				WhistleListener.craftWhistle = false;
 				
-				WhistleListener.whistleTP = true;
-				
-			}
+			WhistleListener.whistleTP = config.getBoolean("whistles.teleport");
 		}
-		else {
-			// Unregister the listener, for the case usage of /horseo reload
+	}
+	
+	private void removeListeners() {
+		// Unregister and unload the all listeners, for the case of usage of /horseo reload
+		if (this.breeding != null) {
+			
+			HandlerList.unregisterAll(this.breeding);
+			
+			this.breeding = null;
+			
+			BreedingListener.betterBreeding = false;
+		}
+		
+		if (this.stats != null) {
+			HandlerList.unregisterAll(stats);
+			
+			this.stats = null;
+			
+			StatsListener.checkStats = false;
+		}
+		
+		if (this.ownership != null) {
+			HandlerList.unregisterAll(ownership);
+			
+			this.ownership = null;
+			
+			OwnershipListener.ownership = true;
+			OwnershipListener.blankDeed = null;
+			OwnershipListener.craftDeed = false;
+			OwnershipListener.coloredNames = false;
+		}
+		
+		if (this.nerf != null) {
+			HandlerList.unregisterAll(nerf);
+			
+			this.nerf = null;
+		}
+		
+		if (this.whistle != null){
 			HandlerList.unregisterAll(whistle);
+			
+			this.whistle = null;
+			
+			WhistleListener.whistle = false;
 		}
 	}
 	
