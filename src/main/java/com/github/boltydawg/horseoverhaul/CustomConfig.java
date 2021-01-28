@@ -22,7 +22,6 @@ public class CustomConfig {
 		file = fetchConfigFile(Main.instance);
 		customFile = YamlConfiguration.loadConfiguration(file);
 		
-		customFile.addDefault("autoGearEquip.enabled", true);
 		customFile.addDefault("betterBreeding.enabled", true);
 		customFile.addDefault("betterBreeding.foodEffects",true);
 		customFile.addDefault("checkStats.enabled", true);

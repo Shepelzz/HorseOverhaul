@@ -66,11 +66,6 @@ public class Main extends JavaPlugin{
 	 * @param config
 	 */
 	public void readConfig(FileConfiguration config) {
-		if(config.getBoolean("autoGearEquip.enabled")) {
-
-			this.getServer().getPluginManager().registerEvents(new GearListener(), this);
-			
-		}
 		if(config.getBoolean("betterBreeding.enabled")) {
 			
 			this.getServer().getPluginManager().registerEvents(new BreedingListener(), this);
