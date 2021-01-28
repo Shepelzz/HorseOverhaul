@@ -19,7 +19,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.github.boltydawg.horseoverhaul.Listeners.BreedingListener;
 import com.github.boltydawg.horseoverhaul.Listeners.GearListener;
 import com.github.boltydawg.horseoverhaul.Listeners.NerfListener;
-import com.github.boltydawg.horseoverhaul.Listeners.DeathListener;
 import com.github.boltydawg.horseoverhaul.Listeners.OwnershipListener;
 import com.github.boltydawg.horseoverhaul.Listeners.StatsListener;
 import com.github.boltydawg.horseoverhaul.Listeners.WhistleListener;
@@ -98,12 +97,6 @@ public class Main extends JavaPlugin{
 			}
 			else
 				StatsListener.untamed = false;
-		}
-		
-		if(config.getBoolean("dropGear.enabled")) {
-			
-			this.getServer().getPluginManager().registerEvents(new DeathListener(), this);
-			
 		}
 		if(config.getBoolean("ownership.enabled")) {
 			

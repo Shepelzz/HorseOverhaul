@@ -27,7 +27,6 @@ public class CustomConfig {
 		customFile.addDefault("betterBreeding.foodEffects",true);
 		customFile.addDefault("checkStats.enabled", true);
 		customFile.addDefault("checkStats.requireTamed", true);
-		customFile.addDefault("dropGear.enabled", true);
 		customFile.addDefault("ownership.enabled", true);
 		customFile.addDefault("ownership.craftingRecipe", true);
 		customFile.addDefault("ownership.coloredNames", false);
