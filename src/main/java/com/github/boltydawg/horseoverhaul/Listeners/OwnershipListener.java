@@ -200,7 +200,7 @@ public class OwnershipListener implements Listener {
 							}		
 						}
 						
-						if(player.hasPermission("horseo.rideAny")) {
+						if(player.hasPermission("horseo.interactAll")) {
 							return;
 						}
 						
