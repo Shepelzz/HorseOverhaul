@@ -200,6 +200,10 @@ public class OwnershipListener implements Listener {
 							}		
 						}
 						
+						if(player.hasPermission("horseo.rideAny")) {
+							return;
+						}
+						
 						abHorse.getWorld().playSound(abHorse.getLocation(), Sound.ENTITY_HORSE_ANGRY, 0.8F, 1.0F);
 						event.setCancelled(true);
 				
