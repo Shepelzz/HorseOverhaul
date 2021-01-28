@@ -67,7 +67,7 @@ public class CustomConfig {
 	 */
 	public static void reload() {
 		customFile = YamlConfiguration.loadConfiguration(file);
-		((Main) Main.instance).readConfig(customFile);
+		Main.instance.readConfig(customFile);
 	}
 	
 	/**

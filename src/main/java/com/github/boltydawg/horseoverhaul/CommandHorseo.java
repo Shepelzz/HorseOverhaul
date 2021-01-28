@@ -41,7 +41,7 @@ public class CommandHorseo implements CommandExecutor {
 					sender.sendMessage("Reloading HorseOverhaul...");
 					
 					//unitialize any existing listeners
-					((Main) Main.instance).removeListeners();
+					Main.instance.removeListeners();
 					
 					//reload the config and necessary listeners
 					CustomConfig.reload();
@@ -75,7 +75,7 @@ public class CommandHorseo implements CommandExecutor {
 					player.sendMessage("Reloading HorseOverhaul...");
 					
 					//unitialize any existing listeners
-					((Main) Main.instance).removeListeners();
+					Main.instance.removeListeners();
 					
 					//reload the config and necessary listeners
 					CustomConfig.reload();

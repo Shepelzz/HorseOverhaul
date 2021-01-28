@@ -43,7 +43,7 @@ public class Main extends JavaPlugin{
 	
 	public static DecimalFormat df = new DecimalFormat("0.00");
 	
-	public static JavaPlugin instance;
+	public static Main instance;
 	
 	private BreedingListener breeding;
 	private StatsListener stats;
