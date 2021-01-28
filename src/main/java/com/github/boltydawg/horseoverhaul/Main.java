@@ -48,59 +48,50 @@ public class Main extends JavaPlugin{
 		
 		instance = this;
 		
-		FileConfiguration config = this.getConfig();
+		// setup config
+		CustomConfig.setup();
+		this.readConfig(CustomConfig.getConfig());
 		
-		config.options().header("HorseOverhaul Configuration\n\n   Please read about each option on the Spigot page.\n\n"
-				+ "Note from BoltyDawg: sorry about how compact everything is here, I intend on fixing this in the future. "
-				+ "In the mean time, feel free to add your own line-breaks, comments, and to re-order things. Just don't add any indents or spaces!\n");
-		
-		config.addDefault("autoGearEquip", true);
-		config.addDefault("betterBreeding", true);
-		config.addDefault("betterBreeding_foodEffects",true);
-		config.addDefault("checkHorseStats", true);
-		config.addDefault("checkHorseStats_untamed", false);
-		config.addDefault("dropHorseGear", true);
-		config.addDefault("horseOwnership", true);
-		config.addDefault("horseOwnership_craftDeeds", true);
-		config.addDefault("horseOwnership_coloredNames", false);
-		config.addDefault("nerfWildHorses", false);
-		config.addDefault("nerfWildHorses_factor", 1.5);
-		config.addDefault("nerfWildHorses_override", false);
-		config.addDefault("whistles", true);
-		config.addDefault("whistles_recipe", true);
-		config.addDefault("whistles_teleport", false);
-		
-		config.options().copyDefaults(true);
-		saveConfig();
-		
+		// commands
 		this.getCommand("horseo").setExecutor(new CommandHorseo());
-		
-		
-		if(config.getBoolean("autoGearEquip")) {
+	}
+	
+	@Override
+	public void onDisable() {
+		this.getLogger().info("Saving config");
+		CustomConfig.save();
+	}
+	
+	/**
+	 * read and set the config's values
+	 * @param config
+	 */
+	public void readConfig(FileConfiguration config) {
+		if(config.getBoolean("autoGearEquip.enabled")) {
 
 			this.getServer().getPluginManager().registerEvents(new GearListener(), this);
 			
 		}
-		if(config.getBoolean("betterBreeding")) {
+		if(config.getBoolean("betterBreeding.enabled")) {
 			
 			this.getServer().getPluginManager().registerEvents(new BreedingListener(), this);
 			
 			BreedingListener.betterBreeding = true;
 			
-			if(config.getBoolean("betterBreeding_foodEffects")) {
+			if(config.getBoolean("betterBreeding.foodEffects")) {
 				
 				BreedingListener.foodEffects = true;
 				
 			}
 			
 		}
-		if(config.getBoolean("checkHorseStats")) {
+		if(config.getBoolean("checkStats.enabled")) {
 			
 			this.getServer().getPluginManager().registerEvents(new StatsListener(), this);
 			
 			StatsListener.checkStats = true;
 			
-			if(config.getBoolean("checkHorseStats_untamed")) {
+			if(config.getBoolean("checkStats.requireTamed")) {
 				
 				StatsListener.untamed = true;
 				
@@ -109,12 +100,12 @@ public class Main extends JavaPlugin{
 				StatsListener.untamed = false;
 		}
 		
-		if(config.getBoolean("dropHorseGear")) {
+		if(config.getBoolean("dropGear.enabled")) {
 			
 			this.getServer().getPluginManager().registerEvents(new DeathListener(), this);
 			
 		}
-		if(config.getBoolean("horseOwnership")) {
+		if(config.getBoolean("ownership.enabled")) {
 			
 			this.getServer().getPluginManager().registerEvents(new OwnershipListener(), this);
 			
@@ -129,7 +120,7 @@ public class Main extends JavaPlugin{
 			met.setLore(lore);
 			OwnershipListener.blankDeed.setItemMeta(met);
 			
-			if(config.getBoolean("horseOwnership_craftDeeds")) {
+			if(config.getBoolean("ownership.craftingRecipes")) {
 				
 				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),OwnershipListener.blankDeed);
 				recipe.addIngredient(1, Material.WRITABLE_BOOK);
@@ -141,16 +132,16 @@ public class Main extends JavaPlugin{
 				
 			}
 			
-			OwnershipListener.coloredNames = config.getBoolean("horseOwnership_coloredNames");
+			OwnershipListener.coloredNames = config.getBoolean("ownership.coloredNames");
 				
 		}
-		if(config.getBoolean("nerfWildHorses")) {
+		if(config.getBoolean("nerfWildSpawns.enabled")) {
 			
 			this.getServer().getPluginManager().registerEvents(new NerfListener(), this);
 			
-			NerfListener.nerf = config.getDouble("nerfWildHorses_factor", 1.5);
+			NerfListener.nerf = config.getDouble("nerfWildSpawns.factor", 1.5);
 			
-			if(config.getBoolean("nerfWildHorses_override")) {
+			if(config.getBoolean("nerfWildSpawns.override")) {
 				
 				NerfListener.override = true;
 				
@@ -165,7 +156,7 @@ public class Main extends JavaPlugin{
 			else
 				NerfListener.override = false;
 		}
-		if(config.getBoolean("whistles")) {
+		if(config.getBoolean("whistles.enabled")) {
 			
 			this.getServer().getPluginManager().registerEvents(new WhistleListener(), this);
 			
@@ -177,7 +168,7 @@ public class Main extends JavaPlugin{
 			met.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
 			WhistleListener.blankWhistle.setItemMeta(met);
 			
-			if(config.getBoolean("whistles_recipe")) {
+			if(config.getBoolean("whistles.craftingRecipe")) {
 				
 				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "whistle"), WhistleListener.blankWhistle);
 				recipe.addIngredient(1, Material.IRON_INGOT);
@@ -188,7 +179,7 @@ public class Main extends JavaPlugin{
 				WhistleListener.craftWhistle = true;
 				
 			}
-			if ( config.getBoolean("whistles_teleport") ) {
+			if ( config.getBoolean("whistles.teleport") ) {
 				
 				WhistleListener.whistleTP = true;
 				
