@@ -124,7 +124,7 @@ public class Main extends JavaPlugin{
 			met.setLore(lore);
 			OwnershipListener.blankDeed.setItemMeta(met);
 			
-			if(config.getBoolean("ownership.craftingRecipes")) {
+			if(config.getBoolean("ownership.craftingRecipe")) {
 				
 				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),OwnershipListener.blankDeed);
 				recipe.addIngredient(1, Material.WRITABLE_BOOK);
