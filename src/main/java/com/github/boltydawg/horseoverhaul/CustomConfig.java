@@ -39,7 +39,7 @@ public class CustomConfig {
 		customFile.addDefault("whistles.teleport", false);
 		
 		customFile.options().copyDefaults(true);
-		customFile.options().header("HorseOverhaul Configuration\n\nSee https://www.spigotmc.org/resources/horse-overhaul.75448/ for more information about each option\n\n");
+		customFile.options().header("HorseOverhaul Configuration\n\nAnytime you change an option here be sure to run the command \"/horseo reload\"\n\nSee https://www.spigotmc.org/resources/horse-overhaul.75448/ for more information about each option\n\n");
 		
 		save();
 	}
