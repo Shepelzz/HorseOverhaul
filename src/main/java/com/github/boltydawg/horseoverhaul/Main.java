@@ -148,7 +148,7 @@ public class Main extends JavaPlugin{
 			this.getServer().getPluginManager().registerEvents(nerf, this);
 			
 			//set other fields
-			NerfListener.nerf = config.getDouble("nerfWildSpawns.factor", 1.5);
+			NerfListener.divisor = config.getDouble("nerfWildSpawns.divisor", 1.5);
 			
 			if(config.getBoolean("nerfWildSpawns.override")) {
 				

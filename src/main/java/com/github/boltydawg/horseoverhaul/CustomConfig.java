@@ -30,7 +30,7 @@ public class CustomConfig {
 		customFile.addDefault("ownership.craftingRecipe", true);
 		customFile.addDefault("ownership.coloredNames", false);
 		customFile.addDefault("nerfWildSpawns.enabled", false);
-		customFile.addDefault("nerfWildSpawns.factor", 1.5);
+		customFile.addDefault("nerfWildSpawns.divisor", 1.5);
 		customFile.addDefault("nerfWildSpawns.override", false);
 		customFile.addDefault("whistles.enabled", true);
 		customFile.addDefault("whistles.craftingRecipe", true);
