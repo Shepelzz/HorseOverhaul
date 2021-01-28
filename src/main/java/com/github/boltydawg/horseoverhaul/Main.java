@@ -2,6 +2,7 @@ package com.github.boltydawg.horseoverhaul;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,6 +14,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,9 +58,6 @@ public class Main extends JavaPlugin{
 		
 		//set constant listeners
 		this.getServer().getPluginManager().registerEvents(new GearListener(), this);
-		
-		//unitialize any existing listeners
-		this.removeListeners();
 		
 		// setup config
 		CustomConfig.setup();
@@ -201,7 +200,7 @@ public class Main extends JavaPlugin{
 		}
 	}
 	
-	private void removeListeners() {
+	public void removeListeners() {
 		// Unregister and unload the all listeners, for the case of usage of /horseo reload
 		if (this.breeding != null) {
 			
@@ -243,6 +242,17 @@ public class Main extends JavaPlugin{
 			this.whistle = null;
 			
 			WhistleListener.whistle = false;
+		}
+
+		Iterator<Recipe> it = this.getServer().recipeIterator();
+		int found = 0;
+		while(it.hasNext() && found < 2) {
+			ItemStack n = it.next().getResult();
+			if (n.equals(OwnershipListener.blankDeed) ||
+					n.equals(WhistleListener.blankWhistle) ) {
+				it.remove();
+				found++;
+			}
 		}
 	}
 	

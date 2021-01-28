@@ -39,7 +39,13 @@ public class CommandHorseo implements CommandExecutor {
 				//no need to check permissions
 				if (param.equalsIgnoreCase("reload")) {
 					sender.sendMessage("Reloading HorseOverhaul...");
+					
+					//unitialize any existing listeners
+					((Main) Main.instance).removeListeners();
+					
+					//reload the config and necessary listeners
 					CustomConfig.reload();
+					
 					sender.sendMessage("Done.");
 					return true;
 				}
@@ -66,9 +72,16 @@ public class CommandHorseo implements CommandExecutor {
 			}
 			else if (param.equalsIgnoreCase("reload")) {
 				if (player.hasPermission("horseo.reload")) {
-					sender.sendMessage("Reloading HorseOverhaul...");
+					player.sendMessage("Reloading HorseOverhaul...");
+					
+					//unitialize any existing listeners
+					((Main) Main.instance).removeListeners();
+					
+					//reload the config and necessary listeners
 					CustomConfig.reload();
-					sender.sendMessage("Done.");
+					
+					player.sendMessage("Done.");
+					
 					return true;
 				}
 				else {
