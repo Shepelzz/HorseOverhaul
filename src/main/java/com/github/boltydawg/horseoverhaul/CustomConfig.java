@@ -22,12 +22,10 @@ public class CustomConfig {
 		file = fetchConfigFile(Main.instance);
 		customFile = YamlConfiguration.loadConfiguration(file);
 		
-		customFile.addDefault("autoGearEquip.enabled", true);
 		customFile.addDefault("betterBreeding.enabled", true);
 		customFile.addDefault("betterBreeding.foodEffects",true);
 		customFile.addDefault("checkStats.enabled", true);
 		customFile.addDefault("checkStats.requireTamed", true);
-		customFile.addDefault("dropGear.enabled", true);
 		customFile.addDefault("ownership.enabled", true);
 		customFile.addDefault("ownership.craftingRecipe", true);
 		customFile.addDefault("ownership.coloredNames", false);
@@ -69,6 +67,7 @@ public class CustomConfig {
 	 */
 	public static void reload() {
 		customFile = YamlConfiguration.loadConfiguration(file);
+		((Main) Main.instance).readConfig(customFile);
 	}
 	
 	/**
