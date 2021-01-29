@@ -225,7 +225,6 @@ public class Main extends JavaPlugin{
 			this.ownership = null;
 			
 			OwnershipListener.ownership = true;
-			OwnershipListener.blankDeed = null;
 			OwnershipListener.craftDeed = false;
 			OwnershipListener.coloredNames = false;
 		}
@@ -248,12 +247,11 @@ public class Main extends JavaPlugin{
 		int found = 0;
 		while(it.hasNext() && found < 2) {
 			ItemStack n = it.next().getResult();
-			if (n.equals(OwnershipListener.blankDeed) ||
-					n.equals(WhistleListener.blankWhistle) ) {
+			if (n.isSimilar(OwnershipListener.blankDeed) ||
+					n.isSimilar(WhistleListener.blankWhistle) ) {
 				it.remove();
 				found++;
 			}
 		}
 	}
-	
 }
