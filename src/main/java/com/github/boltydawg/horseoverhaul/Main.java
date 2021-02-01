@@ -45,6 +45,8 @@ public class Main extends JavaPlugin{
 	
 	public static Main instance;
 	
+	public CustomConfig config;
+	
 	private BreedingListener breeding;
 	private StatsListener stats;
 	private OwnershipListener ownership;
@@ -60,8 +62,8 @@ public class Main extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(new GearListener(), this);
 		
 		// setup config
-		CustomConfig.setup();
-		this.readConfig(CustomConfig.getConfig());
+		this.config = new CustomConfig(this);
+		this.readConfig(config.getConfig());
 		
 		// commands
 		this.getCommand("horseo").setExecutor(new CommandHorseo());
@@ -70,7 +72,11 @@ public class Main extends JavaPlugin{
 	@Override
 	public void onDisable() {
 		this.getLogger().info("Saving config");
-		CustomConfig.save();
+		config.save();
+	}
+	
+	public CustomConfig getCustomConfig() {
+		return this.config;
 	}
 	
 	/**
