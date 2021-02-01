@@ -9,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CustomConfig {
 	
-	private static File file;
 	private static FileConfiguration customFile;
 	
 	private static final String NAME = "settings.yml";
@@ -19,8 +18,7 @@ public class CustomConfig {
 	 * Set up our {@link FileConfiguration} and locally stored {@link File}
 	 */
 	public static void setup() {
-		file = fetchConfigFile(Main.instance);
-		customFile = YamlConfiguration.loadConfiguration(file);
+		customFile = YamlConfiguration.loadConfiguration(fetchConfigFile());
 		
 		customFile.addDefault("betterBreeding.enabled", true);
 		customFile.addDefault("betterBreeding.foodEffects",true);
@@ -55,7 +53,7 @@ public class CustomConfig {
 	 */
 	public static void save() {
 		try {
-			customFile.save(file);
+			customFile.save(fetchConfigFile());
 		} 
 		catch(IOException e) {
 			Main.instance.getLogger().warning("Error saving config, please report this to BoltyDawg:\n" + e.toString());
@@ -66,7 +64,7 @@ public class CustomConfig {
 	 * reloads the configuration
 	 */
 	public static void reload() {
-		customFile = YamlConfiguration.loadConfiguration(file);
+		customFile = YamlConfiguration.loadConfiguration(fetchConfigFile());
 		Main.instance.readConfig(customFile);
 	}
 	
@@ -76,8 +74,8 @@ public class CustomConfig {
 	 * @param plugin
 	 * @return File
 	 */
-	private static File fetchConfigFile(JavaPlugin plugin) {
-		File file = new File(plugin.getDataFolder(), NAME);
+	private static File fetchConfigFile() {
+		File file = new File(Main.instance.getDataFolder(), NAME);
 		
 		if(!file.exists()) {
 			try {
