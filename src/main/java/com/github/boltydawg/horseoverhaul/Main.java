@@ -63,7 +63,7 @@ public class Main extends JavaPlugin{
 		
 		// setup config
 		this.config = new CustomConfig(this);
-		this.readConfig(config.getConfig());
+		this.readConfig();
 		
 		// commands
 		this.getCommand("horseo").setExecutor(new CommandHorseo());
@@ -83,9 +83,10 @@ public class Main extends JavaPlugin{
 	 * read and set the config's values
 	 * @param config
 	 */
-	public void readConfig(FileConfiguration config) {
+	public void readConfig() {
+		FileConfiguration c = config.getConfig();
 		
-		if(config.getBoolean("betterBreeding.enabled")) {
+		if(c.getBoolean("betterBreeding.enabled")) {
 			//initialize 
 			this.breeding = new BreedingListener();
 			
@@ -95,10 +96,10 @@ public class Main extends JavaPlugin{
 			//set other fields
 			BreedingListener.betterBreeding = true;
 				
-			BreedingListener.foodEffects = config.getBoolean("betterBreeding.foodEffects");
+			BreedingListener.foodEffects = c.getBoolean("betterBreeding.foodEffects");
 		}
 		
-		if(config.getBoolean("checkStats.enabled")) {
+		if(c.getBoolean("checkStats.enabled")) {
 			//initialize 
 			this.stats = new StatsListener();
 			
@@ -108,10 +109,10 @@ public class Main extends JavaPlugin{
 			//set other fields
 			StatsListener.checkStats = true;
 			
-			StatsListener.untamed = config.getBoolean("checkStats.requireTamed");
+			StatsListener.untamed = c.getBoolean("checkStats.requireTamed");
 		}
 		
-		if(config.getBoolean("ownership.enabled")) {
+		if(c.getBoolean("ownership.enabled")) {
 			//initialize
 			this.ownership = new OwnershipListener();
 			
@@ -130,7 +131,7 @@ public class Main extends JavaPlugin{
 			met.setLore(lore);
 			OwnershipListener.blankDeed.setItemMeta(met);
 			
-			if(config.getBoolean("ownership.craftingRecipe")) {
+			if(c.getBoolean("ownership.craftingRecipe")) {
 				
 				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "blankDeed"),OwnershipListener.blankDeed);
 				recipe.addIngredient(1, Material.WRITABLE_BOOK);
@@ -142,11 +143,11 @@ public class Main extends JavaPlugin{
 				
 			}
 			
-			OwnershipListener.coloredNames = config.getBoolean("ownership.coloredNames");
+			OwnershipListener.coloredNames = c.getBoolean("ownership.coloredNames");
 				
 		}
 		
-		if(config.getBoolean("nerfWildSpawns.enabled")) {
+		if(c.getBoolean("nerfWildSpawns.enabled")) {
 			//initialize
 			this.nerf = new NerfListener();
 			
@@ -154,9 +155,9 @@ public class Main extends JavaPlugin{
 			this.getServer().getPluginManager().registerEvents(nerf, this);
 			
 			//set other fields
-			NerfListener.divisor = config.getDouble("nerfWildSpawns.divisor", 1.5);
+			NerfListener.divisor = c.getDouble("nerfWildSpawns.divisor", 1.5);
 			
-			if(config.getBoolean("nerfWildSpawns.override")) {
+			if(c.getBoolean("nerfWildSpawns.override")) {
 				
 				NerfListener.override = true;
 				
@@ -172,7 +173,7 @@ public class Main extends JavaPlugin{
 				NerfListener.override = false;
 		}
 		
-		if(config.getBoolean("whistles.enabled")) {
+		if(c.getBoolean("whistles.enabled")) {
 			//initialize
 			this.whistle = new WhistleListener();
 			
@@ -188,7 +189,7 @@ public class Main extends JavaPlugin{
 			met.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
 			WhistleListener.blankWhistle.setItemMeta(met);
 			
-			if(config.getBoolean("whistles.craftingRecipe")) {
+			if(c.getBoolean("whistles.craftingRecipe")) {
 				
 				ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this, "whistle"), WhistleListener.blankWhistle);
 				recipe.addIngredient(1, Material.IRON_INGOT);
@@ -202,7 +203,7 @@ public class Main extends JavaPlugin{
 			else
 				WhistleListener.craftWhistle = false;
 				
-			WhistleListener.whistleTP = config.getBoolean("whistles.teleport");
+			WhistleListener.whistleTP = c.getBoolean("whistles.teleport");
 		}
 	}
 	
@@ -231,7 +232,6 @@ public class Main extends JavaPlugin{
 			this.ownership = null;
 			
 			OwnershipListener.ownership = true;
-			OwnershipListener.blankDeed = null;
 			OwnershipListener.craftDeed = false;
 			OwnershipListener.coloredNames = false;
 		}

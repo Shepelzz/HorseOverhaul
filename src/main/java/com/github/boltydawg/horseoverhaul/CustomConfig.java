@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class CustomConfig {
 	
 	private FileConfiguration customFile;
+	private File file;
 	
 	private static final String NAME = "settings.yml";
 	
@@ -16,8 +17,13 @@ public class CustomConfig {
 	
 	public CustomConfig(Main plugin) {
 		this.plugin = plugin;
-		customFile = YamlConfiguration.loadConfiguration(fetchConfigFile());
+		this.file = fetchConfigFile();
+		this.customFile = YamlConfiguration.loadConfiguration(file);
 		
+		addDefaults();
+	}
+	
+	private void addDefaults() {
 		customFile.addDefault("betterBreeding.enabled", true);
 		customFile.addDefault("betterBreeding.foodEffects",true);
 		customFile.addDefault("checkStats.enabled", true);
@@ -63,8 +69,13 @@ public class CustomConfig {
 	 * reloads the configuration
 	 */
 	public void reload() {
-		customFile = YamlConfiguration.loadConfiguration(fetchConfigFile());
-		this.plugin.readConfig(customFile);
+		if(!this.file.exists()) {
+			file = fetchConfigFile();
+			customFile = YamlConfiguration.loadConfiguration(file);
+			addDefaults();
+		}
+		else
+			customFile = YamlConfiguration.loadConfiguration(file);
 	}
 	
 	/**
