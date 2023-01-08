@@ -301,6 +301,7 @@ public class OwnershipListener implements Listener {
         if (!isOwner || !hasOwner) return;
         if(!Item.OWNED_DEED_ITEM.isEqual(main)) return;
 
+        event.setCancelled(true);
         if(PersistentAttribute.PUBLIC_RIDEABLE.getData(abHorse, (byte) 0) == (byte) 1){
             PersistentAttribute.PUBLIC_RIDEABLE.setData(abHorse, (byte) 0);
             ComponentUtils.sendConfigMessage(player, "horse.status.private");
