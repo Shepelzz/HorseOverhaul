@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public enum PersistentAttribute {
+    PUBLIC_RIDEABLE("public_rideable", PersistentDataType.BYTE, (byte) 0),
     NERFED("nerfed", PersistentDataType.BYTE, (byte) 1),
     NEUTERED("neutered", PersistentDataType.BYTE, (byte) 0),
     OWNER("owner", new UUIDDataType(), null),

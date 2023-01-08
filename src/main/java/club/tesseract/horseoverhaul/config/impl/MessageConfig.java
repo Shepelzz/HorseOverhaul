@@ -39,6 +39,8 @@ public class MessageConfig extends AbstractConfig {
         customFile.addDefault("horse.claim.wild-horse", "<red>You do not have permission to claim wild horses");
         customFile.addDefault("horse.claim.not-tamed", "<red>You must tame this horse before claiming it!");
         customFile.addDefault("horse.claim.success", "<green>You are now the proud owner of <horse>!");
+        customFile.addDefault("horse.status.private", "<red>This horse is private!");
+        customFile.addDefault("horse.status.public", "<green>This horse is public!");
         customFile.addDefault("whistle.no-name-item", "<yellow><horse_colour> Horses' Whistle");
         customFile.addDefault("whistle.name-item", "<yellow><horse>'s Whistle");
         customFile.addDefault("whistle.linked", "<yellow>Whistle Carved!");

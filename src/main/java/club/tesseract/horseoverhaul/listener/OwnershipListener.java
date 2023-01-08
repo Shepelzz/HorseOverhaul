@@ -22,9 +22,11 @@ import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.HorseInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.BookMeta.Generation;
@@ -109,7 +111,6 @@ public class OwnershipListener implements Listener {
         HorseOverhaul.getInstance().getLogger().info(consoleInformation);
 
         new BukkitRunnable() {
-
             @Override
             public void run() {
 
@@ -119,6 +120,24 @@ public class OwnershipListener implements Listener {
         }.runTaskLater(HorseOverhaul.getInstance(), 4);
 
 
+    }
+
+    /**
+     * Handles the horses inventory click events
+     * prevent the player from taking the horse out of the inventory
+     * if they are not the owner
+     */
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!(event.getClickedInventory() instanceof HorseInventory)) return;
+        HorseInventory inventory = (HorseInventory) event.getClickedInventory();
+        if(!(inventory.getHolder() instanceof AbstractHorse))return;
+        AbstractHorse horse = (AbstractHorse) event.getClickedInventory().getHolder();
+        if(horse == null) return;
+        Player player = (Player) event.getWhoClicked();
+        if (horse.getOwner() != null && !horse.getOwner().equals(player)) {
+            event.setCancelled(true);
+        }
     }
 
     /**
@@ -264,6 +283,34 @@ public class OwnershipListener implements Listener {
     }
 
     /**
+     * Handles changing status of a horse, Publicly accessible or not
+     */
+    @EventHandler
+    public void onToggleStatus(PlayerInteractEntityEvent event){
+        if (event.getHand() != EquipmentSlot.HAND) return;
+
+        if (!(event.getRightClicked() instanceof AbstractHorse)) return;
+
+        Player player = event.getPlayer();
+        AbstractHorse abHorse = (AbstractHorse) event.getRightClicked();
+        boolean isOwner = abHorse.getOwner() != null && player.getUniqueId().equals(PersistentAttribute.OWNER.getData(abHorse));
+        boolean hasOwner = abHorse.getOwner() != null && PersistentAttribute.OWNER.getData(abHorse) != null;
+        ItemStack main = player.getInventory().getItemInMainHand();
+
+        if (!abHorse.isTamed()) return;
+        if (!isOwner || !hasOwner) return;
+        if(!Item.OWNED_DEED_ITEM.isEqual(main)) return;
+
+        if(PersistentAttribute.PUBLIC_RIDEABLE.getData(abHorse, (byte) 0) == (byte) 1){
+            PersistentAttribute.PUBLIC_RIDEABLE.setData(abHorse, (byte) 0);
+            ComponentUtils.sendConfigMessage(player, "horse.status.private");
+        } else {
+            PersistentAttribute.PUBLIC_RIDEABLE.setData(abHorse, (byte) 1);
+            ComponentUtils.sendConfigMessage(player, "horse.status.public");
+        }
+    }
+
+    /**
      * Handles transferring of deed ownership
      * and prevent non owners interacting with horse
      */
@@ -291,7 +338,6 @@ public class OwnershipListener implements Listener {
 
             if (abHorse.getUniqueId().equals(horseId)) {
 
-
                 if (Generation.ORIGINAL.equals(met.getGeneration())) {
 
                     if (!player.hasPermission("horseo.claim-owned")) {
@@ -313,6 +359,7 @@ public class OwnershipListener implements Listener {
         }
 
         if (player.hasPermission("horseo.interact-all")) return;
+        if(PersistentAttribute.PUBLIC_RIDEABLE.getData(abHorse, (byte)0) == (byte)1) return;
         event.setCancelled(true);
 
         abHorse.getWorld().playSound(abHorse.getLocation(), Sound.ENTITY_HORSE_ANGRY, 0.8F, 1.0F);
