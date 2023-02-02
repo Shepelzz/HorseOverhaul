@@ -22,6 +22,7 @@ import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -102,14 +103,6 @@ public class OwnershipListener implements Listener {
 
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 0.5f);
 
-        String consoleInformation = player.getName() + " claims horse " + horseName + " from " +
-                previousOwner + ", in world: " + abHorse.getWorld().getName() +
-                ", at coords: x=" + (int) abHorse.getLocation().getX() +
-                " y=" + (int) abHorse.getLocation().getY() +
-                " z=" + (int) abHorse.getLocation().getZ();
-
-        HorseOverhaul.getInstance().getLogger().info(consoleInformation);
-
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -120,6 +113,26 @@ public class OwnershipListener implements Listener {
         }.runTaskLater(HorseOverhaul.getInstance(), 4);
 
 
+    }
+
+    /**
+     *  Handles the taming of a horse
+     *  Prevent the horse from being tamed if the player does not have the permission
+     *  Prevent the horse from being removed when far away
+     */
+    @EventHandler
+    public void onTame(EntityTameEvent event){
+        if(!(event.getOwner() instanceof Player))return;
+        if(!(event.getEntity() instanceof AbstractHorse))return;
+
+        Player player = (Player) event.getOwner();
+        AbstractHorse horse = (AbstractHorse) event.getEntity();
+
+        if(!player.hasPermission("horseo.tame")) {
+            event.setCancelled(true);
+            return;
+        }
+        horse.setRemoveWhenFarAway(false);
     }
 
     /**

@@ -1,29 +1,32 @@
 name: HorseOverhaul
 main: club.tesseract.horseoverhaul.HorseOverhaul
 version: @version@
-authors: ["BoltyDawg", "TropicalShadow"]
+authors: [ "BoltyDawg", "TropicalShadow" ]
 description: Better horse breeding, ownership, and stat viewing
 api-version: 1.14
 commands:
   horseoverhaul:
     description: Learn about Horse Overhaul!
     usage: /horseoverhaul [breed, ownership, stats, whistle]
-    aliases: ["ho", "horseo"]
+    aliases: [ "ho", "horseo" ]
 permissions:
-   horseo.*:
-      description: Gives access to all basic HorseOverhaul functionality
-      children:
-         horseo.claim-wild: true
-         horseo.claim-owned: true
-   horseo.claim-wild:
-      description: Grants you permission to claim wild horses (requires ownership to be enabled in config)
-      default: true
-   horseo.claim-owned:
-      description: Grants you permission to claim other owned horses using their deeds (requires ownership to be enabled in config)
-      default: true
-   horseo.reload:
-      description: Allows an admin to refresh HorseOverhaul's configuration
-      default: op
-   horseo.interact-all:
-      description: Allows you to ride/interact with any horse regardless of ownership
-      default: false
+  horseo.*:
+    description: Gives access to all basic HorseOverhaul functionality
+    children:
+      horseo.claim-wild: true
+      horseo.claim-owned: true
+  horseo.claim-wild:
+    description: Grants you permission to claim wild horses (requires ownership to be enabled in config)
+    default: true
+  horseo.claim-owned:
+    description: Grants you permission to claim other owned horses using their deeds (requires ownership to be enabled in config)
+    default: true
+  horseo.reload:
+    description: Allows an admin to refresh HorseOverhaul's configuration
+    default: op
+  horseo.interact-all:
+    description: Allows you to ride/interact with any horse regardless of ownership
+    default: false
+  horseo.tame:
+    description: Allows you to tame a horse
+    default: true
