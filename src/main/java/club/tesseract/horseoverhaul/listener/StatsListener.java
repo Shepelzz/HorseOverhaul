@@ -99,7 +99,7 @@ public class StatsListener implements Listener {
 				&& event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.CARROT_ON_A_STICK)
 				&& signStats.containsKey(event.getPlayer().getUniqueId())
 		) {
-			
+			event.setCancelled(true);
 			Sign sign = (Sign)(event.getClickedBlock().getState());
 			
 			ArrayList<String> msg = signStats.get(event.getPlayer().getUniqueId());
@@ -111,7 +111,7 @@ public class StatsListener implements Listener {
 			sign.update();
 			
 			signStats.remove(event.getPlayer().getUniqueId());
-		}	
+		}
 	}
 	
 	
