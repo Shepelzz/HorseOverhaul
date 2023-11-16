@@ -1,13 +1,10 @@
 
 plugins {
+    `maven-publish`
     id("java")
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("xyz.jpenilla.run-paper") version "2.2.0"
 }
-
-group = "club.tesseract"
-version = "2.0.3"
-
 
 repositories {
     mavenCentral()
@@ -61,4 +58,15 @@ tasks{
 java {
     targetCompatibility = JavaVersion.VERSION_11
     sourceCompatibility = JavaVersion.VERSION_11
+}
+
+publishing{
+    publications{
+        create<MavenPublication>("maven"){
+            groupId = project.group.toString()
+            artifactId = "HorseChestSaddle"
+            version = project.version.toString()
+            from(components["java"])
+        }
+    }
 }
