@@ -31,7 +31,7 @@ public class CommandHorseo implements TabExecutor {
 		String param = args[0];
 
 		switch(param.toLowerCase()){
-			case "breed":
+			case "breeding":
 				ComponentUtils.sendConfigMessage(sender, "command.help.breed");
 				break;
 			case "whistle":
@@ -63,7 +63,7 @@ public class CommandHorseo implements TabExecutor {
 		ArrayList<String> result = new ArrayList<>();
 		if(args == null || args.length < 1)return result;
 		if(args.length == 1){
-			if("breed".startsWith(args[0].toLowerCase()))result.add("breed");
+			if("breeding".startsWith(args[0].toLowerCase()))result.add("breeding");
 			if("whistle".startsWith(args[0].toLowerCase()))result.add("whistle");
 			if("stats".startsWith(args[0].toLowerCase()))result.add("stats");
 			if("ownership".startsWith(args[0].toLowerCase()))result.add("ownership");

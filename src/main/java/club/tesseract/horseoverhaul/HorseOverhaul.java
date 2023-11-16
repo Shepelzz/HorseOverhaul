@@ -5,6 +5,7 @@ import club.tesseract.horseoverhaul.command.CommandHorseo;
 import club.tesseract.horseoverhaul.config.ConfigManager;
 import club.tesseract.horseoverhaul.config.impl.GeneralConfig;
 import club.tesseract.horseoverhaul.listener.*;
+import club.tesseract.horseoverhaul.metric.Metrics;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -26,7 +27,7 @@ import java.text.DecimalFormat;
 public class HorseOverhaul extends JavaPlugin{
 	
 	public static DecimalFormat statNumberFormat = new DecimalFormat("0.00");
-	
+	private Metrics metrics;
 	private BreedingListener breeding;
 	private StatsListener stats;
 	private OwnershipListener ownership;
@@ -46,6 +47,7 @@ public class HorseOverhaul extends JavaPlugin{
 	public void onEnable() {
 		this.adventure = BukkitAudiences.create(this);
 		ConfigManager.get().loadConfigs();
+		metrics = new Metrics(this, 10086);
 
 		//set constant listeners
 		getServer().getPluginManager().registerEvents(new GearListener(), this);
@@ -57,6 +59,7 @@ public class HorseOverhaul extends JavaPlugin{
 	@Override
 	public void onDisable() {
 		this.getLogger().info("Plugin shutting down!");
+		metrics.shutdown();
 		if(this.adventure != null) {
 			this.adventure.close();
 			this.adventure = null;
