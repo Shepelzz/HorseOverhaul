@@ -31,6 +31,11 @@ tasks{
     test {
         workingDir = file("./run")
     }
+
+    build{
+        dependsOn("shadowJar")
+    }
+
     shadowJar{
         archiveBaseName.set(project.name)
         archiveClassifier.set("")
