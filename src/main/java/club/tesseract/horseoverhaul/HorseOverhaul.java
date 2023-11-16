@@ -47,7 +47,7 @@ public class HorseOverhaul extends JavaPlugin{
 	public void onEnable() {
 		this.adventure = BukkitAudiences.create(this);
 		ConfigManager.get().loadConfigs();
-		metrics = new Metrics(this, 10086);
+		metrics = new Metrics(this, 20307);
 
 		//set constant listeners
 		getServer().getPluginManager().registerEvents(new GearListener(), this);
