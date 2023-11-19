@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.kyori:adventure-api:4.10.0")
+    compileOnly("net.kyori:adventure-api:4.10.0")
     implementation("net.kyori:adventure-text-minimessage:4.10.0")
     implementation("net.kyori:adventure-platform-bukkit:4.2.0")
 
@@ -69,7 +69,7 @@ publishing{
     publications{
         create<MavenPublication>("maven"){
             groupId = project.group.toString()
-            artifactId = "HorseChestSaddle"
+            artifactId = "HorseOverhaul"
             version = project.version.toString()
             from(components["java"])
         }
