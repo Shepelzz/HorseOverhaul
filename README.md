@@ -1,4 +1,4 @@
-# HorseOverhaul V2
+# HorseOverhaul V2 - by MrShmel
 
 > A reworking of Minecraft's Vanilla horse breeding and ownership system
 

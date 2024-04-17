@@ -12,16 +12,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -78,7 +83,7 @@ public class OwnershipListener implements Listener {
      * @param player    the player claiming the horse
      * @param horseName the name of the horse
      */
-    public static void claimHorse(AbstractHorse abHorse, Player player, String horseName) {
+    public static void claimHorse(AbstractHorse abHorse, Player player, String horseName, boolean changeName) {
 
         OfflinePlayer previousOwnerPlayer;
         String previousOwner = "nature";
@@ -93,7 +98,17 @@ public class OwnershipListener implements Listener {
 
         abHorse.setOwner(player);
         PersistentAttribute.OWNER.setData(abHorse, player.getUniqueId());
-        abHorse.setCustomName(horseName);
+
+        int owners = PersistentAttribute.OWNER_COUNT.getData(abHorse, 0);
+
+        if (!(player.isOp() && changeName)) {
+            owners = owners + 1;
+        }
+        PersistentAttribute.OWNER_COUNT.setData(abHorse, owners);
+
+        if (changeName) {
+            abHorse.setCustomName(horseName);
+        }
 
         abHorse.getWorld().playSound(abHorse.getLocation(), Sound.ENTITY_HORSE_ARMOR, 0.9f, 2.0f);
         ComponentUtils.sendConfigMessage(player, "horse.claim.success",
@@ -107,7 +122,7 @@ public class OwnershipListener implements Listener {
             @Override
             public void run() {
 
-                player.getInventory().addItem(getDeed(abHorse.getUniqueId(), abHorse.getCustomName(), player.getUniqueId(), player.getName()));
+                player.getInventory().addItem(getDeed(abHorse.getUniqueId(), horseName, player.getUniqueId(), player.getName()));
 
             }
         }.runTaskLater(HorseOverhaul.getInstance(), 4);
@@ -189,15 +204,20 @@ public class OwnershipListener implements Listener {
         Player player = event.getPlayer();
         ItemStack main = player.getInventory().getItemInMainHand();
         AbstractHorse abHorse = (AbstractHorse) event.getRightClicked();
-        boolean isOwner = abHorse.getOwner() != null && player.getUniqueId().equals(PersistentAttribute.OWNER.getData(abHorse));
+        boolean isOwner = player.isOp() ||
+                          (abHorse.getOwner() != null && player.getUniqueId().equals(PersistentAttribute.OWNER.getData(abHorse)));
 
-        if (!isOwner) return;
+        if (!(Material.SHEARS.equals(main.getType()) && player.isSneaking()) || !isOwner) {
+            return;
+        }
 
-        if (!abHorse.isAdult() && Material.SHEARS.equals(main.getType())) {
+        boolean doThis = player.isOp() || (!abHorse.isAdult());
+        if (doThis) {
 
             boolean isNeutered = PersistentAttribute.NEUTERED.getData(abHorse, (byte) 0) == (byte) 1;
             if (isNeutered) {
                 ComponentUtils.sendConfigMessage(player, "horse.interaction.already-neutered");
+                event.setCancelled(true);
                 return;
             }
 
@@ -213,10 +233,8 @@ public class OwnershipListener implements Listener {
                     ComponentUtils.sendConfigMessage(player, "horse.interaction.neutered");
                 }
             }.runTaskLater(HorseOverhaul.getInstance(), 20L);
-
-
+            event.setCancelled(true);
         }
-
     }
 
     /**
@@ -235,7 +253,7 @@ public class OwnershipListener implements Listener {
 
         if (!Item.BLANK_DEED.isEqual(main)) return;
 
-        if (abHorse.isTamed()) {
+        if (abHorse.isTamed() || !abHorse.isAdult()) {
 
             event.setCancelled(true);
 
@@ -266,8 +284,12 @@ public class OwnershipListener implements Listener {
      */
     @EventHandler
     public void onRenameHorse(PlayerInteractEntityEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND) return;
-        if (!(event.getRightClicked() instanceof AbstractHorse)) return;
+        if (event.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
+        if (!(event.getRightClicked() instanceof AbstractHorse)) {
+            return;
+        }
 
         Player player = event.getPlayer();
         ItemStack main = player.getInventory().getItemInMainHand();
@@ -275,22 +297,23 @@ public class OwnershipListener implements Listener {
         AbstractHorse abHorse = (AbstractHorse) event.getRightClicked();
         boolean isOwner = abHorse.getOwner() != null && player.getUniqueId().equals(PersistentAttribute.OWNER.getData(abHorse));
 
-        if (Material.NAME_TAG.equals(main.getType()) && main.getItemMeta().hasDisplayName()) {
+        if (Material.NAME_TAG.equals(main.getType())
+                && main.getItemMeta() != null && main.getItemMeta().hasDisplayName()) {
             event.setCancelled(true);
             if (isOwner) {
                 boolean isOwnedDeed = Item.OWNED_DEED_ITEM.isEqual(off);
                 UUID horseID = PersistentAttribute.DEED_HORSE_ID.getData(off);
                 UUID ownerID = PersistentAttribute.DEED_OWNER.getData(off);
                 if (isOwnedDeed) {
-                    if (horseID == abHorse.getUniqueId() && ownerID == player.getUniqueId()) {
+                    if (abHorse.getUniqueId().equals(horseID) && player.getUniqueId().equals(ownerID)) {
                         player.getInventory().setItemInOffHand(getDeed(abHorse.getUniqueId(), main.getItemMeta().getDisplayName(), player.getUniqueId(), player.getName()));
+                        abHorse.setCustomName(main.getItemMeta().getDisplayName());
                         return;
                     }
                 }
                 ComponentUtils.sendConfigMessage(player, "horse.rename.not-holding-deed");
-
             } else {
-                ComponentUtils.sendConfigMessage(player, "horse.rename.not-owned");
+                ComponentUtils.sendConfigMessage(player, "horse.rename.not-owner");
             }
         }
     }
@@ -359,7 +382,7 @@ public class OwnershipListener implements Listener {
                         return;
                     }
                     player.getInventory().setItemInMainHand(null);
-                    claimHorse(abHorse, player, abHorse.getCustomName());
+                    claimHorse(abHorse, player, abHorse.getCustomName(), true);
 
                 } else {
 
@@ -373,6 +396,7 @@ public class OwnershipListener implements Listener {
         }
 
         if (player.hasPermission("horseo.interact-all")) return;
+        if (player.isOp()) return;
         if(PersistentAttribute.PUBLIC_RIDEABLE.getData(abHorse, (byte)0) == (byte)1) return;
         event.setCancelled(true);
 
@@ -399,4 +423,42 @@ public class OwnershipListener implements Listener {
         if (!Item.OWNED_DEED_ITEM.isEqual(item)) return;
         event.setUseItemInHand(Result.DENY);
     }
+
+//    @EventHandler
+//    public void onPlayerAttack(EntityDamageByEntityEvent event) {
+//        Entity damager = event.getDamager();
+//        Entity entity = event.getEntity();
+//        try {
+//            if (damager instanceof Player && entity instanceof AbstractHorse) {
+//                AbstractHorse abHorse = (AbstractHorse) entity;
+//                boolean isOwner = abHorse.getOwner() != null
+//                                  && damager.getUniqueId().equals(PersistentAttribute.OWNER.getData(abHorse));
+//                boolean hasOwner = abHorse.getOwner() != null && PersistentAttribute.OWNER.getData(abHorse) != null;
+//                if (hasOwner && !isOwner) {
+//                    ComponentUtils.sendConfigMessage(damager, "theft.dinahu");
+//                    event.setCancelled(true);
+//                } else {
+//                    // Get the item the player is holding
+//                    ItemStack itemInHand = ((Player) damager).getInventory().getItemInMainHand();
+//                    if (itemInHand != null) {
+//                        // Convert the ItemStack to a CraftItemStack
+//                        ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemInHand);
+//                        // Get the damage value from the item
+//                        int damage = itemInHand.get
+//                        // Apply the original Minecraft logic for item damage
+//                        if (damage < nmsItemStack.getMaxDamage()) {
+//                            nmsItemStack.setDamage(damage + 1);
+//                        }
+//                        // Set the modified ItemStack back to the player's inventory
+//                        player.getInventory().setItemInMainHand(CraftItemStack.asBukkitCopy(nmsItemStack));
+//                        // Apply the damage to the horse
+//                        abHorse.damage(1);
+//                        event.setCancelled(true);
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            Bukkit.broadcastMessage(e.getMessage());
+//        }
+//    }
 }
