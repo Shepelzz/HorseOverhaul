@@ -78,7 +78,7 @@ public class WhistleListener implements Listener {
 
 			boolean found = false;	//boolean for whether the horse is detected
 
-			for(Entity entity : player.getNearbyEntities(100, 30, 100)) { //search a 100x30x100 radius
+			for(Entity entity : player.getNearbyEntities(250, 30, 250)) { //search a 100x30x100 radius
 				if(!(entity instanceof AbstractHorse)) continue;
 
 				if(entity.getUniqueId().equals(horseId)) {

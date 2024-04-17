@@ -3,6 +3,7 @@ package club.tesseract.horseoverhaul;
 import club.tesseract.horseoverhaul.listener.OwnershipListener;
 import club.tesseract.horseoverhaul.utils.ComponentUtils;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.conversations.Conversable;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
@@ -45,23 +46,28 @@ public class NamePrompt extends StringPrompt {
 	@Override
 	public Prompt acceptInput(@NotNull ConversationContext context, String input) {
 		
-		final String name;
-		
-		if(OwnershipListener.COLOURED_NAMES) name = ChatColor.translateAlternateColorCodes('&', input);
-		else name = input;
+		String name;
+		boolean changeName = true;
 
-		
-		if(ChatColor.stripColor(name).length() > 16) {
-			Conversable recipient = context.getForWhom();
-			if(recipient instanceof Player)ComponentUtils.sendConfigMessage(((Player) recipient), "horse.name.too-long");
-			else context.getForWhom().sendRawMessage(ComponentUtils.componentFormattedConfigString("horse.name.too-long"));
-			return new NamePrompt(player,abHorse);
-			
+		//option to leave custom names
+		if (player.isOp() && input.equals("_")) {
+			name = ChatColor.stripColor(abHorse.getName());
+			changeName = false;
+		} else {
+			if(OwnershipListener.COLOURED_NAMES) {
+				name = ChatColor.translateAlternateColorCodes('&', input);
+			} else {
+				name = input;
+			}
+			if(ChatColor.stripColor(name).length() > 16) {
+				Conversable recipient = context.getForWhom();
+				if(recipient instanceof Player)ComponentUtils.sendConfigMessage(((Player) recipient), "horse.name.too-long");
+				else context.getForWhom().sendRawMessage(ComponentUtils.componentFormattedConfigString("horse.name.too-long"));
+				return new NamePrompt(player, abHorse);
+
+			}
 		}
-		
-		OwnershipListener.claimHorse(abHorse, player, name);
-		
+		OwnershipListener.claimHorse(abHorse, player, name, changeName);
 		return StringPrompt.END_OF_CONVERSATION;
-		
 	}
 }
