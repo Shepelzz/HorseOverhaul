@@ -54,7 +54,7 @@ public class StatsListener implements Listener {
 					event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.CARROT_ON_A_STICK)) {
 				
 				event.setCancelled(true);
-				player.sendMessage(new StatHorse(abHorse).printStats(!OwnershipListener.OWNERSHIP_ENABLED));
+				player.sendMessage(new StatHorse(abHorse).printStats());
 				
 				
 				ArrayList<String> stats = new ArrayList<>();
@@ -66,19 +66,19 @@ public class StatsListener implements Listener {
 					String color = horse.getColor().name();
 					color = color.toCharArray()[0] + color.substring(1).toLowerCase();
 					if(horse.isAdult())
-						stats.add(color + " Horse: ");
+						stats.add(color + " Лошадь: ");
 					else
-						stats.add(color + " Foal:");
+						stats.add(color + " Жеребенок:");
 				}
 				else {
 					String type = abHorse.getType().name();
 					type = type.toCharArray()[0] + type.substring(1).toLowerCase();
-					stats.add(type + " Horse: ");
+					stats.add(type + " Лошадь: ");
 				}
 					
-				stats.add("Health: " + roach.getHealth());
-				stats.add("Speed: " + HorseOverhaul.statNumberFormat.format(roach.getSpeed()));
-				stats.add("Jump: " + HorseOverhaul.statNumberFormat.format(roach.getJumpHeight()));
+				stats.add("Здоровье: " + roach.getHealth());
+				stats.add("Скорость: " + HorseOverhaul.statNumberFormat.format(roach.getSpeed()));
+				stats.add("Прыжок: " + HorseOverhaul.statNumberFormat.format(roach.getJumpHeight()));
 				
 				signStats.put(player.getUniqueId(), stats);
 				

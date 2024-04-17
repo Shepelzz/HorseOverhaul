@@ -16,10 +16,10 @@ import club.tesseract.horseoverhaul.listener.BreedingListener;
 public class StatHorse{
 
 
-	private static final String heart = "❤";
-	private static final String UNICODE_CIRCLE = "⬤";
-	private static final String UNICODE_SQUARE = "⬛";
-	
+	private static final String HEART = "❤";
+	private static final String SPEED = "➤";
+	private static final String JUMP = "⬛";
+
 	/**
 	 * fields
 	 */
@@ -141,137 +141,126 @@ public class StatHorse{
 	/**
 	 * Methods for printing/display a horse's stats
 	 */
-	public String printStats(boolean border) {
+	public String printStats() {
 		String msg = "";
 		if(roach == null)return msg;
+
+		String horseName = "кобылятина";
 		if(roach.getCustomName()!=null) {
-			
-			String stripped = ChatColor.stripColor(roach.getCustomName());
-			
-			StringBuilder line = new StringBuilder(ChatColor.GRAY.toString());
-			line.append("-".repeat(Math.max(0, stripped.length() + 6)));
-			line.append("\n").append(ChatColor.RESET);
-			
-			msg+= line;
-			
-			if( roach.getCustomName().equals(stripped) )
-				msg += ChatColor.DARK_AQUA;
-			
-			msg += (roach.getCustomName() + "'s Stats" + ChatColor.RESET + "\n");
-			
-			msg += line;
-				
-		}
-		
-		else if (roach instanceof Horse) {
-			String color = ((Horse)this.roach).getColor().name();
-			color = color.toCharArray()[0] + color.substring(1).toLowerCase();
-			msg += (ChatColor.DARK_AQUA.toString() + ChatColor.UNDERLINE + color + " Horse's Stats") + ChatColor.RESET + "\n \n";
-		}
-		
-		else {
-			String type = roach.getType().name();
-			type = type.toCharArray()[0] + type.substring(1).toLowerCase();
-			msg += (ChatColor.DARK_AQUA.toString() + ChatColor.UNDERLINE + type + "'s Stats") + ChatColor.RESET + "\n \n";
+			horseName = roach.getCustomName();
+		} else if (roach instanceof Horse) {
+			horseName = "лошади";
+		} else {
+			horseName = roach.getType().name();
 		}
 			
-		
-		msg += ChatColor.RED + "Health:\n" + printHearts(getHealth()) + " " + ChatColor.RED + HorseOverhaul.statNumberFormat.format(getHealth()) + "h\n";
-		msg += ChatColor.GREEN + "Speed:\n" + printSpeed(getSpeed()) + " " + ChatColor.GREEN + HorseOverhaul.statNumberFormat.format(getSpeed()) + "m/s\n";
-		msg += ChatColor.BLUE + "Jump Height:\n" + printJump(getJumpHeight()) + " " + ChatColor.BLUE + HorseOverhaul.statNumberFormat.format(getJumpHeight()) + "m\n";
-		
-		
-		if(border) {
-			String bord = ChatColor.LIGHT_PURPLE + "-----------------------------------------------------";
-			return bord + "\n" + msg + bord;
-		}
-		else
-			return msg + ChatColor.YELLOW + "Can Breed:\n" + (PersistentAttribute.NEUTERED.getData(roach, (byte)0) == (byte)1 ? ChatColor.LIGHT_PURPLE + "False" : ChatColor.LIGHT_PURPLE + "True") + "\n";
+		StringBuilder line = new StringBuilder(ChatColor.GRAY.toString());
+		line.append("-".repeat(Math.max(0, 30)));
+
+		msg+= line + "\n";
+		msg += ChatColor.GOLD + "Характеристики: \"" + horseName + ChatColor.GOLD + "\"" + ChatColor.RESET + "\n";
+
+		msg += ChatColor.YELLOW + "Здоровье: " + printHearts(getHealth()) + " " + ChatColor.WHITE + HorseOverhaul.statNumberFormat.format(getHealth()) + "хп\n";
+		msg += ChatColor.YELLOW + "Скорость: " + printSpeed(getSpeed()) + " " + ChatColor.WHITE + HorseOverhaul.statNumberFormat.format(getSpeed()) + "м/с\n";
+		msg += ChatColor.YELLOW + "Прыжок: " + printJump(getJumpHeight()) + " " + ChatColor.WHITE + HorseOverhaul.statNumberFormat.format(getJumpHeight()) + "м\n";
+
+		msg += ChatColor.YELLOW + "Может размножаться: " + ChatColor.WHITE + (PersistentAttribute.NEUTERED.getData(roach, (byte)0) == (byte)1 ? "Нет" : "Да") + "\n";
+
+		msg += ChatColor.YELLOW + "Владелец: " + ChatColor.WHITE +
+			   (roach.getOwner() != null ? (roach.getOwner().getName() + " (" + PersistentAttribute.OWNER_COUNT.getData(roach, 1) + "-й)") : "Нет") + "\n";
+		msg += ChatColor.YELLOW + "Документы: " + ChatColor.WHITE + (roach.getCustomName()!=null ? "Есть" : "Нет") + "\n";
+		msg += line;
+		return msg;
 	}
-		
+
 	private String printJump(double jh) {
-		
 		String msg = "";
 		double b = 0;
 		StringBuilder blocks = new StringBuilder();
-		
-		while(jh - b >= 0.2625) {
-			
-			blocks.append(UNICODE_SQUARE);
-			b += 0.525;
-			
+
+		// Display yellow squares up to a maximum of 5, only if jh is greater than or equal to 5
+		if (jh >= 5) {
+			while (b < 5) {
+				blocks.append(JUMP);
+				b += 0.525;
+			}
+			msg += ChatColor.GOLD + blocks.toString();
+			blocks = new StringBuilder();
+		} else {
+			while (jh - b >= 0.2625) {
+				blocks.append(JUMP);
+				b += 0.525;
+			}
+			msg += ChatColor.WHITE + blocks.toString();
+			blocks = new StringBuilder();
 		}
-		
-		msg += ChatColor.DARK_BLUE + blocks.toString();
-		
-		blocks = new StringBuilder();
-		
-		while(b < 5.25) {
-			
-			blocks.append(UNICODE_SQUARE);
+
+		// Display gray squares for any additional squares beyond the first 5
+		while (b < 5.25) {
+			blocks.append(JUMP);
 			b += 0.525;
-			
 		}
-		
 		msg += ChatColor.GRAY + blocks.toString();
 		return msg;
-		
 	}
+
 	private String printSpeed(double sp) {
-		
 		String msg = "";
 		int b = 0;
 		StringBuilder rate = new StringBuilder();
-		
-		while(sp - b >= 0.5) {
-			
-			rate.append(UNICODE_CIRCLE);
+		// Display yellow circles up to a maximum of 14, only if sp is greater than or equal to 14
+		if (sp >= 14) {
+			while (b < 14) {
+				rate.append(SPEED);
+				b++;
+			}
+			msg += ChatColor.GOLD + rate.toString();
+			rate = new StringBuilder();
+		} else {
+			while (sp - b >= 0.5) {
+				rate.append(SPEED);
+				b++;
+			}
+			msg += ChatColor.WHITE + rate.toString();
+			rate = new StringBuilder();
+		}
+		// Display gray circles for any additional circles beyond the first 14
+		while (b < 14) {
+			rate.append(SPEED);
 			b++;
 		}
-		
-		msg += ChatColor.DARK_GREEN + rate.toString();
-		
-		rate = new StringBuilder();
-		
-		while(b < 14.5125) {
-			
-			rate.append(UNICODE_CIRCLE);
-			b++;
-			
-		}
-		
 		msg += ChatColor.GRAY + rate.toString();
 		return msg;
-		
 	}
 	
 	private String printHearts(int hp) {
-		
 		String msg = "";
 		int s = 0;
 		StringBuilder hearts = new StringBuilder();
-		
-		while(s<hp) {
-			
-			hearts.append(heart);
-			s++;
-			
+
+		// Display white hearts up to a maximum of 15, only if hp is greater than 15
+		if (hp > 15) {
+			while (s < 15) {
+				hearts.append(HEART);
+				s++;
+			}
+			msg += ChatColor.GOLD + hearts.toString();
+			hearts = new StringBuilder();
+		} else {
+			while (s < hp) {
+				hearts.append(HEART);
+				s++;
+			}
+			msg += ChatColor.WHITE + hearts.toString();
+			hearts = new StringBuilder();
 		}
-		
-		msg += ChatColor.DARK_RED + hearts.toString();
-		
-		hearts = new StringBuilder();
-		
-		while(s < 15) {
-			
-			hearts.append(heart);
+
+		// Display gray hearts for any additional hearts beyond the first 15
+		while (s < 15) {
+			hearts.append(HEART);
 			s++;
-			
-		}	
-		
+		}
 		msg += ChatColor.GRAY + hearts.toString();
 		return msg;
-		
 	}
-	
 }

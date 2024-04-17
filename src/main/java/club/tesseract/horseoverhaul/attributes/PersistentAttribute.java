@@ -17,6 +17,7 @@ public enum PersistentAttribute {
     DEED_HORSE_ID("deed_horse_id", new UUIDDataType(), null),
     DEED_OWNER("deed_owner", new UUIDDataType(), null),
     WHISTLE_HORSE_ID("whistle_horse_id", new UUIDDataType(), null),
+    OWNER_COUNT("owner_count", PersistentDataType.INTEGER, 0)
 
     ;
 
@@ -53,6 +54,10 @@ public enum PersistentAttribute {
 
     public void setData(@NotNull PersistentDataHolder holder, Object value) {
         holder.getPersistentDataContainer().set(getKey(), getType(), value);
+    }
+
+    public void addOwnerCounter() {
+
     }
 
     public void setData(@NotNull ItemStack itemStack, Object value) {
